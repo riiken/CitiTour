@@ -1,0 +1,34 @@
+<div class="home-content">
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Discover Amazing Local Businesses</h1>
+    <p>Find the best places around you—restaurants, stores, and more.</p>
+    <mat-form-field appearance="outline" class="search-bar">
+      <mat-label>Search by name or location</mat-label>
+      <input matInput (keyup)="onSearch($event)" placeholder="E.g. Pizza, New York">
+    </mat-form-field>
+  </section>
+
+  <!-- Business Grid -->
+  <section>
+    <h2>Popular Businesses Near You</h2>
+    <div class="business-grid" *ngIf="businesses.length">
+      <div class="business-tile" *ngFor="let business of businesses" (click)="viewDetails(business)">
+        <div class="business-card">
+          <img [src]="business.image" alt="{{ business.name }}" class="business-image" />
+          <div class="business-info">
+            <h3>{{ business.name }}</h3>
+            <p class="category">{{ business.category }}</p>
+            <p class="description">{{ business.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="no-results" *ngIf="!businesses.length">No businesses found. Try another search!</p>
+  </section>
+
+  <!-- Advertisement Section -->
+  <section class="ads-section">
+    <app-google-ads></app-google-ads>
+  </section>
+</div>
