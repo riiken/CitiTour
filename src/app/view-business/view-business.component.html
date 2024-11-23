@@ -1,0 +1,35 @@
+<div class="page-center">
+  <div class="content">
+    <h1>{{ business.name }}</h1>
+    <div class="business-info">
+      <p><strong>Category:</strong> {{ business.category }}</p>
+      <p><strong>Location:</strong> {{ business.location }}</p>
+      <p><strong>Description:</strong> {{ business.description }}</p>
+    </div>
+    
+    <mat-divider></mat-divider>
+    
+    <h2>Reviews</h2>
+    <div *ngFor="let review of reviews" class="review">
+      <mat-card class="review-card">
+        <mat-card-header>
+          <mat-card-title>{{ review.user }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ review.comment }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    
+    <form [formGroup]="reviewForm" (ngSubmit)="onReviewSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Your Review</mat-label>
+        <textarea matInput formControlName="comment" rows="4"></textarea>
+      </mat-form-field>
+  
+      <button mat-raised-button color="accent" type="submit">Submit Review</button>
+    </form>
+  
+    <button mat-raised-button color="primary" (click)="goBack()">Back to List</button>
+  </div>
+</div>
