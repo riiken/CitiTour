@@ -7,7 +7,7 @@ body {
   }
   
 
-  .page-center{
+  /* .page-center{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,7 +42,7 @@ body {
     width: 100%;
     max-width: 400px;
     margin-bottom: 20px;
-  }
+  } */
   
   .h-100{
     height: 100%;
@@ -50,6 +50,31 @@ body {
 
   .w-100{
     width: 100%;
+  }
+
+  .gp-1{
+    gap: 1em;
+  }
+
+  .justify-content-between{
+    justify-content: space-between;
+  }
+
+  .flex-wrap{
+    flex-wrap: wrap;
+  }
+
+  .d-flex{
+    display: flex;
+  }
+  .flex-column{
+    flex-direction: column;
+  }  
+  .overflow-hidden{
+    overflow: hidden;
+  } 
+  .position-relative{
+    position: relative;
   }
   @media (max-width: 768px) {
     mat-grid-list {

@@ -1,0 +1,30 @@
+<nav class="navbar">
+    <!-- Add a logo here if needed -->
+    <!-- <div class="logo">CitiTour</div> -->
+  
+    <!-- Hamburger Icon for Mobile -->
+    <div class="d-flex justify-content-between w-100">
+        <div class="logo-container">
+            <a [routerLink]="'/'">
+              <img
+                src="assets/Cititour.png"
+                alt="logo"
+                class="logo"
+              />
+            </a>
+          </div>
+        <button class="menu-toggle" (click)="toggleSidebarFUn()">☰</button>
+    </div>
+  
+  
+    <!-- Optional: You can keep your other links in a hidden mobile view if needed -->
+    <!-- <div class="menu" [class.open]="isMenuOpen"> -->
+      <!-- <ul>
+          <li><span routerLink="/dashboard">Dashboard</span></li>
+          <li><span routerLink="/blogs">Blogs</span></li>
+          <li><span routerLink="/properties">Properties</span></li>
+          <li><span routerLink="/trip-planner">Plan Trip</span></li>
+      </ul> -->
+    <!-- </div> -->
+  </nav>
+  

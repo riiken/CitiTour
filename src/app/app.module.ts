@@ -18,6 +18,17 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GoogleAdsComponent } from './google-ads/google-ads.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { CardComponent } from './components/card/card.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { TripPlannerComponent } from './pages/trip-planner/trip-planner.component';
+import { BlogsComponent } from './pages/blogs/blogs.component';
+import { PropertiesComponent } from './pages/properties/properties.component';
+import { MatSelectModule } from '@angular/material/select';
+import { TripPlannerService } from './services/trip-planner.service';
+import { HttpClientModule } from '@angular/common/http';
+import { LoaderComponent } from './shared/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +36,15 @@ import { GoogleAdsComponent } from './google-ads/google-ads.component';
     AddBusinessComponent,
     ViewBusinessComponent,
     HomeComponent,
-    GoogleAdsComponent
+    GoogleAdsComponent,
+    NavbarComponent,
+    SidebarComponent,
+    CardComponent,
+    DashboardComponent,
+    TripPlannerComponent,
+    BlogsComponent,
+    PropertiesComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -41,9 +60,11 @@ import { GoogleAdsComponent } from './google-ads/google-ads.component';
     MatGridListModule,
     MatDividerModule,
     MatListModule,
+    MatSelectModule,
+    HttpClientModule,
     MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [TripPlannerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
