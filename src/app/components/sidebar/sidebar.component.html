@@ -1,0 +1,64 @@
+<nav
+class="primary-nav d-flex flex-column justify-content-start position-relative h-100"
+[ngClass]="{ 'closed': !open, 'opened': open }"
+>
+<div class="sidebar nav-sidemenu h-100 mb-0">
+    <!-- Logo at the top of the sidebar -->
+     <span *ngIf="!showLogo" class="close-sidebar" (click)="closeSideBar()">&times;</span>
+    <div *ngIf="showLogo" class="logo-container">
+      <a [routerLink]="'/'">
+        <img
+          src="assets/{{
+            open ? 'Cititour.png' : 'purple-q-man.svg'
+          }}"
+          [ngClass]="{ logo: open, 'logo-small': !open }"
+          alt="logo"
+        />
+      </a>
+      <!-- <div class="sidebar-toggle-btn">
+        <img
+          (click)="toggleSidebarView()"
+          src="assets/images/svg/toggle-arrow-sidebar.svg"
+          alt="toggle-arrow"
+          [ngClass]="{ 'toggle-arrow': !sidebarFullView }"
+        />
+      </div> -->
+    </div>
+    
+    <!-- Sidebar Links -->
+    <ul class="nav-sidemenu-list pr-0 pl-0">
+      <li class="active">
+        <span class="sidebar-link" routerLink="/dashboard">
+          <i class="icon fas fa-tachometer-alt"></i>
+          Dashboard
+        </span>
+      </li>
+      <!-- <li>
+        <span class="sidebar-link" routerLink="/add-business">
+          <i class="icon fas fa-building"></i>
+          Add Business
+        </span>
+      </li> -->
+      <li>
+        <span class="sidebar-link" routerLink="/businesses">
+          <i class="icon fas fa-list"></i>
+          Explore
+        </span>
+      </li>
+      <li>
+        <span class="sidebar-link" routerLink="/plan-trip">
+          <i class="icon fas fa-map"></i>
+          Plan Trip
+        </span>
+      </li>
+      <li>
+        <span class="sidebar-link" routerLink="/blogs">
+          <i class="icon fas fa-blog"></i>
+          Blogs
+        </span>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+  

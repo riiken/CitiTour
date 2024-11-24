@@ -1,4 +1,4 @@
-<div class="main-container">
+<!-- <div class="main-container">
   <mat-toolbar>
     <span class="logo-container">
       <img src="../assets/Cititour.png" alt="Cititout Logo" class="logo">
@@ -8,4 +8,18 @@
   </mat-toolbar>
 
   <router-outlet></router-outlet>
+</div> -->
+<app-loader></app-loader>
+<div  class="bg-primary d-flex h-100 w-100 flex-column  overflow-hidden position-relative" [style.height]="'100vh'">
+  <div class="d-flex h-100 w-100 flex-1 overflow-hidden" [style.height]="'100vh'">
+    <app-sidebar *ngIf="isSidebarOpen" [open]="isSidebarOpen" (closeSidebarEvent)="isSidebarOpen = $event"></app-sidebar>
+    <div class="bg-dark-contrast h-100 w-100 d-flex flex-column overflow-hidden content-wrapper">
+      <app-navbar (toggleSidebar)="toggleSidebar()"></app-navbar>
+      <div class="flex-1 content-wrapper bg-dark-contrast h-100 w-100 position-relative overflow-hidden ">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
 </div>
+
+

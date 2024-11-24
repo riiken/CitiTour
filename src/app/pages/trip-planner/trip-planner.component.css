@@ -1,0 +1,110 @@
+.trip-planner {
+    padding: 20px;
+    margin: 0px 5px 0px 5px;
+    height: calc(100% - 42px);
+    background: #f7f7f7;
+    overflow: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .trip-form{
+    display: flex;
+        gap: 2em;
+        flex-wrap: wrap;
+  }
+  
+  .form-field {
+    width: auto;
+  }
+  
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #009688;
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #00796b;
+  }
+  
+  .results {
+    margin-top: 40px;
+  }
+  
+  .results h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .recommendations {
+    gap: 20px;
+  }
+  
+  .recommendation-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+  }
+  
+  .recommendation-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .recommendation-card p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  .recommendation-card button {
+    background-color: #009688;
+    color: white;
+    border: none;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .recommendation-card button:hover {
+    background-color: #00796b;
+  }
+  
+  @media (max-width: 768px) {
+    .trip-form {
+      grid-template-columns: 1fr;
+    }
+  
+    .recommendations {
+      grid-template-columns: 1fr;
+    }
+
+    .form-field{
+      width: 100%;
+    }
+  
+    .recommendation-card {
+      margin-bottom: 20px;
+    }
+  }
+  
