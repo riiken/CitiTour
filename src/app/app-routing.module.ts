@@ -7,13 +7,16 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { TripPlannerComponent } from './pages/trip-planner/trip-planner.component';
 import { BlogsComponent } from './pages/blogs/blogs.component';
 import { PropertiesComponent } from './pages/properties/properties.component';
+import { ViewBlogComponent } from './pages/blogs/view-blog/view-blog.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'blogs', component: BlogsComponent },
   { path: 'properties', component: PropertiesComponent },
-  { path: 'plan-trip', component: TripPlannerComponent }
+  { path: 'plan-trip', component: TripPlannerComponent },
+  { path: 'blog/:id', component: ViewBlogComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
