@@ -1,0 +1,47 @@
+<!-- create-blog-dialog.component.html -->
+<h1 mat-dialog-title>Create a New Blog</h1>
+<mat-dialog-content>
+  <form [formGroup]="createBlogForm" (ngSubmit)="submitNewBlog()">
+    <!-- Blog Title -->
+    <mat-form-field appearance="fill">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" required />
+    </mat-form-field>
+
+    <!-- Author Name -->
+    <mat-form-field appearance="fill">
+      <mat-label>Author</mat-label>
+      <input matInput formControlName="author" required />
+    </mat-form-field>
+
+    <!-- Summary -->
+    <mat-form-field appearance="fill">
+      <mat-label>Summary</mat-label>
+      <textarea matInput formControlName="summary" required></textarea>
+    </mat-form-field>
+
+    <!-- Blog Content -->
+    <mat-form-field appearance="fill">
+      <mat-label>Content</mat-label>
+      <textarea matInput formControlName="content" required></textarea>
+    </mat-form-field>
+
+    <!-- Tags -->
+    <mat-form-field appearance="fill">
+      <mat-label>Tags</mat-label>
+      <input matInput formControlName="tags" (keydown.enter)="addTag($event)" />
+    </mat-form-field>
+
+    <div class="tags-container">
+      <mat-chip-list>
+        <mat-chip *ngFor="let tag of tags">{{ tag }}</mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <!-- Submit and Cancel Buttons -->
+    <div class="button-group">
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-button (click)="closeDialog()">Cancel</button>
+    </div>
+  </form>
+</mat-dialog-content>

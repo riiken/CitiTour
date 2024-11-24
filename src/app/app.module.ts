@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -29,6 +29,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { TripPlannerService } from './services/trip-planner.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LoaderComponent } from './shared/loader/loader.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { AddBlogComponent } from './pages/blogs/add-blog/add-blog.component';
+import { ViewBlogComponent } from './pages/blogs/view-blog/view-blog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -44,7 +50,9 @@ import { LoaderComponent } from './shared/loader/loader.component';
     TripPlannerComponent,
     BlogsComponent,
     PropertiesComponent,
-    LoaderComponent
+    LoaderComponent,
+    AddBlogComponent,
+    ViewBlogComponent
   ],
   imports: [
     BrowserModule,
@@ -62,8 +70,13 @@ import { LoaderComponent } from './shared/loader/loader.component';
     MatListModule,
     MatSelectModule,
     HttpClientModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatExpansionModule,
+    MatChipsModule,
+    MatIconModule,
+    MatDialogModule
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [TripPlannerService],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,25 @@
+<!-- blog-detail.component.html -->
+<div class="blog-detail-container">
+    <mat-card class="blog-detail-card">
+      <mat-card-header>
+        <mat-card-title>{{ blog.title }}</mat-card-title>
+        <mat-card-subtitle>{{ blog.author }} | {{ blog.date }}</mat-card-subtitle>
+      </mat-card-header>
+  
+      <mat-card-content>
+        <p class="blog-summary">{{ blog.summary }}</p>
+        <div class="blog-content">
+          <p>{{ blog.content }}</p>
+        </div>
+  
+        <!-- Tags Section -->
+        <div class="tags-container">
+          <mat-chip-list>
+            <mat-chip *ngFor="let tag of blog.tags">{{ tag }}</mat-chip>
+          </mat-chip-list>
+        </div>
+  
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
