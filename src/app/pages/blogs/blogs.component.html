@@ -1,1 +1,60 @@
-<p>blogs works!</p>
+<div class="blogs-container">
+    <!-- Blog Title Section -->
+    <div class="blog-header">
+      <h1 class="blog-title">Welcome to the Blogs</h1>
+      <p class="blog-subtitle">Explore insightful articles and stay updated</p>
+    </div>
+
+    <button mat-raised-button class="create-blog-button" (click)="openCreateBlogModal()">Create New Blog</button>
+  
+    <!-- Featured Highlights -->
+    <div class="blog-highlights">
+      <mat-card *ngFor="let blog of blogs" class="blog-card">
+        <mat-card-header>
+          <mat-card-title>{{ blog.title }}</mat-card-title>
+          <mat-card-subtitle>By {{ blog.author }} | {{ blog.date }}</mat-card-subtitle>
+        </mat-card-header>
+  
+        <mat-card-content>
+          <!-- Key Points or Summary -->
+          <p class="blog-summary">{{ blog.summary }}</p>
+  
+          <!-- Tags or Buttons -->
+          <div class="blog-tags">
+            <div *ngFor="let tag of blog.tags" class="tag">
+              <button mat-button class="tag-button">{{ tag }}</button>
+            </div>
+          </div>
+        </mat-card-content>
+  
+        <!-- Actions Section -->
+        <mat-card-actions>
+          <button mat-button (click)="openBlog(blog.id)">Read More</button>
+          <button mat-icon-button aria-label="Like this blog">
+            <mat-icon>thumb_up</mat-icon>
+          </button>
+          <span>{{ blog.likes }} Likes</span>
+        </mat-card-actions>
+  
+        <!-- Author Information Section -->
+        <mat-divider></mat-divider>
+        <div class="blog-author">
+          <span>Written by {{ blog.author }}</span>
+          <button mat-stroked-button color="accent" (click)="viewAuthorProfile(blog.authorId)">
+            View Profile
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  
+    <!-- Additional Section: Categories and Popular Topics -->
+    <div class="blog-categories">
+      <h2>Categories</h2>
+      <mat-chip-list>
+        <mat-chip *ngFor="let category of categories" (click)="filterByCategory(category)">
+          {{ category }}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+  </div>
+  
