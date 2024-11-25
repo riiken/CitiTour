@@ -1,5 +1,5 @@
-<div class="home-content">
-  <!-- Hero Section -->
+<!-- <div class="home-content">
+
   <section class="hero">
     <h1>Discover Amazing Local Businesses</h1>
     <p>Find the best places around you—restaurants, stores, and more.</p>
@@ -8,8 +8,6 @@
       <input matInput (keyup)="onSearch($event)" placeholder="E.g. Pizza, New York">
     </mat-form-field>
   </section>
-
-  <!-- Business Grid -->
   <section>
     <h2>Popular Businesses Near You</h2>
     <div class="business-grid" *ngIf="businesses.length">
@@ -26,9 +24,12 @@
     </div>
     <p class="no-results" *ngIf="!businesses.length">No businesses found. Try another search!</p>
   </section>
+</div> -->
 
-  <!-- Advertisement Section -->
-  <!-- <section class="ads-section">
-    <app-google-ads></app-google-ads>
-  </section> -->
-</div>
+<app-hero></app-hero>
+<app-about></app-about>
+<app-booking></app-booking>
+<app-destination></app-destination>
+<app-process></app-process>
+<app-services></app-services>
+<app-contact></app-contact>

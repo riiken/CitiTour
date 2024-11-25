@@ -9,7 +9,7 @@ export class SidebarComponent {
   @Input() open: boolean = true;
   @Output() closeSidebarEvent = new EventEmitter<boolean>();
   showLogo: boolean | undefined;
-  activeMenu: any;
+  activeMenu: any = 'dashboard';
   ngOnInit(){
     this.showLogo = window.innerWidth <=768 ? false : true;
   }

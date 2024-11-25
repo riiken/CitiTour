@@ -35,6 +35,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { AddBlogComponent } from './pages/blogs/add-blog/add-blog.component';
 import { ViewBlogComponent } from './pages/blogs/view-blog/view-blog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { BookingComponent } from './components/booking/booking.component';
+import { ProcessComponent } from './components/process/process.component';
+import { ServicesComponent } from './components/services/services.component';
+import { AboutComponent } from './components/about/about.component';
+import { DestinationComponent } from './components/destination/destination.component';
+import { TopbarComponent } from './components/topbar/topbar.component';
+import { PackageComponent } from './components/package/package.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { NavbarStickyDirective } from './navbar-sticky.directive';
+import { HeroComponent } from './hero/hero.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { BackToTopDirective } from './back-to-top.directive';
 
 @NgModule({
   declarations: [
@@ -52,7 +64,19 @@ import { MatDialogModule } from '@angular/material/dialog';
     PropertiesComponent,
     LoaderComponent,
     AddBlogComponent,
-    ViewBlogComponent
+    ViewBlogComponent,
+    BookingComponent,
+    ProcessComponent,
+    ServicesComponent,
+    AboutComponent,
+    DestinationComponent,
+    TopbarComponent,
+    PackageComponent,
+    FooterComponent,
+    NavbarStickyDirective,
+    HeroComponent,
+    ContactComponent,
+    BackToTopDirective
   ],
   imports: [
     BrowserModule,
