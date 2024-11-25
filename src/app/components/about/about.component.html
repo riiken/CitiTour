@@ -1,0 +1,24 @@
+<!-- about.component.html -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
+                <div class="position-relative h-100">
+                    <img class="img-fluid position-absolute w-100 h-100" src="assets/img/about.jpg" alt="" style="object-fit: cover;">
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                <h6 class="section-title bg-white text-start text-primary pe-3">About Us</h6>
+                <h1 class="mb-4">Welcome to <span class="text-primary">Cititour</span></h1>
+                <p class="mb-4">We're here to guide you through an exciting journey of discovery. Our site is designed to give you a seamless experience, making it easy to navigate and explore all that we have to offer. Whether you're here to learn more about our services or discover new features, we're committed to providing you with all the tools you need to make your journey enjoyable and informative.</p>
+<p class="mb-4">As you embark on your tour, let us walk you through the most exciting parts of our platform. From intuitive navigation to innovative features, we're dedicated to ensuring you have a smooth and engaging experience. Explore our offerings, discover helpful resources, and feel free to reach out if you have any questions along the way. We’re here to help you every step of the way!</p>
+                <div class="row gy-2 gx-4 mb-4">
+                    <div class="col-sm-6" *ngFor="let feature of features">
+                        <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>{{ feature }}</p>
+                    </div>
+                </div>
+                <a class="btn btn-primary py-3 px-5 mt-2" href="#">Read More</a>
+            </div>
+        </div>
+    </div>
+</div>

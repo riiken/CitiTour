@@ -1,0 +1,15 @@
+/* Example styles */
+.footer {
+    background-color: #343a40;
+    color: #fff;
+  }
+  
+  .footer .btn-link {
+    color: #ddd;
+  }
+  
+  .footer .footer-menu a {
+    color: #ddd;
+    margin: 0 10px;
+  }
+  

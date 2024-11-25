@@ -27,8 +27,8 @@ class="primary-nav d-flex flex-column justify-content-start position-relative h-
     
     <!-- Sidebar Links -->
     <ul class="nav-sidemenu-list pr-0 pl-0">
-      <li class="active" (click)="clickedMenuItems('dashboard')" [ngClass]="{'active':activeMenu==='dashboard'}">
-        <span class="sidebar-link" routerLink="/dashboard">
+      <li class="active" (click)="clickedMenuItems('dashboard')" [ngClass]="{'active':activeMenu==='dashboard'}" routerLink="/dashboard">
+        <span class="sidebar-link">
           <i class="icon fas fa-tachometer-alt"></i>
           Dashboard
         </span>
@@ -39,20 +39,20 @@ class="primary-nav d-flex flex-column justify-content-start position-relative h-
           Add Business
         </span>
       </li> -->
-      <li (click)="clickedMenuItems('Explore')" [ngClass]="{'active':activeMenu==='Explore'}">
+      <li (click)="clickedMenuItems('Explore')" [ngClass]="{'active':activeMenu==='Explore'}" routerLink="/businesses">
         <span class="sidebar-link" routerLink="/businesses">
           <i class="icon fas fa-list"></i>
           Explore
         </span>
       </li>
-      <li (click)="clickedMenuItems('plantrip')" [ngClass]="{'active':activeMenu==='plantrip'}">
-        <span class="sidebar-link" routerLink="/plan-trip">
+      <li (click)="clickedMenuItems('plantrip')" [ngClass]="{'active':activeMenu==='plantrip'}" routerLink="/plan-trip">
+        <span class="sidebar-link" >
           <i class="icon fas fa-map"></i>
           Plan Trip
         </span>
       </li>
-      <li (click)="clickedMenuItems('blogs')" [ngClass]="{'active':activeMenu==='blogs'}">
-        <span class="sidebar-link" routerLink="/blogs">
+      <li (click)="clickedMenuItems('blogs')" [ngClass]="{'active':activeMenu==='blogs'}" routerLink="/blogs">
+        <span class="sidebar-link" >
           <i class="icon fas fa-blog"></i>
           Blogs
         </span>
