@@ -1,0 +1,125 @@
+/* Basic Card Styling */
+.card {
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .list-group-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+  }
+  
+  .list-group-item i {
+    margin-right: 10px;
+  }
+  
+  .btn-info {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .btn-info:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  .card-img-top {
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin-top: 30px;
+  }
+  
+  /* Responsive Layouts */
+  @media (max-width: 768px) {
+    .card {
+      margin-bottom: 20px;
+    }
+  
+    .card-img-top {
+      height: 200px; /* Adjust image height on smaller screens */
+    }
+  
+    .card-title {
+      font-size: 1.25rem;
+    }
+  
+    .card-text {
+      font-size: 0.9rem;
+    }
+  
+    .btn-info {
+      width: 100%; /* Make button full width on small screens */
+    }
+  
+    .list-group-item {
+      font-size: 0.8rem;
+    }
+  
+    /* Card Header Layout */
+    .card-header {
+      padding: 1rem;
+    }
+  
+    /* Adjust spacing between hotel details and amenities */
+    .card-body {
+      padding: 1rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .container {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  
+    .card {
+      padding: 10px;
+    }
+  
+    .card-title {
+      font-size: 1.1rem;
+    }
+  
+    .card-text {
+      font-size: 0.85rem;
+    }
+  
+    .btn-info {
+      font-size: 0.9rem;
+      width: 100%;
+    }
+  
+    .list-group-item {
+      font-size: 0.75rem;
+    }
+  
+    .card-body {
+      padding: 1rem;
+    }
+  
+    /* Reduce Image Height Further on Very Small Screens */
+    .card-img-top {
+      height: 180px;
+    }
+  }
+  
