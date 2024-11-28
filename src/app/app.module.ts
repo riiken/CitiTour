@@ -47,6 +47,7 @@ import { NavbarStickyDirective } from './navbar-sticky.directive';
 import { HeroComponent } from './hero/hero.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { BackToTopDirective } from './back-to-top.directive';
+import { HotelDetailsComponent } from './components/hotel-details/hotel-details.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { BackToTopDirective } from './back-to-top.directive';
     NavbarStickyDirective,
     HeroComponent,
     ContactComponent,
-    BackToTopDirective
+    BackToTopDirective,
+    HotelDetailsComponent
   ],
   imports: [
     BrowserModule,
