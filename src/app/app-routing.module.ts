@@ -16,6 +16,7 @@ import { ProcessComponent } from './components/process/process.component';
 import { ServicesComponent } from './components/services/services.component';
 import { HeroComponent } from './hero/hero.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'services', component: ServicesComponent },
   { path: 'hero', component: HeroComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'search-results', component: SearchResultsComponent },
   { path: '**', redirectTo: '' },
 
 ];
