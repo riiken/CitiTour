@@ -26,12 +26,4 @@
       </div>
     </div>
   </div>
-
-  <div *ngIf="searchRecommendation?.hotels?.length > 0" class="d-flex flex-column">
-    <span class="text-center hotel-heading">HOTELS</span>
-    <div class="bar-container" *ngIf="searchRecommendation?.hotels?.length > 0" [@barAnimation]></div>
-    <div *ngFor="let hotel of searchRecommendation?.hotels" [@fadeIn]>
-      <app-hotel-details  [hotel]="hotel"></app-hotel-details>
-    </div>
-  </div>
   

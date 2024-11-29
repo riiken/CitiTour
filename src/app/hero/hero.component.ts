@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SearchRecommendationService } from '../services/search-recommendation.service';
 import { LoaderService } from '../services/loader.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-hero',
@@ -29,7 +30,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export class HeroComponent {
   searchQuery: string = '';
   searchRecommendation:any;
-  constructor(private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService){
+  constructor(private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService,private router:Router){
 
   }
 
@@ -39,8 +40,10 @@ export class HeroComponent {
       this.searchRecommendationService.getSearchRecommentdation(this.searchQuery?.trim()).subscribe((res:any)=>{
         console.log(res);
         this.searchRecommendation = res['data'];
+        this.searchRecommendationService.setSearchRecommendation(this.searchRecommendation);
         this.loaderService.hide();
-        this.searchQuery = ''
+        this.searchQuery = '';
+        this.router.navigate(['search-results'],{ state: { searchRecommendation: this.searchRecommendation } })
       })
     } else {
       console.warn('Search query is empty');

@@ -48,6 +48,8 @@ import { HeroComponent } from './hero/hero.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { BackToTopDirective } from './back-to-top.directive';
 import { HotelDetailsComponent } from './components/hotel-details/hotel-details.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { ResturantDetailsComponent } from './components/resturant-details/resturant-details.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +80,9 @@ import { HotelDetailsComponent } from './components/hotel-details/hotel-details.
     HeroComponent,
     ContactComponent,
     BackToTopDirective,
-    HotelDetailsComponent
+    HotelDetailsComponent,
+    SearchResultsComponent,
+    ResturantDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,57 @@
+<div [@fadeIn] class="mt-4">
+    <div class="position-relative w-75 mx-auto animated slideInDown">
+        <input class="form-control border-0 rounded-pill w-100 py-2 ps-4 pe-5" [style.border]="'1px solid #86B817 !important'" type="text" placeholder="Eg: Thailand"
+            [(ngModel)]="searchQuery" />
+        <button type="button" class="btn btn-primary rounded-pill px-4 position-absolute top-0 end-0 me-1" (click)="onSearch()" style="margin-top: 2px;">
+            Search
+        </button>
+    </div>
+
+    <div class="container mt-4">
+        <ul class="nav nav-tabs sticky-header" id="responsiveTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button"
+                    role="tab" aria-controls="tab1" aria-selected="true">
+                    Hotels
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button"
+                    role="tab" aria-controls="tab2" aria-selected="false">
+                    Resturants
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button"
+                    role="tab" aria-controls="tab3" aria-selected="false">
+                    Transports
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="responsiveTabsContent">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                <div class="p-3">
+                    <div *ngIf="searchRecommendation?.hotels?.length > 0" class="d-flex flex-column">
+                        <div *ngFor="let hotel of searchRecommendation?.hotels" [@fadeIn]>
+                            <app-hotel-details [hotel]="hotel"></app-hotel-details>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                <div class="p-3">
+                    <div *ngIf="searchRecommendation?.restaurants?.length > 0" class="d-flex flex-column">
+                        <div *ngFor="let resturant of searchRecommendation?.restaurants" [@fadeIn]>
+                            <app-resturant-details [restaurant]="resturant"></app-resturant-details>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                <div class="p-3">
+                    <span>No Data Yet , we are working on it</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
