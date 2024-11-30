@@ -27,7 +27,10 @@ import { BlogsComponent } from './pages/blogs/blogs.component';
 import { PropertiesComponent } from './pages/properties/properties.component';
 import { MatSelectModule } from '@angular/material/select';
 import { TripPlannerService } from './services/trip-planner.service';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatChipsModule } from '@angular/material/chips';
@@ -52,6 +55,7 @@ import { SearchResultsComponent } from './components/search-results/search-resul
 import { ResturantDetailsComponent } from './components/resturant-details/resturant-details.component';
 import { TourDetailsComponent } from './components/tour-details/tour-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -85,8 +89,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HotelDetailsComponent,
     SearchResultsComponent,
     ResturantDetailsComponent,
-    TourDetailsComponent
+    TourDetailsComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -102,16 +108,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatDividerModule,
     MatListModule,
     MatSelectModule,
-    HttpClientModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
     MatChipsModule,
     MatIconModule,
     MatDialogModule,
-    NgbModule
+    NgbModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [TripPlannerService],
-  bootstrap: [AppComponent]
+  providers: [TripPlannerService,DatePipe, provideHttpClient(withInterceptorsFromDi())],
 })
-export class AppModule { }
+export class AppModule {}
