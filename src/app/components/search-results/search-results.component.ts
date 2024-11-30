@@ -24,6 +24,7 @@ export class SearchResultsComponent {
   searchRecommendation$: any;
   constructor(private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService){
     this.searchRecommendation$ = this.searchRecommendationService.searchRecommendation$;
+    this.searchQuery = localStorage.getItem('location') ?? this.searchQuery;
   }
   ngOnInit(): void {
     this.searchRecommendation$.subscribe((data:any) => {

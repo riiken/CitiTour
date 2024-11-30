@@ -50,6 +50,7 @@ import { BackToTopDirective } from './back-to-top.directive';
 import { HotelDetailsComponent } from './components/hotel-details/hotel-details.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { ResturantDetailsComponent } from './components/resturant-details/resturant-details.component';
+import { TourDetailsComponent } from './components/tour-details/tour-details.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { ResturantDetailsComponent } from './components/resturant-details/restur
     BackToTopDirective,
     HotelDetailsComponent,
     SearchResultsComponent,
-    ResturantDetailsComponent
+    ResturantDetailsComponent,
+    TourDetailsComponent
   ],
   imports: [
     BrowserModule,
