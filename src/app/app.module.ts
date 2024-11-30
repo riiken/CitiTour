@@ -51,6 +51,7 @@ import { HotelDetailsComponent } from './components/hotel-details/hotel-details.
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { ResturantDetailsComponent } from './components/resturant-details/resturant-details.component';
 import { TourDetailsComponent } from './components/tour-details/tour-details.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { TourDetailsComponent } from './components/tour-details/tour-details.com
     MatExpansionModule,
     MatChipsModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    NgbModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [TripPlannerService],

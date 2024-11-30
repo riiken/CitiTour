@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,15 +7,28 @@ import { Component } from '@angular/core';
   styleUrls: ['./booking.component.css']
 })
 export class BookingComponent {
-  booking = {
+  plan = {
     name: '',
     email: '',
-    dateTime: '',
-    destination: '1',
-    specialRequest: ''
+    checkIn: '',
+    checkOut:'',
+    destination: ''
   };
 
+  constructor(private datePipe:DatePipe){}
+
   onSubmit() {
-    console.log(this.booking);
+    console.log(this.plan);
+  }
+
+  onStartDateSelect(date: any): void {
+    const formattedDate = this.datePipe.transform(date, 'yyyy/MM/dd');
+    this.plan.checkIn = formattedDate || '';
+  }
+
+  onEndDateSelect(date: any): void {
+    const formattedDate = this.datePipe.transform(date, 'yyyy/MM/dd');
+    this.plan.checkOut = formattedDate || '';
+    console.log(this.plan);
   }
 }
