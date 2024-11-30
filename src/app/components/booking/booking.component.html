@@ -1,55 +1,62 @@
-<!-- Booking Start -->
+<!-- plan Start -->
 <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container">
         <div class="booking p-5">
             <div class="row g-5 align-items-center">
                 <div class="col-md-6 text-white">
-                    <h6 class="text-white text-uppercase">Booking</h6>
-                    <h1 class="text-white mb-4">Online Booking</h1>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
+                    <h6 class="text-white text-uppercase">Trips</h6>
+                    <h1 class="text-white mb-4">Trip Planning</h1>
+                    <p class="mb-4">Whether you're seeking a relaxing getaway or an adventurous escape, we have curated the perfect travel options for you. From serene beaches to thrilling mountain hikes, your ideal vacation awaits. Explore exciting destinations and start planning the journey of a lifetime.</p>
+                    <p class="mb-4">Uncover hidden gems and unique experiences that will make your trip unforgettable. With handpicked destinations, personalized itineraries, and expert recommendations, we ensure that every detail of your travel is tailored to your interests and preferences. Let us help you create memories that will last forever.</p>
                     <a class="btn btn-outline-light py-3 px-5 mt-2" href="">Read More</a>
                 </div>
                 <div class="col-md-6">
-                    <h1 class="text-white mb-4">Book A Tour</h1>
+                    <h1 class="text-white mb-4">Plan Your Trip</h1>
                     <form (ngSubmit)="onSubmit()">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control bg-transparent" id="name" [(ngModel)]="booking.name" name="name" placeholder="Your Name" required>
+                                    <input type="text" class="form-control bg-transparent" id="name" [(ngModel)]="plan.name" name="name" placeholder="Your Name" required>
                                     <label for="name">Your Name</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="email" class="form-control bg-transparent" id="email" [(ngModel)]="booking.email" name="email" placeholder="Your Email" required>
+                                    <input type="email" class="form-control bg-transparent" id="email" [(ngModel)]="plan.email" name="email" placeholder="Your Email" required>
                                     <label for="email">Your Email</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-floating date" id="date3" data-target-input="nearest">
-                                    <input type="text" class="form-control bg-transparent datetimepicker-input" id="datetime" [(ngModel)]="booking.dateTime" name="dateTime" placeholder="Date & Time" required>
-                                    <label for="datetime">Date & Time</label>
+                                <div class="form-floating date" id="date3">
+                                  <input type="text" class="form-control bg-transparent" [(ngModel)]="plan.checkIn" name="dateTime" placeholder="Start Date" required>
+                                  <label for="datetime">Start Date</label>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
+                              </div>   
+                              
+                              <div class="col-md-6">
+                                <div class="form-floating date" id="date3">
+                                  <input type="text" class="form-control bg-transparent" [(ngModel)]="plan.checkOut" name="dateTime" placeholder="End Date" required>
+                                  <label for="datetime">End Date</label>
+                                </div>
+                              </div>   
+                            <!-- <div class="col-md-6">
                                 <div class="form-floating">
-                                    <select class="form-select bg-transparent" id="select1" [(ngModel)]="booking.destination" name="destination" required>
+                                    <select class="form-select bg-transparent" id="select1" [(ngModel)]="plan.destination" name="destination" required>
                                         <option value="1">Destination 1</option>
                                         <option value="2">Destination 2</option>
                                         <option value="3">Destination 3</option>
                                     </select>
                                     <label for="select1">Destination</label>
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea class="form-control bg-transparent" placeholder="Special Request" id="message" [(ngModel)]="booking.specialRequest" name="specialRequest" style="height: 100px"></textarea>
-                                    <label for="message">Special Request</label>
+                            </div> -->
+                            <div class="col-md-6">
+                                <div class="form-floating date" id="date3" data-target-input="nearest">
+                                    <input type="text" class="form-control bg-transparent" id="destination" [(ngModel)]="plan.destination" name="destination" placeholder="Enter PLace Name" required>
+                                    <label for="destination">Destination</label>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-outline-light w-100 py-3" type="submit">Book Now</button>
+                                <button class="btn btn-outline-light w-100 py-3" type="submit">Plan Now</button>
                             </div>
                         </div>
                     </form>
@@ -58,4 +65,4 @@
         </div>
     </div>
 </div>
-<!-- Booking End -->
+<!-- plan End -->
