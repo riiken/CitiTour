@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { TripPlannerService } from 'src/app/services/trip-planner.service';
 
@@ -17,11 +17,14 @@ export class BookingComponent {
     destination: ''
   };
 
+  @Output() planTripEmmiter = new EventEmitter<any>();
+
   constructor(private router:Router,private tripPlannerService:TripPlannerService){}
 
   onSubmit() {
     console.log(this.plan);
     this.tripPlannerService.setTripData(this.plan);
-    this.router.navigate(['plan-trip'])
+    this.planTripEmmiter.emit(this.plan)
+    this.router.navigate(['plan-trip']);
   }
 }

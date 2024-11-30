@@ -1,6 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from 'src/app/services/loader.service';
 import { SearchRecommendationService } from 'src/app/services/search-recommendation.service';
 
@@ -22,7 +23,7 @@ export class SearchResultsComponent {
   @Input() searchQuery:string = 'banglore';
   searchRecommendation: any;
   searchRecommendation$: any;
-  constructor(private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService){
+  constructor(private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService,private toastr:ToastrService){
     this.searchRecommendation$ = this.searchRecommendationService.searchRecommendation$;
     this.searchQuery = localStorage.getItem('location') ?? this.searchQuery;
   }
@@ -49,6 +50,10 @@ export class SearchResultsComponent {
       this.searchRecommendation = res['data'];
       this.searchRecommendationService.setSearchRecommendation(this.searchRecommendation);
       this.loaderService.hide();
+    },(err)=>{
+      this.toastr.error(err.message);
+      this.loaderService.hide();
+      return;
     })
   }
 

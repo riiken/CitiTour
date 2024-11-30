@@ -56,6 +56,7 @@ import { ResturantDetailsComponent } from './components/resturant-details/restur
 import { TourDetailsComponent } from './components/tour-details/tour-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { DatePipe } from '@angular/common';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     MatToolbarModule,

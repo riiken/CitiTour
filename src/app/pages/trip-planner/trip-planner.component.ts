@@ -26,7 +26,11 @@ export class TripPlannerComponent {
   }
 
   ngOnInit(){
-    this.getRecommendations();
+    const { destination, checkIn, checkOut } = this.tripplannerservice.getTripData();
+    if(destination && checkIn && checkOut){
+      this.getRecommendations();
+    }
+    
   }
 
   // Function to handle form submission
@@ -58,5 +62,12 @@ export class TripPlannerComponent {
   viewDetails(rec: any) {
     // Here you can redirect to a detailed page or show a modal with more information
     console.log('Viewing details for:', rec);
+  }
+
+  planTripEmmiter(plan:any){
+    const { destination, checkIn, checkOut } = plan;
+    if(destination && checkIn && checkOut){
+      this.getRecommendations();
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/app/environment';
 
 @Component({
@@ -30,13 +31,13 @@ export class ContactComponent {
   email:string = '';
   subject:string= '';
   message:string=''
-  constructor(private http:HttpClient){
+  constructor(private http:HttpClient,private toaster:ToastrService){
     this.apiURL = environment.apiURL;
   }
   sendMessage(){
     console.log(this.name);
     if (!this.name || !this.email || !this.message) {
-      alert('Please fill in all required fields.');
+      this.toaster.info('Please fill in all required fields.')
       return;
     }
 
@@ -49,12 +50,11 @@ export class ContactComponent {
 
     this.http.post(`${this.apiURL}sendEmail`, emailData).subscribe(
       (response: any) => {
-        alert('Your message has been sent successfully!');
+        this.toaster.success('Your message has been sent successfully!')
         this.clearForm();
       },
       (error) => {
-        console.error('Failed to send email:', error);
-        alert('Failed to send your message. Please try again later.');
+        this.toaster.error('Failed to send your message. Please try again later.')
       }
     );
   }

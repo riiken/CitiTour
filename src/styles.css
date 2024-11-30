@@ -457,3 +457,56 @@
 .bg-primary{
   background-color: #86B817 !important;
 }
+
+
+.toast-container {
+  position: absolute !important;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  z-index: 9999;
+  width: 100%; /* Set a desired width for the toast */
+}
+
+/* Optional: Customize individual toasts' size and padding */
+.toast-success, .toast-error, .toast-info, .toast-warning {
+  color: white !important; /* White text for readability */
+  padding: 10px; /* Add more padding for better spacing */
+  border-radius: 8px;  /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
+  font-size: 16px; /* Increase font size */
+  min-height: 60px; /* Set a minimum height for the toast */
+  width: 25vw;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width:768px) {
+  .toast-success, .toast-error, .toast-info, .toast-warning{
+    width: 80vw;
+  }
+}
+
+/* Remove the close button (cross) */
+.toast-close-button {
+  display: none !important; /* Hide the close button */
+}
+
+/* Optionally, style the toast when it's in 'success', 'error', etc. */
+.toast-success {
+  background-color: #86B817;
+}
+
+.toast-error {
+  background-color: red;
+}
+
+.toast-info {
+  background-color: blue;
+}
+
+.toast-warning {
+  background-color: orange;
+}
