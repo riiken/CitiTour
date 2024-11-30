@@ -1,62 +1,3 @@
-<div class="container mt-5">
-  <!-- Trip Planner Form -->
-  <div class="row">
-    <div class="col-12">
-      <h1>Plan Your Trip</h1>
-      <form class="trip-form">
-        
-        <!-- Location Input -->
-        <div class="mb-3" class="plan-form-field">
-          <label for="location" class="form-label">Location</label>
-          <input type="text" class="form-control" id="location" placeholder="Enter destination" [(ngModel)]="tripData.location" name="location" required>
-        </div>
-        
-        <!-- Time Input -->
-        <div class="mb-3" class="plan-form-field">
-          <label for="time" class="form-label">Duration</label>
-          <input type="text" class="form-control" id="time" placeholder="Enter time period" [(ngModel)]="tripData.time" name="time" required>
-        </div>
-        
-        <!-- Number of Travelers Input -->
-        <div class="mb-3" class="plan-form-field">
-          <label for="travelers" class="form-label">Number of Travelers</label>
-          <input type="number" class="form-control" id="travelers" placeholder="Enter number of travelers" [(ngModel)]="tripData.travelers" name="travelers" required>
-        </div>
-        
-        <!-- Budget Input -->
-        <div class="mb-3" class="plan-form-field">
-          <label for="budget" class="form-label">Budget</label>
-          <input type="number" class="form-control" id="budget" placeholder="Enter your budget" [(ngModel)]="tripData.budget" name="budget" required>
-        </div>
-        
-        <!-- Preferred Activities Select -->
-        <div class="mb-3 plan-form-field">
-          <label class="form-label">Preferred Activities</label>
-          
-          <div>
-            <input type="checkbox" id="sightseeing" value="sightseeing" [(ngModel)]="tripData.activities.sightseeing" name="sightseeing" />
-            <label for="sightseeing">Sightseeing</label>
-          </div>
-          
-          <div>
-            <input type="checkbox" id="adventure" value="adventure" [(ngModel)]="tripData.activities.adventure" name="adventure" />
-            <label for="adventure">Adventure</label>
-          </div>
-          
-          <div>
-            <input type="checkbox" id="beach" value="beach" [(ngModel)]="tripData.activities.beach" name="beach" />
-            <label for="beach">Beach</label>
-          </div>
-        </div>
-        
-        
-        
-
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary" (click)="getRecommendations()">Get Recommendations</button>
-      </form>
-    </div>
-  </div>
 
   <!-- Recommendations Section -->
   <div class="results mt-5" *ngIf="recommendations">
@@ -115,4 +56,3 @@
 
     </div>
   </div>
-</div>

@@ -16,6 +16,7 @@ export class FooterComponent {
     'assets/img/package-1.jpg'
   ];
 
+  constructor(){}
   subscribe() {
     console.log('Subscribed with email:', this.email);
   }

@@ -22,7 +22,11 @@ export class TripPlannerComponent {
   recommendations: any;
 
   constructor(private tripplannerservice:TripPlannerService,private loaderService:LoaderService){
+    console.log(this.tripplannerservice.getTripData());
+  }
 
+  ngOnInit(){
+    this.getRecommendations();
   }
 
   // Function to handle form submission
@@ -35,19 +39,9 @@ export class TripPlannerComponent {
 
   getRecommendations() {
     this.loaderService.show();
-    const { location, time, travelers, budget, activities } = this.tripData;
+    const { destination, checkIn, checkOut } = this.tripplannerservice.getTripData();
 
-    if (!location || !time || !travelers || !budget) {
-      alert('Please fill in all required fields.');
-      this.loaderService.hide();
-      return;
-    }
-
-    let query = `Plan a trip to ${location} for ${travelers} people for ${time}`;
-    if (activities.sightseeing || activities.adventure || activities.beach) {
-      query += ` including activities like ${activities.sightseeing ? 'sightseeing' : ''}${activities.sightseeing && activities.adventure ? ', ' : ''}${activities.adventure ? 'adventure' : ''}${(activities.sightseeing || activities.adventure) && activities.beach ? ', ' : ''}${activities.beach ? 'beach' : ''}`;
-
-    }
+    let query = `Plan a trip to ${destination} from ${checkIn} to ${checkOut}`;
     query += `.`;
 
     console.log(query);

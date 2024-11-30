@@ -1,5 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { TripPlannerService } from 'src/app/services/trip-planner.service';
 
 @Component({
   selector: 'app-booking',
@@ -15,20 +17,11 @@ export class BookingComponent {
     destination: ''
   };
 
-  constructor(private datePipe:DatePipe){}
+  constructor(private router:Router,private tripPlannerService:TripPlannerService){}
 
   onSubmit() {
     console.log(this.plan);
-  }
-
-  onStartDateSelect(date: any): void {
-    const formattedDate = this.datePipe.transform(date, 'yyyy/MM/dd');
-    this.plan.checkIn = formattedDate || '';
-  }
-
-  onEndDateSelect(date: any): void {
-    const formattedDate = this.datePipe.transform(date, 'yyyy/MM/dd');
-    this.plan.checkOut = formattedDate || '';
-    console.log(this.plan);
+    this.tripPlannerService.setTripData(this.plan);
+    this.router.navigate(['plan-trip'])
   }
 }

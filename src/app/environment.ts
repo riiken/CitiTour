@@ -1,3 +1,4 @@
 export const environment ={
-    apiURL:'https://cititour-befnl.onrender.com/api/ai/'
+    apiURL:'https://cititour-befnl.onrender.com/api/ai/',
+    emailURL:'sendEmail'
 }
