@@ -42,6 +42,7 @@ export class HeroComponent {
         this.searchRecommendation = res['data'];
         this.searchRecommendationService.setSearchRecommendation(this.searchRecommendation);
         this.loaderService.hide();
+        localStorage.setItem('location',this.searchQuery);
         this.searchQuery = '';
         this.router.navigate(['search-results'],{ state: { searchRecommendation: this.searchRecommendation } })
       })

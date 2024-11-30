@@ -1,0 +1,43 @@
+<div class="container mt-5" *ngIf="tour">
+    <!-- Row for Tour Details -->
+    <div class="row">
+      <!-- Tour Image Column -->
+      <div class="col-lg-4 col-md-6 mb-3">
+        <img [src]="tour.thumbnail" class="img-fluid rounded shadow-sm" alt="{{ tour.title }}">
+      </div>
+
+      <!-- Tour Info Column -->
+      <div class="col-lg-8 col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <!-- Title and Category -->
+            <h5 class="card-title">{{ tour.title }}</h5>
+            <p class="text-muted mb-2">Category: {{ tour.category }}</p>
+
+            <!-- Tour Details -->
+            <p><strong>Operator:</strong> {{ tour.operator }}</p>
+            <p><strong>Duration:</strong> {{ tour.duration }}</p>
+            <p><strong>Languages Offered:</strong> {{ tour.languages.join(', ') }}</p>
+
+            <!-- Rating and Reviews -->
+            <p><strong>Rating:</strong> {{ tour.rating }} ⭐</p>
+            <p><strong>Reviews:</strong> {{ tour.reviewsCount }} reviews</p>
+
+            <!-- Price -->
+            <p><strong>Price:</strong> {{ tour.priceText }}</p>
+
+            <!-- Cancellation Policy -->
+            <p><strong>Cancellation Policy:</strong> {{ tour.cancellation }}</p>
+
+            <!-- Description -->
+            <p class="mt-3">{{ tour.description }}</p>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between">
+              <a [href]="tour.url" target="_blank" class="btn btn-primary">View on Tripadvisor</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
