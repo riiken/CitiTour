@@ -94,6 +94,10 @@
     .trip-form {
       grid-template-columns: 1fr;
     }
+
+    .plan-form-field{
+      width: 100%;
+    }
   
     .recommendations {
       grid-template-columns: 1fr;

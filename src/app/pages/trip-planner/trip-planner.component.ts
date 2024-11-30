@@ -13,7 +13,11 @@ export class TripPlannerComponent {
     time: '',
     travelers: 1,
     budget: 1000,
-    activities: [] as string[]
+    activities:{
+      sightseeing:false,
+      adventure:false,
+      beach:true,
+    }
   };
   recommendations: any;
 
@@ -40,8 +44,9 @@ export class TripPlannerComponent {
     }
 
     let query = `Plan a trip to ${location} for ${travelers} people for ${time}`;
-    if (activities.length > 0) {
-      query += ` including activities like ${activities.join(', ')}`;
+    if (activities.sightseeing || activities.adventure || activities.beach) {
+      query += ` including activities like ${activities.sightseeing ? 'sightseeing' : ''}${activities.sightseeing && activities.adventure ? ', ' : ''}${activities.adventure ? 'adventure' : ''}${(activities.sightseeing || activities.adventure) && activities.beach ? ', ' : ''}${activities.beach ? 'beach' : ''}`;
+
     }
     query += `.`;
 
@@ -54,17 +59,6 @@ export class TripPlannerComponent {
     // You can also send this query to an API or use it as needed
   }
 
-  // Function to handle activity selection
-  onActivitySelection(activity: any) {
-    if (!this.tripData.activities.includes(activity)) {
-      this.tripData.activities.push(activity);
-    }
-  }
-
-  // Function to remove an activity from selected activities
-  removeActivity(activity: string) {
-    this.tripData.activities = this.tripData.activities.filter(a => a !== activity);
-  }
 
   // Dummy method for "View Details" button (you can extend it for navigation)
   viewDetails(rec: any) {

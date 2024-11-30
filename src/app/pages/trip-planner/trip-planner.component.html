@@ -1,85 +1,118 @@
-<div class="trip-planner">
-    <h1>Plan Your Trip</h1>
-    <div>
-        <form class="trip-form">
-            <mat-form-field appearance="fill" class="form-field">
-              <mat-label>Location</mat-label>
-              <input matInput placeholder="Enter destination" [(ngModel)]="tripData.location" name="location" required>
-            </mat-form-field>
+<div class="container mt-5">
+  <!-- Trip Planner Form -->
+  <div class="row">
+    <div class="col-12">
+      <h1>Plan Your Trip</h1>
+      <form class="trip-form">
         
-            <mat-form-field appearance="fill" class="form-field">
-              <mat-label>Time</mat-label>
-              <input matInput placeholder="Enter time period" [(ngModel)]="tripData.time" name="time" required>
-            </mat-form-field>
+        <!-- Location Input -->
+        <div class="mb-3" class="plan-form-field">
+          <label for="location" class="form-label">Location</label>
+          <input type="text" class="form-control" id="location" placeholder="Enter destination" [(ngModel)]="tripData.location" name="location" required>
+        </div>
         
-            <mat-form-field appearance="fill" class="form-field">
-              <mat-label>Number of Travelers</mat-label>
-              <input matInput type="number" placeholder="Enter number of travelers" [(ngModel)]="tripData.travelers" name="travelers" required>
-            </mat-form-field>
+        <!-- Time Input -->
+        <div class="mb-3" class="plan-form-field">
+          <label for="time" class="form-label">Duration</label>
+          <input type="text" class="form-control" id="time" placeholder="Enter time period" [(ngModel)]="tripData.time" name="time" required>
+        </div>
         
-            <mat-form-field appearance="fill" class="form-field">
-              <mat-label>Budget</mat-label>
-              <input matInput type="number" placeholder="Enter your budget" [(ngModel)]="tripData.budget" name="budget" required>
-            </mat-form-field>
+        <!-- Number of Travelers Input -->
+        <div class="mb-3" class="plan-form-field">
+          <label for="travelers" class="form-label">Number of Travelers</label>
+          <input type="number" class="form-control" id="travelers" placeholder="Enter number of travelers" [(ngModel)]="tripData.travelers" name="travelers" required>
+        </div>
         
-            <mat-form-field appearance="fill" class="form-field">
-              <mat-label>Preferred Activities</mat-label>
-              <mat-select placeholder="Choose activities" [(ngModel)]="tripData.activities" name="activities" multiple>
-                <mat-option value="sightseeing">Sightseeing</mat-option>
-                <mat-option value="adventure">Adventure</mat-option>
-                <mat-option value="beach">Beach</mat-option>
-                <mat-option value="cultural">Cultural</mat-option>
-                <mat-option value="food">Food & Drink</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </form>
-          <button mat-raised-button color="primary" type="submit" (click)="getRecommendations()">Get Recommendations</button>
+        <!-- Budget Input -->
+        <div class="mb-3" class="plan-form-field">
+          <label for="budget" class="form-label">Budget</label>
+          <input type="number" class="form-control" id="budget" placeholder="Enter your budget" [(ngModel)]="tripData.budget" name="budget" required>
+        </div>
+        
+        <!-- Preferred Activities Select -->
+        <div class="mb-3 plan-form-field">
+          <label class="form-label">Preferred Activities</label>
+          
+          <div>
+            <input type="checkbox" id="sightseeing" value="sightseeing" [(ngModel)]="tripData.activities.sightseeing" name="sightseeing" />
+            <label for="sightseeing">Sightseeing</label>
+          </div>
+          
+          <div>
+            <input type="checkbox" id="adventure" value="adventure" [(ngModel)]="tripData.activities.adventure" name="adventure" />
+            <label for="adventure">Adventure</label>
+          </div>
+          
+          <div>
+            <input type="checkbox" id="beach" value="beach" [(ngModel)]="tripData.activities.beach" name="beach" />
+            <label for="beach">Beach</label>
+          </div>
+        </div>
+        
+        
+        
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary" (click)="getRecommendations()">Get Recommendations</button>
+      </form>
     </div>
-  
-    <div class="results" *ngIf="recommendations">
-      <h2>AI Recommendations</h2>
-      <div class="recommendations d-flex flex-column align-items-center justify-content-center">
-        <!-- Travel Guide -->
-        <div class="travel-guide d-flex flex-column align-items-center justify-content-center">
-          <h3>Travel Guide</h3>
-          <div class="travel-guide-wrapper flex-wrap gp-1 d-flex align-items-center justify-content-center">
-            <div class="recommendation-card" *ngFor="let travel of recommendations?.travelGuide">
-              <h4>{{ travel.placeName }}</h4>
-              <p>{{ travel.explanation }}</p>
+  </div>
+
+  <!-- Recommendations Section -->
+  <div class="results mt-5" *ngIf="recommendations">
+    <h2>AI Recommendations</h2>
+    <div class="recommendations row">
+
+      <!-- Travel Guide -->
+      <div class="col-12 col-md-4">
+        <h3>Travel Guide</h3>
+        <div class="d-flex flex-column">
+          <div class="card mb-3" *ngFor="let travel of recommendations?.travelGuide">
+            <div class="card-body">
+              <h5 class="card-title">{{ travel.placeName }}</h5>
+              <p class="card-text">{{ travel.explanation }}</p>
               <small><strong>Location:</strong> {{ travel.location }}</small>
-              <small *ngIf="travel?.websiteLink"><strong>Link:</strong> <a [href]= "travel.websiteLink" target="_blank">{{travel.websiteLink}}</a></small>
-              <button mat-button (click)="viewDetails(travel)">View Details</button>
+              <br>
+              <small *ngIf="travel?.websiteLink"><strong>Link:</strong> <a [href]="travel.websiteLink" target="_blank">{{ travel.websiteLink }}</a></small>
+              <br>
+              <button class="btn btn-secondary mt-2 bg-primary" (click)="viewDetails(travel)">View Details</button>
             </div>
           </div>
         </div>
-    
-        <!-- Stay Guide -->
-        <div class="stay-guide">
-          <h3>Stay Guide</h3>
-        <div class="stay-wrapper flex-wrap gp-1 d-flex align-items-center justify-content-center">
-          <div class="recommendation-card" *ngFor="let stay of recommendations?.stayGuide">
-            <h4>{{ stay.placeName || 'Stay Option' }}</h4>
-            <p>{{ stay.explanation || 'Details not available' }}</p>
-            <small *ngIf="stay?.websiteLink"><strong>Link:</strong> <a [href]= "stay.websiteLink" target="_blank">{{stay.websiteLink}}</a></small>
-            <button mat-button (click)="viewDetails(stay)">View Details</button>
+      </div>
+
+      <!-- Stay Guide -->
+      <div class="col-12 col-md-4">
+        <h3>Stay Guide</h3>
+        <div class="d-flex flex-column">
+          <div class="card mb-3" *ngFor="let stay of recommendations?.stayGuide">
+            <div class="card-body">
+              <h5 class="card-title">{{ stay.placeName || 'Stay Option' }}</h5>
+              <p class="card-text">{{ stay.explanation || 'Details not available' }}</p>
+              <small *ngIf="stay?.websiteLink"><strong>Link:</strong> <a [href]="stay.websiteLink" target="_blank">{{ stay.websiteLink }}</a></small>
+              <br>
+              <button class="btn btn-secondary mt-2 bg-primary" (click)="viewDetails(stay)">View Details</button>
+            </div>
           </div>
-        </div>
-        </div>
-    
-        <!-- Food Guide -->
-        <div class="food-guide">
-          <h3>Food Guide</h3>
-        <div class="food-wrapper flex-wrap gp-1 d-flex align-items-center justify-content-center">
-          <div class="recommendation-card" *ngFor="let food of recommendations?.foodGuide">
-            <h4>{{ food.dishName || 'Food Option' }}</h4>
-            <p>{{ food.explanation || 'Details not available' }}</p>
-            <small *ngIf="food?.websiteLink"><strong>Link:</strong> <a [href]= "food.websiteLink" target="_blank">{{food.websiteLink}}</a></small>
-            <button mat-button (click)="viewDetails(food)">View Details</button>
-          </div>
-        </div>
         </div>
       </div>
+
+      <!-- Food Guide -->
+      <div class="col-12 col-md-4">
+        <h3>Food Guide</h3>
+        <div class="d-flex flex-column">
+          <div class="card mb-3" *ngFor="let food of recommendations?.foodGuide">
+            <div class="card-body">
+              <h5 class="card-title">{{ food.dishName || 'Food Option' }}</h5>
+              <p class="card-text">{{ food.explanation || 'Details not available' }}</p>
+              <small *ngIf="food?.websiteLink"><strong>Link:</strong> <a [href]="food.websiteLink" target="_blank">{{ food.websiteLink }}</a></small>
+              <br>
+              <button class="btn btn-secondary mt-2 bg-primary" (click)="viewDetails(food)">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <!-- <app-google-ads></app-google-ads> -->
   </div>
-  
+</div>
