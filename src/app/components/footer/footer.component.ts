@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-footer',
@@ -16,8 +17,9 @@ export class FooterComponent {
     'assets/img/package-1.jpg'
   ];
 
-  constructor(){}
+  constructor(private taostr:ToastrService){}
   subscribe() {
     console.log('Subscribed with email:', this.email);
+    this.taostr.success('Subscribed with email:', this.email)
   }
 }

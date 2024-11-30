@@ -14,9 +14,9 @@ export class SearchRecommendationService {
     this.apiUrl = environment.apiURL;
   }
 
-  getSearchRecommentdation(location:string){
+  getSearchRecommentdation(location:string,sort?:string){
     const url = `${this.apiUrl}recommendlocation`;
-    return this.http.post(url,{location:location});
+    return this.http.post(url,{location:location,sort:sort});
   }
 
   // Set the search recommendation data

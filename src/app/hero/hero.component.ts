@@ -3,6 +3,7 @@ import { SearchRecommendationService } from '../services/search-recommendation.s
 import { LoaderService } from '../services/loader.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-hero',
@@ -30,7 +31,7 @@ import { Router } from '@angular/router';
 export class HeroComponent {
   searchQuery: string = '';
   searchRecommendation:any;
-  constructor(private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService,private router:Router){
+  constructor(private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService,private router:Router,private toastr: ToastrService){
 
   }
 
@@ -45,10 +46,16 @@ export class HeroComponent {
         localStorage.setItem('location',this.searchQuery);
         this.searchQuery = '';
         this.router.navigate(['search-results'],{ state: { searchRecommendation: this.searchRecommendation } })
+      },(err)=>{
+        this.toastr.error(err.message);
+      this.loaderService.hide();
+
+        return;
       })
     } else {
       console.warn('Search query is empty');
       this.loaderService.hide();
+      
     }
   }
 }

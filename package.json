@@ -25,6 +25,7 @@
         "bootstrap": "^5.3.3",
         "font-awesome": "^4.7.0",
         "moment": "^2.30.1",
+        "ngx-toastr": "^19.0.0",
         "owl.carousel": "^2.3.4",
         "rxjs": "~7.8.0",
         "tslib": "^2.3.0",
