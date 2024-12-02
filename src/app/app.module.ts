@@ -57,6 +57,7 @@ import { TourDetailsComponent } from './components/tour-details/tour-details.com
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
+import { PopunderDirective } from './popunder.directive';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { ToastrModule } from 'ngx-toastr';
     SearchResultsComponent,
     ResturantDetailsComponent,
     TourDetailsComponent,
+    PopunderDirective,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],

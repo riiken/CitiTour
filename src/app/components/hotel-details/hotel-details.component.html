@@ -18,8 +18,8 @@
             <p><strong>Price Range:</strong> {{ hotel.currency }} {{ hotel.priceMin }} - {{ hotel.currency }} {{ hotel.priceMax }}</p>
   
             <div class="d-flex justify-content-between">
-              <a [href]="hotel.url" target="_blank" class="btn btn-primary">View on Tripadvisor</a>
-              <button class="btn btn-info" (click)="toggleAmenities()">
+              <a [href]="hotel.url" target="_blank" class="btn btn-primary" appPopunder="https://zireemilsoude.net/4/8596098">View</a>
+              <button class="btn btn-info" (click)="toggleAmenities()" appPopunder="https://zireemilsoude.net/4/8596098">
                 <i class="bi bi-list"></i> Amenities
               </button>
             </div>
