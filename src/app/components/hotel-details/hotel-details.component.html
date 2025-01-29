@@ -18,8 +18,8 @@
             <p><strong>Price Range:</strong> {{ hotel.currency }} {{ hotel.priceMin }} - {{ hotel.currency }} {{ hotel.priceMax }}</p>
   
             <div class="d-flex justify-content-between">
-              <a [href]="hotel.url" target="_blank" class="btn btn-primary" appPopunder="https://zireemilsoude.net/4/8596098">View</a>
-              <button class="btn btn-info" (click)="toggleAmenities()" appPopunder="https://zireemilsoude.net/4/8596098">
+              <a [href]="hotel.url" target="_blank" class="btn btn-primary">View</a>
+              <button class="btn btn-info" (click)="toggleAmenities()">
                 <i class="bi bi-list"></i> Amenities
               </button>
             </div>
