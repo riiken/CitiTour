@@ -9,6 +9,10 @@
   --dark: #14141F;
 }
 
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
 .fw-medium {
   font-weight: 600 !important;
 }
@@ -499,6 +503,10 @@
   background-color: #86B817;
 }
 
+.color-tour {
+  color: #86B817;
+}
+
 .toast-error {
   background-color: red;
 }
@@ -510,3 +518,46 @@
 .toast-warning {
   background-color: orange;
 }
+
+.font-10{
+  font-size: 10px;
+}
+
+.font-12{
+  font-size: 12px;
+}
+
+.font-14{
+  font-size: 14px;
+}
+
+.font-16{
+  font-size: 16px;
+}
+
+.font-18{
+  font-size: 18px;
+}
+
+.font-20{
+  font-size: 20px;
+}
+
+.font-24{
+  font-size: 24px;
+}
+
+.position-absolute{
+  position: absolute;
+}
+
+.position-relative{
+  position: relative;
+}
+
+.opacity-7{
+  opacity: 0.7;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -45,7 +45,7 @@ export class SearchResultsComponent {
 
   setRecommendations(){
     this.loaderService.show();
-    this.searchRecommendationService.getSearchRecommentdation(this.searchQuery?.trim()).subscribe((res:any)=>{
+    this.searchRecommendationService.getSearchRecommendationFromAPi(this.searchQuery?.trim()).subscribe((res:any)=>{
       console.log(res);
       this.searchRecommendation = res['data'];
       this.searchRecommendationService.setSearchRecommendation(this.searchRecommendation);
