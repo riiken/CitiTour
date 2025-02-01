@@ -3,8 +3,16 @@
     <div class="row">
       <!-- Hotel Image Column -->
       <div class="col-md-4 image-container">
-        <img [src]="hotel.thumbnail" class="card-img-top" alt="{{ hotel.name }}">
-        <div class="other-photos">
+        <img [src]="hotel.thumbnail?hotel.thumbnail:'assets/img/hotelimg.jpg'" class="card-img-top" alt="{{ hotel.name }}">
+        <div *ngIf="!hotel?.photos?.length" class="other-photos">
+          <div class="photos-container">
+            <img [src]="'assets/img/hotelimg1.jpg'" alt="" class="photos-container-img">
+          </div>
+          <div class="photos-container">
+            <img [src]="'assets/img/hotelimg2.jpg'" alt="" class="photos-container-img">
+          </div>
+        </div>
+        <div *ngIf="hotel?.photos?.length" class="other-photos">
           <div *ngFor="let photo of hotel.photos?.slice(0,2)" class="photos-container">
             <img [src]="photo" alt="" class="photos-container-img">
           </div>
@@ -16,7 +24,7 @@
         <div class="card h-100">
           <div class="card-body">
             <span class="card-title">{{ hotel.name }}</span>
-            <span class="card-text">#{{ hotel.ranking.current_rank}} of {{hotel.ranking.total}}</span>
+            <span *ngIf="hotel.ranking.current_rank" class="card-text">#{{ hotel.ranking.current_rank}} of {{hotel.ranking.total}}</span>
             <div class="d-flex align-items-start row">
               <div class="d-flex flex-column col-md-6 gp-5">
                 <span class="ratings font-16">
