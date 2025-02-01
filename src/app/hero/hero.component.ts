@@ -38,7 +38,7 @@ export class HeroComponent {
   onSearch(): void {
     this.loaderService.show();
     if (this.searchQuery?.trim()) {
-      this.searchRecommendationService.getSearchRecommentdation(this.searchQuery?.trim()).subscribe((res:any)=>{
+      this.searchRecommendationService.getSearchRecommendationFromAPi(this.searchQuery?.trim()).subscribe((res:any)=>{
         console.log(res);
         this.searchRecommendation = res['data'];
         this.searchRecommendationService.setSearchRecommendation(this.searchRecommendation);

@@ -23,7 +23,7 @@ export class DestinationComponent {
 
   getPopularDestinations(){
     this.loaderService.show();
-    this.searchRecommendationService.getSearchRecommentdation('india','POPULARITY').subscribe((res:any)=>{
+    this.searchRecommendationService.getSearchRecommendationFromAPi('india','POPULARITY').subscribe((res:any)=>{
       console.log(res);
       this.destinations = res['data'];
       // this.searchRecommendationService.setSearchRecommendation(this.searchRecommendation);
