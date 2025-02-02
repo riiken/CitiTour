@@ -39,6 +39,7 @@ export class SearchResultsComponent {
 
   onSearch(){
     if(this.searchQuery?.trim()){
+      localStorage.setItem('location',this.searchQuery?.trim());
       this.setRecommendations();
     }
   }

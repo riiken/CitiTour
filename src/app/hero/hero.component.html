@@ -19,7 +19,8 @@
               style="margin-top: 7px;"
               (click)="onSearch()"
             >
-              Search
+            <span class="d-none d-md-inline">Search</span> <!-- Show "Search" on larger screens -->
+            <i class="fa fa-search d-inline d-md-none"></i> <!-- Show search icon on small screens -->
             </button>
           </div>
         </div>
