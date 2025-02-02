@@ -9,6 +9,7 @@ export class ResturantDetailsComponent {
 
   @Input() restaurant:any;
   showMenu:boolean = false;
+  isLoading:boolean = false;
 
   toggleMenu(){
     this.showMenu = !this.showMenu;

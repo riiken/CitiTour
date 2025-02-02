@@ -1,43 +1,61 @@
-<div class="container mt-5" *ngIf="tour">
-    <!-- Row for Tour Details -->
-    <div class="row">
-      <!-- Tour Image Column -->
-      <div class="col-lg-4 col-md-6 mb-3">
-        <img [src]="tour.thumbnail" class="img-fluid rounded shadow-sm" alt="{{ tour.title }}">
+<div class="container shadow" *ngIf="tour">
+  <!-- Row for tour Details -->
+  <div class="row">
+    <!-- tour Image Column -->
+    <div class="col-md-4 image-container">
+      <img [src]="tour.image?tour.image:'assets/img/tourimg.jpg'" class="card-img-top" alt="{{ tour.title }}">
+      <div *ngIf="!tour?.photos?.length" class="other-photos">
+        <div class="photos-container">
+          <img [src]="'assets/img/tourimg1.jpg'" alt="" class="photos-container-img">
+        </div>
+        <div class="photos-container">
+          <img [src]="'assets/img/tourimg2.jpg'" alt="" class="photos-container-img">
+        </div>
       </div>
+      <div *ngIf="tour?.photos?.length" class="other-photos">
+        <div *ngFor="let photo of tour?.photos?.slice(0,2)" class="photos-container">
+          <img [src]="photo" alt="" class="photos-container-img">
+        </div>
+      </div>
+    </div>
 
-      <!-- Tour Info Column -->
-      <div class="col-lg-8 col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <!-- Title and Category -->
-            <h5 class="card-title">{{ tour.title }}</h5>
-            <p class="text-muted mb-2">Category: {{ tour.category }}</p>
-
-            <!-- Tour Details -->
-            <p><strong>Operator:</strong> {{ tour.operator }}</p>
-            <p><strong>Duration:</strong> {{ tour.duration }}</p>
-            <p><strong>Languages Offered:</strong> {{ tour.languages.join(', ') }}</p>
-
-            <!-- Rating and Reviews -->
-            <p><strong>Rating:</strong> {{ tour.rating }} ⭐</p>
-            <p><strong>Reviews:</strong> {{ tour.reviewsCount }} reviews</p>
-
-            <!-- Price -->
-            <p><strong>Price:</strong> {{ tour.priceText }}</p>
-
-            <!-- Cancellation Policy -->
-            <p><strong>Cancellation Policy:</strong> {{ tour.cancellation }}</p>
-
-            <!-- Description -->
-            <p class="mt-3">{{ tour.description }}</p>
-
-            <!-- Buttons -->
-            <div class="d-flex justify-content-between">
-              <a [href]="tour.url" target="_blank" class="btn btn-primary">View</a>
+    <!-- tour Info Column -->
+    <div class="col-md-8">
+      <div class="card h-100">
+        <div class="card-body">
+          <span class="card-title">{{ tour?.title }}</span>
+          <span *ngIf="tour?.category" class="card-text">{{tour?.category}}</span>
+          <div class="d-flex align-items-start row">
+            <div class="d-flex flex-column col-md-6 gp-5">
+              <span class="ratings font-16">
+                <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+                  <i class="fa" [ngClass]="i < (tour?.rating || 0) ? 'fa-star filled' : 'fa-star empty'"></i>
+                </ng-container>
+              </span>            
+              <span class="reviews opacity-7">{{ tour?.reviewsCount }} reviews</span>
             </div>
+            <div class="amenities d-flex flex-wrap align-items-center gp-10 col-md-6">
+              <span class="amenities-item d-flex align-items-center" *ngFor="let language of tour?.languages">
+                <i class="fa fa-check-circle"></i> {{ language }}
+              </span>
+              <span class="font-14">{{tour?.operator}}</span>
+            </div>
+          </div>
+          <div class="d-flex flex-column opacity-7 font-14 gp-5">
+            <span>{{ tour?.description }}</span>
+            <span class="color-tour">{{tour?.duration}}</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-auto flex-wrap gp-5">
+            <div class="d-flex flex-column">
+              <span class="hotel-price font-20"><strong>{{ tour?.price | currency: tour?.currency }}</strong></span>
+            <div *ngIf="tour?.cancellation" class="tour-styles color-tour">
+              {{tour?.cancellation}}
+            </div>
+            </div>
+            <a [href]="tour?.url" target="_blank" class="btn btn-primary view-btn">View</a>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </div>
