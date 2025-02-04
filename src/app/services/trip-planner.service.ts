@@ -14,6 +14,10 @@ export class TripPlannerService {
     this.apiUrl = environment.apiURL;
   }
 
+  getUserLocation(): Observable<any> {
+    return this.http.get('https://ipapi.co/json/');
+  }
+
   getTripRecommentdation(query:string){
     const url = `${this.apiUrl}query`;
     return this.http.post(url,{query:query});

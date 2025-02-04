@@ -13,7 +13,7 @@
         </div>
       </div>
       <div *ngIf="restaurant?.photos?.length" class="other-photos">
-        <div *ngFor="let photo of restaurant?.photos?.slice(0, 2)" class="photos-container">
+        <div *ngFor="let photo of restaurant?.photos?.slice(1,3)" class="photos-container">
           <div class="loader-container" *ngIf="isLoading">
             <div class="loader"></div> <!-- This is the actual loader -->
           </div>

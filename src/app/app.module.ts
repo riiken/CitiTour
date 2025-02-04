@@ -58,6 +58,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
 import { PopunderDirective } from './popunder.directive';
+import { CurrencyConverterDirective } from './currency-converter.directive';
+import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +95,8 @@ import { PopunderDirective } from './popunder.directive';
     ResturantDetailsComponent,
     TourDetailsComponent,
     PopunderDirective,
+    PrivacyPolicyComponent,
+    CurrencyConverterDirective
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],

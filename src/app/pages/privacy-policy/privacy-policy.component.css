@@ -1,0 +1,36 @@
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #86B817;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #86B817;
+            padding-bottom: 10px;
+        }
+        p {
+            margin: 10px 0;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        a {
+            color: #86B817;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }

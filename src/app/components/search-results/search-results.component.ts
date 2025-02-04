@@ -2,6 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { GoogleAdsService } from 'src/app/services/google-ads.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { SearchRecommendationService } from 'src/app/services/search-recommendation.service';
 
@@ -23,7 +24,7 @@ export class SearchResultsComponent {
   @Input() searchQuery:string = 'banglore';
   searchRecommendation: any;
   searchRecommendation$: any;
-  constructor(private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService,private toastr:ToastrService){
+  constructor(private googleAds:GoogleAdsService,private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService,private toastr:ToastrService){
     this.searchRecommendation$ = this.searchRecommendationService.searchRecommendation$;
     this.searchQuery = localStorage.getItem('location') ?? this.searchQuery;
   }
@@ -39,6 +40,7 @@ export class SearchResultsComponent {
 
   onSearch(){
     if(this.searchQuery?.trim()){
+      this.googleAds?.showAd('interstitial');
       localStorage.setItem('location',this.searchQuery?.trim());
       this.setRecommendations();
     }
