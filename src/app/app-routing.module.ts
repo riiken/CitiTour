@@ -17,6 +17,7 @@ import { ServicesComponent } from './components/services/services.component';
 import { HeroComponent } from './hero/hero.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'hero', component: HeroComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'search-results', component: SearchResultsComponent },
+  {path:'privacy-policy',component:PrivacyPolicyComponent},
   { path: '**', redirectTo: '' },
 
 ];

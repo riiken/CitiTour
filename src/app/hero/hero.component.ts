@@ -4,6 +4,7 @@ import { LoaderService } from '../services/loader.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { GoogleAdsService } from '../services/google-ads.service';
 
 @Component({
   selector: 'app-hero',
@@ -31,12 +32,13 @@ import { ToastrService } from 'ngx-toastr';
 export class HeroComponent {
   searchQuery: string = '';
   searchRecommendation:any;
-  constructor(private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService,private router:Router,private toastr: ToastrService){
+  constructor(private ads:GoogleAdsService,private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService,private router:Router,private toastr: ToastrService){
 
   }
 
   onSearch(): void {
     this.loaderService.show();
+    this.ads.showAd('interstitial')
     if (this.searchQuery?.trim()) {
       this.searchRecommendationService.getSearchRecommendationFromAPi(this.searchQuery?.trim()).subscribe((res:any)=>{
         console.log(res);
