@@ -26,7 +26,7 @@ export class AppComponent {
 
   async initializeAdMob() {
     await AdMob.initialize({
-      initializeForTesting: true,
+      initializeForTesting: false,
     });
   }
 
