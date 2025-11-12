@@ -18,10 +18,17 @@ import { HeroComponent } from './hero/hero.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
+import { LoginComponent } from './pages/auth/login/login.component';
+import { RegisterComponent } from './pages/auth/register/register.component';
+import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  {path: 'home',component:HomeComponent},
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'user-dashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'blogs', component: BlogsComponent },
   { path: 'properties', component: PropertiesComponent },

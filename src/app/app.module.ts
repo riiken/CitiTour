@@ -60,6 +60,13 @@ import { ToastrModule } from 'ngx-toastr';
 import { PopunderDirective } from './popunder.directive';
 import { CurrencyConverterDirective } from './currency-converter.directive';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
+import { LoginComponent } from './pages/auth/login/login.component';
+import { RegisterComponent } from './pages/auth/register/register.component';
+import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { WeatherDisplayComponent } from './components/weather-display/weather-display.component';
+import { ImageGalleryComponent } from './components/image-gallery/image-gallery.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +103,12 @@ import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.co
     TourDetailsComponent,
     PopunderDirective,
     PrivacyPolicyComponent,
-    CurrencyConverterDirective
+    CurrencyConverterDirective,
+    LoginComponent,
+    RegisterComponent,
+    UserDashboardComponent,
+    WeatherDisplayComponent,
+    ImageGalleryComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
@@ -123,6 +135,15 @@ import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.co
     MatDialogModule,
     NgbModule,
   ],
-  providers: [TripPlannerService,DatePipe, provideHttpClient(withInterceptorsFromDi())],
+  providers: [
+    TripPlannerService,
+    DatePipe,
+    provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
 })
 export class AppModule {}

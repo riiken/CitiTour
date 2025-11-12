@@ -1,0 +1,261 @@
+/* Weather Container */
+.weather-container {
+  margin: 20px 0;
+}
+
+/* Current Weather Card */
+.current-weather {
+  background: linear-gradient(135deg, #86B817 0%, #6A9112 100%);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(134, 184, 23, 0.3);
+}
+
+.current-weather .card-title {
+  color: white;
+  font-weight: 600;
+}
+
+/* Weather Icon */
+.weather-icon-large {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.weather-icon-large img {
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+}
+
+/* Temperature Display */
+.temperature-display {
+  font-size: 3rem;
+  font-weight: 300;
+  margin: 15px 0;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.temp-value {
+  font-weight: 700;
+}
+
+.temp-unit {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+/* Temperature Color Classes */
+.temp-freezing { color: #4FC3F7; }
+.temp-cold { color: #81C784; }
+.temp-cool { color: #86B817; }
+.temp-warm { color: #FFB74D; }
+.temp-hot { color: #FF8A65; }
+
+.weather-description {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Weather Details */
+.weather-details {
+  padding: 10px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item i {
+  font-size: 1.3rem;
+  width: 30px;
+  margin-right: 10px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.detail-label {
+  flex: 1;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.detail-value {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Temperature Range */
+.temp-range {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.temp-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.progress {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #86B817 0%, #FFB74D 100%);
+  border-radius: 10px;
+}
+
+/* Forecast Section */
+.forecast-section {
+  margin-top: 30px;
+}
+
+.forecast-section h4 {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Forecast Cards */
+.forecast-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.forecast-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(134, 184, 23, 0.25);
+  border-color: #86B817;
+}
+
+.forecast-day {
+  font-weight: 700;
+  color: #86B817;
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+
+.forecast-date {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.forecast-icon {
+  width: 60px;
+  height: 60px;
+  margin: 10px auto;
+}
+
+.forecast-description {
+  color: #666;
+  font-size: 0.85rem;
+  min-height: 32px;
+}
+
+.forecast-temp {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.temp-high {
+  font-weight: 700;
+}
+
+.temp-low {
+  font-weight: 500;
+}
+
+.temp-divider {
+  color: #ccc;
+}
+
+.forecast-details {
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+  color: #666;
+}
+
+.forecast-details i {
+  margin-right: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .temperature-display {
+    font-size: 2.5rem;
+  }
+
+  .weather-icon-large {
+    width: 120px;
+    height: 120px;
+  }
+
+  .weather-icon-large img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .detail-item {
+    font-size: 0.9rem;
+  }
+
+  .forecast-card {
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .current-weather .card-body {
+    padding: 20px 15px;
+  }
+
+  .temperature-display {
+    font-size: 2rem;
+  }
+
+  .detail-item i {
+    font-size: 1.1rem;
+    width: 25px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .forecast-card {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #fff;
+  }
+
+  .forecast-section h4 {
+    color: #fff;
+  }
+
+  .forecast-description {
+    color: #ccc;
+  }
+
+  .forecast-details {
+    color: #aaa;
+    border-top-color: #444;
+  }
+}

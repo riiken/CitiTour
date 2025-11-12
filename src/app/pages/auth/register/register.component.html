@@ -1,0 +1,141 @@
+<div class="register-container">
+  <div class="register-card">
+    <!-- Header -->
+    <div class="register-header">
+      <h1>Create Account</h1>
+      <p>Join CitiTour and start planning your dream trips</p>
+    </div>
+
+    <!-- Register Form -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          class="form-control"
+          [class.is-invalid]="submitted && f['name'].errors"
+          placeholder="Enter your full name"
+        />
+        <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+          <div *ngIf="f['name'].errors['required']">Name is required</div>
+          <div *ngIf="f['name'].errors['minlength']">Name must be at least 2 characters</div>
+          <div *ngIf="f['name'].errors['maxlength']">Name cannot exceed 100 characters</div>
+        </div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-control"
+          [class.is-invalid]="submitted && f['email'].errors"
+          placeholder="Enter your email"
+        />
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">Email is required</div>
+          <div *ngIf="f['email'].errors['email']">Email must be a valid email address</div>
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="hidePassword ? 'password' : 'text'"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            [class.is-invalid]="submitted && f['password'].errors"
+            placeholder="Create a strong password"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="hidePassword = !hidePassword"
+          >
+            <i class="fa" [class.fa-eye]="hidePassword" [class.fa-eye-slash]="!hidePassword"></i>
+          </button>
+        </div>
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <div *ngIf="f['password'].errors['required']">Password is required</div>
+          <div *ngIf="f['password'].errors['minlength']">Password must be at least 8 characters</div>
+          <div *ngIf="f['password'].errors['pattern']">Password must contain uppercase, lowercase, and number</div>
+        </div>
+        <div class="password-strength" *ngIf="f['password'].value">
+          <small class="text-muted">Use 8+ characters with uppercase, lowercase, and numbers</small>
+        </div>
+      </div>
+
+      <!-- Confirm Password Field -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            class="form-control"
+            [class.is-invalid]="submitted && (f['confirmPassword'].errors || registerForm.errors?.['passwordMismatch'])"
+            placeholder="Confirm your password"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="hideConfirmPassword = !hideConfirmPassword"
+          >
+            <i class="fa" [class.fa-eye]="hideConfirmPassword" [class.fa-eye-slash]="!hideConfirmPassword"></i>
+          </button>
+        </div>
+        <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+          <div *ngIf="f['confirmPassword'].errors['required']">Please confirm your password</div>
+        </div>
+        <div *ngIf="submitted && registerForm.errors?.['passwordMismatch']" class="invalid-feedback">
+          Passwords do not match
+        </div>
+      </div>
+
+      <!-- Terms and Conditions -->
+      <div class="terms-checkbox">
+        <input type="checkbox" id="terms" required />
+        <label for="terms">
+          I agree to the <a href="/privacy-policy" target="_blank">Terms & Conditions</a>
+        </label>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="loading"
+      >
+        <span *ngIf="!loading">Create Account</span>
+        <span *ngIf="loading">
+          <i class="fa fa-spinner fa-spin"></i> Creating account...
+        </span>
+      </button>
+
+      <!-- Login Link -->
+      <div class="login-link">
+        Already have an account?
+        <a (click)="goToLogin()" class="link-primary">Sign in</a>
+      </div>
+    </form>
+
+    <!-- Free Tier Benefits -->
+    <div class="benefits">
+      <div class="benefit-header">Start with our FREE plan:</div>
+      <ul class="benefit-list">
+        <li><i class="fa fa-check-circle"></i> 20 AI trip recommendations/hour</li>
+        <li><i class="fa fa-check-circle"></i> 50 location searches/15 min</li>
+        <li><i class="fa fa-check-circle"></i> Personalized travel planning</li>
+      </ul>
+    </div>
+  </div>
+</div>

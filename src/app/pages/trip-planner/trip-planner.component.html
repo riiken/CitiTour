@@ -1,9 +1,111 @@
 
 
 <app-booking (planTripEmmiter)="planTripEmmiter($event)"></app-booking>
-  <!-- Recommendations Section -->
+
+  <!-- Destination Data Section (Weather, Images, Travel Info) -->
+  <div class="destination-data-section mt-5" *ngIf="showDestinationData && travelData">
+    <div class="container">
+      <!-- Destination Overview -->
+      <div class="destination-overview mb-4">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h1 class="destination-title">{{ travelData.destination }}</h1>
+            <p class="destination-description" *ngIf="travelData.overview?.description">
+              {{ travelData.overview.description }}
+            </p>
+          </div>
+          <div class="col-md-4 text-end">
+            <span class="badge bg-success me-2">
+              <i class="bi bi-check-circle me-1"></i>
+              {{ travelData.completeness }}% Complete
+            </span>
+            <span class="badge bg-info">
+              <i class="bi bi-database me-1"></i>
+              {{ travelData.sources.length || 0 }} Sources
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Travel Recommendations -->
+      <div class="travel-recommendations mb-4" *ngIf="travelData.recommendations && travelData.recommendations.length > 0">
+        <h3><i class="bi bi-lightbulb me-2"></i>Travel Recommendations</h3>
+        <div class="row">
+          <div class="col-md-4" *ngFor="let rec of travelData.recommendations">
+            <div class="alert alert-info mb-3">
+              <i class="bi bi-info-circle me-2"></i>{{ rec }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Best Time to Visit -->
+      <div class="best-time-section mb-4" *ngIf="travelData.bestTimeToVisit">
+        <div class="card bg-primary text-white">
+          <div class="card-body">
+            <h4 class="card-title">
+              <i class="bi bi-calendar-check me-2"></i>
+              Best Time to Visit
+            </h4>
+            <div class="row">
+              <div class="col-md-8">
+                <p class="mb-2">
+                  <strong>Recommended Date:</strong> {{ travelData.bestTimeToVisit.bestDay | date: 'fullDate' }}
+                </p>
+                <p class="mb-2">
+                  <strong>Score:</strong> {{ travelData.bestTimeToVisit.score }}/100
+                </p>
+                <p class="mb-0">
+                  <strong>Reason:</strong> {{ travelData.bestTimeToVisit.reason }}
+                </p>
+              </div>
+              <div class="col-md-4" *ngIf="travelData.bestTimeToVisit && travelData.bestTimeToVisit.alternatives && travelData.bestTimeToVisit.alternatives.length > 0">
+                <p class="mb-1"><strong>Alternative Dates:</strong></p>
+                <ul class="list-unstyled">
+                  <li *ngFor="let alt of travelData.bestTimeToVisit.alternatives">
+                    {{ alt | date: 'mediumDate' }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Things To Do -->
+      <div class="things-to-do-section mb-4" *ngIf="travelData.thingsToDo && travelData.thingsToDo.length > 0">
+        <h3><i class="bi bi-list-check me-2"></i>Things To Do</h3>
+        <div class="row">
+          <div class="col-md-3" *ngFor="let activity of travelData.thingsToDo">
+            <div class="card mb-3">
+              <div class="card-body">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                {{ activity }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weather Display Component -->
+      <app-weather-display
+        [weather]="weather"
+        [forecast]="forecast"
+        [loading]="loading">
+      </app-weather-display>
+
+      <!-- Image Gallery Component -->
+      <app-image-gallery
+        [images]="images"
+        [loading]="loading"
+        [destination]="destination">
+      </app-image-gallery>
+    </div>
+  </div>
+
+  <!-- AI Recommendations Section -->
   <div class="results mt-5" *ngIf="recommendations">
-    <h2>AI Recommendations</h2>
+    <h2>AI-Powered Trip Recommendations</h2>
     <div class="recommendations row">
 
       <!-- Travel Guide -->

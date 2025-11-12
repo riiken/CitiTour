@@ -27,16 +27,16 @@
   button {
     width: 100%;
     padding: 12px;
-    background-color: #009688;
+    background-color: #86B817;
     color: white;
     border: none;
     font-size: 16px;
     border-radius: 4px;
     cursor: pointer;
   }
-  
+
   button:hover {
-    background-color: #00796b;
+    background-color: #6A9112;
   }
   
   .results {
@@ -78,18 +78,83 @@
   }
   
   .recommendation-card button {
-    background-color: #009688;
+    background-color: #86B817;
     color: white;
     border: none;
     font-size: 14px;
     border-radius: 4px;
     cursor: pointer;
   }
-  
+
   .recommendation-card button:hover {
-    background-color: #00796b;
+    background-color: #6A9112;
   }
   
+  /* Destination Data Section */
+  .destination-data-section {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+
+  .destination-overview {
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  .destination-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  .destination-description {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* Travel Recommendations */
+  .travel-recommendations h3 {
+    color: #86B817;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .travel-recommendations .alert {
+    border-radius: 8px;
+    border-left: 4px solid #86B817;
+  }
+
+  /* Best Time Section */
+  .best-time-section .card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(134, 184, 23, 0.3);
+  }
+
+  /* Things To Do */
+  .things-to-do-section h3 {
+    color: #86B817;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .things-to-do-section .card {
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .things-to-do-section .card:hover {
+    border-color: #86B817;
+    box-shadow: 0 4px 12px rgba(134, 184, 23, 0.25);
+    transform: translateY(-2px);
+  }
+
   @media (max-width: 768px) {
     .trip-form {
       grid-template-columns: 1fr;
@@ -98,7 +163,7 @@
     .plan-form-field{
       width: 100%;
     }
-  
+
     .recommendations {
       grid-template-columns: 1fr;
     }
@@ -106,9 +171,21 @@
     .form-field{
       width: 100%;
     }
-  
+
     .recommendation-card {
       margin-bottom: 20px;
+    }
+
+    .destination-title {
+      font-size: 2rem;
+    }
+
+    .destination-description {
+      font-size: 1rem;
+    }
+
+    .destination-data-section {
+      padding: 20px 15px;
     }
   }
   
