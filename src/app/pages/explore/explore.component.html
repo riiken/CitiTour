@@ -1,13 +1,13 @@
 <div class="container py-4 explore">
   <form class="search" (ngSubmit)="search()">
     <i class="fa fa-search"></i>
-    <input class="form-control" name="q" [(ngModel)]="query" placeholder="Explore a city or region, e.g. Udaipur" aria-label="Destination">
-    <button class="btn btn-primary" type="submit">Explore</button>
+    <input class="form-control" name="q" [(ngModel)]="query" [placeholder]="'Explore a city or region, e.g. Udaipur' | t" [attr.aria-label]="'Destination' | t">
+    <button class="btn btn-primary" type="submit">{{ 'Explore' | t }}</button>
   </form>
 
   <div *ngIf="!destination" class="start">
-    <h1>Explore India, place by place</h1>
-    <p class="muted">Sights, activities, stays and food from travel guides and verified local businesses.</p>
+    <h1>{{ 'Explore India, place by place' | t }}</h1>
+    <p class="muted">{{ 'Sights, activities, stays and food from travel guides and verified local businesses.' | t }}</p>
     <div class="popular">
       <button *ngFor="let place of popular" type="button" class="chip" (click)="search(place)">{{ place }}</button>
     </div>
@@ -23,41 +23,41 @@
         <p class="muted small">{{ data.destination.displayName }}</p>
       </div>
       <a class="btn btn-primary" routerLink="/plan-trip" [queryParams]="{ destination: data.destination.name }">
-        <i class="fa fa-calendar"></i> Plan a trip here
+        <i class="fa fa-calendar"></i> {{ 'Plan a trip here' | t }}
       </a>
     </header>
 
     <nav class="tabs" role="tablist">
       <button *ngFor="let section of sections" role="tab" [attr.aria-selected]="active === section"
               [class.active]="active === section" (click)="select(section)" [disabled]="!data.counts[section]">
-        {{ sectionLabels[section] }} <span class="count">{{ data.counts[section] }}</span>
+        {{ sectionLabels[section] | t }} <span class="count">{{ data.counts[section] }}</span>
       </button>
     </nav>
 
     <div class="filters">
       <button *ngIf="hasPartners" class="chip" [class.active]="verifiedOnly" (click)="toggleVerified()">
-        <i class="fa fa-check-circle"></i> Verified businesses only
+        <i class="fa fa-check-circle"></i> {{ 'Verified businesses only' | t }}
       </button>
       <ng-container *ngIf="priceBands.length">
-        <button class="chip" [class.active]="!priceBand" (click)="setBand(null)">Any price</button>
-        <button *ngFor="let band of priceBands" class="chip" [class.active]="priceBand === band" (click)="setBand(band)">{{ band }}</button>
+        <button class="chip" [class.active]="!priceBand" (click)="setBand(null)">{{ 'Any price' | t }}</button>
+        <button *ngFor="let band of priceBands" class="chip" [class.active]="priceBand === band" (click)="setBand(band)">{{ band | t }}</button>
       </ng-container>
       <a *ngIf="active === 'stay'" class="see-all" [href]="data.links.allStays" target="_blank" rel="sponsored noopener"
-         (click)="trackClick($any(null), data.links.allStays)">All stays on Booking.com →</a>
+         (click)="trackClick($any(null), data.links.allStays)">{{ 'All stays on Booking.com →' | t }}</a>
       <a *ngIf="active === 'do' || active === 'see'" class="see-all" [href]="data.links.allActivities" target="_blank" rel="sponsored noopener"
-         (click)="trackClick($any(null), data.links.allActivities)">All tours &amp; activities →</a>
+         (click)="trackClick($any(null), data.links.allActivities)">{{ 'All tours & activities →' | t }}</a>
     </div>
 
     <div class="layout">
       <div class="list">
-        <p class="muted" *ngIf="!places.length">Nothing here yet.</p>
+        <p class="muted" *ngIf="!places.length">{{ 'Nothing here yet.' | t }}</p>
         <article class="place" *ngFor="let place of places" [class.partner]="place.partner">
           <img *ngIf="place.photo" [src]="listingService.photoUrl(place.photo)" [alt]="place.name" class="photo">
           <div class="body">
             <div class="badges">
-              <span class="sponsored" *ngIf="place.sponsored">Sponsored</span>
-              <span class="verified" *ngIf="place.partner"><i class="fa fa-check-circle"></i> Verified by owner</span>
-              <span class="band" *ngIf="place.priceBand">{{ place.priceBand }}</span>
+              <span class="sponsored" *ngIf="place.sponsored">{{ 'Sponsored' | t }}</span>
+              <span class="verified" *ngIf="place.partner"><i class="fa fa-check-circle"></i> {{ 'Verified by owner' | t }}</span>
+              <span class="band" *ngIf="place.priceBand">{{ place.priceBand | t }}</span>
             </div>
             <h3>
               <a *ngIf="place.partner && place.listingId; else plainName" [routerLink]="['/place', place.listingId]">{{ place.name }}</a>
@@ -68,16 +68,16 @@
             <p class="price" *ngIf="priceText(place) as price">{{ price }}</p>
             <div class="actions">
               <a *ngIf="place.mapsLink" class="btn btn-outline-secondary btn-sm" [href]="place.mapsLink" target="_blank" rel="noopener"
-                 (click)="trackClick(place, place.mapsLink)">Map</a>
+                 (click)="trackClick(place, place.mapsLink)">{{ 'Map' | t }}</a>
               <ng-container *ngIf="place.partner; else affiliate">
                 <a *ngIf="place.whatsappLink" class="btn btn-success btn-sm" [href]="place.whatsappLink" target="_blank" rel="noopener"
-                   (click)="trackLead(place, 'whatsapp')"><i class="fa fa-whatsapp"></i> WhatsApp</a>
+                   (click)="trackLead(place, 'whatsapp')"><i class="fa fa-whatsapp"></i> {{ 'WhatsApp' | t }}</a>
                 <a *ngIf="place.callLink" class="btn btn-outline-secondary btn-sm" [href]="place.callLink" (click)="trackLead(place, 'call')">
-                  <i class="fa fa-phone"></i> Call</a>
+                  <i class="fa fa-phone"></i> {{ 'Call' | t }}</a>
               </ng-container>
               <ng-template #affiliate>
                 <a *ngIf="place.bookingLink" class="btn btn-primary btn-sm" [href]="place.bookingLink" target="_blank" rel="sponsored noopener"
-                   (click)="trackClick(place, place.bookingLink)">{{ bookLabel(place) }}</a>
+                   (click)="trackClick(place, place.bookingLink)">{{ bookLabel(place) | t }}</a>
               </ng-template>
             </div>
           </div>

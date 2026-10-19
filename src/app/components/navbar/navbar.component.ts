@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService, User } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +21,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public i18n: I18nService
   ){
     this.mobileVersion = window.innerWidth <= 768;
   }

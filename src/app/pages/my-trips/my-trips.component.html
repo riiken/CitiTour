@@ -1,21 +1,21 @@
 <div class="container py-4 my-trips">
   <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-    <h1 class="mb-0">My trips</h1>
-    <a routerLink="/plan-trip" class="btn btn-primary"><i class="fa fa-plus"></i> Plan a new trip</a>
+    <h1 class="mb-0">{{ 'My trips' | t }}</h1>
+    <a routerLink="/plan-trip" class="btn btn-primary"><i class="fa fa-plus"></i> {{ 'Plan a new trip' | t }}</a>
   </div>
 
   <p *ngIf="loading">Loading…</p>
   <div class="alert alert-warning" *ngIf="error">{{ error }}</div>
 
   <div class="empty" *ngIf="!loading && !error && !trips.length">
-    <h2>No saved trips yet</h2>
-    <p>Plan a trip, or open a trip a friend shared, and tap <strong>Save to my trips</strong>.</p>
-    <a routerLink="/plan-trip" class="btn btn-primary">Plan a trip</a>
+    <h2>{{ 'No saved trips yet' | t }}</h2>
+    <p>Plan a trip, or open a trip a friend shared, and tap <strong>{{ 'Save to my trips' | t }}</strong>.</p>
+    <a routerLink="/plan-trip" class="btn btn-primary">{{ 'Plan a trip' | t }}</a>
   </div>
 
   <ng-container *ngFor="let group of [{ label: 'Upcoming', trips: upcoming }, { label: 'Past', trips: past }]">
     <section *ngIf="group.trips.length">
-      <h2>{{ group.label }}</h2>
+      <h2>{{ group.label | t }}</h2>
       <div class="grid">
         <article class="trip" *ngFor="let trip of group.trips">
           <a [routerLink]="['/trip', trip.id]" class="trip-link">

@@ -3,7 +3,7 @@
 <div class="container" *ngIf="error">
   <div class="alert alert-warning d-flex justify-content-between align-items-center flex-wrap gap-2">
     <span>{{ error }}</span>
-    <button class="btn btn-sm btn-primary" (click)="retry()">Try again</button>
+    <button class="btn btn-sm btn-primary" (click)="retry()">{{ 'Try again' | t }}</button>
   </div>
 </div>
 
@@ -11,18 +11,18 @@
   <div class="row g-4 text-center">
     <div class="col-md-4">
       <i class="fa fa-map-o fa-2x mb-2"></i>
-      <h5>Real places only</h5>
-      <p class="text-muted">Every stop comes from travel guides and maps, not made up.</p>
+      <h5>{{ 'Real places only' | t }}</h5>
+      <p class="text-muted">{{ 'Every stop comes from travel guides and maps, not made up.' | t }}</p>
     </div>
     <div class="col-md-4">
       <i class="fa fa-calendar fa-2x mb-2"></i>
-      <h5>Day-by-day plan</h5>
-      <p class="text-muted">Grouped by area so you spend time exploring, not travelling.</p>
+      <h5>{{ 'Day-by-day plan' | t }}</h5>
+      <p class="text-muted">{{ 'Grouped by area so you spend time exploring, not travelling.' | t }}</p>
     </div>
     <div class="col-md-4">
       <i class="fa fa-whatsapp fa-2x mb-2"></i>
-      <h5>Share with your group</h5>
-      <p class="text-muted">Send the plan on WhatsApp and book stays for your dates.</p>
+      <h5>{{ 'Share with your group' | t }}</h5>
+      <p class="text-muted">{{ 'Send the plan on WhatsApp and book stays for your dates.' | t }}</p>
     </div>
   </div>
 </div>

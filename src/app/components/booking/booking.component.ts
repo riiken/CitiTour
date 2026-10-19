@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TripPlannerService, TripRequest } from 'src/app/services/trip-planner.service';
+import { I18nService } from 'src/app/i18n/i18n.service';
 
 const toIsoDate = (date: Date) => date.toISOString().slice(0, 10);
 
@@ -19,7 +20,7 @@ export class BookingComponent {
 
   @Output() planTripEmmiter = new EventEmitter<TripRequest>();
 
-  constructor(private tripPlannerService: TripPlannerService, private toastr: ToastrService, route: ActivatedRoute) {
+  constructor(private tripPlannerService: TripPlannerService, private toastr: ToastrService, route: ActivatedRoute, private i18n: I18nService) {
     const fromQuery = route.snapshot.queryParamMap.get('destination');
     const existing = this.tripPlannerService.getTripData();
     const start = new Date();
@@ -45,11 +46,11 @@ export class BookingComponent {
 
   onSubmit(): void {
     if (!this.plan.destination?.trim()) {
-      this.toastr.info('Where are you going?');
+      this.toastr.info(this.i18n.t('Where are you going?'));
       return;
     }
     if (!this.plan.checkIn || !this.plan.checkOut || this.plan.checkOut <= this.plan.checkIn) {
-      this.toastr.info('Choose an end date after the start date.');
+      this.toastr.info(this.i18n.t('Choose an end date after the start date.'));
       return;
     }
     const plan = { ...this.plan, destination: this.plan.destination.trim() };

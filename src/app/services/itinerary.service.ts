@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../environment';
 import { TripRequest } from './trip-planner.service';
+import { storedLanguage } from '../i18n/i18n.service';
 
 export type PlaceKind = 'attraction' | 'hotel' | 'restaurant' | 'tour' | 'area';
 export type Slot = 'morning' | 'lunch' | 'afternoon' | 'evening' | 'dinner';
@@ -126,7 +127,7 @@ export class ItineraryService {
 
   create(trip: TripRequest): Observable<Itinerary> {
     return this.http
-      .post<{ success: boolean; data: Itinerary }>(`${this.baseUrl}/itineraries`, trip)
+      .post<{ success: boolean; data: Itinerary }>(`${this.baseUrl}/itineraries`, { ...trip, language: storedLanguage() })
       .pipe(map(res => res.data));
   }
 

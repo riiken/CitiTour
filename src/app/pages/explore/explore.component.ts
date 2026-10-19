@@ -6,6 +6,7 @@ import * as L from 'leaflet';
 import { ExploreData, ExploreSection, ItineraryPlace, ItineraryService } from 'src/app/services/itinerary.service';
 import { ListingService } from 'src/app/services/listing.service';
 import { apiErrorMessage } from 'src/app/services/api-error';
+import { I18nService } from 'src/app/i18n/i18n.service';
 
 const SECTION_LABELS: Record<ExploreSection, string> = { see: 'See', do: 'Do', stay: 'Stay', eat: 'Eat' };
 const POPULAR = ['Udaipur', 'Jaipur', 'Goa', 'Rishikesh', 'Manali', 'Varanasi', 'Munnar', 'Darjeeling'];
@@ -46,7 +47,8 @@ export class ExploreComponent implements OnInit, AfterViewChecked, OnDestroy {
     public listingService: ListingService,
     private title: Title,
     private meta: Meta,
-    private zone: NgZone
+    private zone: NgZone,
+    private i18n: I18nService
   ) {}
 
   ngOnInit(): void {
@@ -148,7 +150,10 @@ export class ExploreComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   priceText(place: ItineraryPlace): string | null {
-    if (place.priceMin) return `From ₹${place.priceMin.toLocaleString('en-IN')}${place.kind === 'hotel' ? '/night' : ''}`;
+    if (place.priceMin) {
+      const price = place.priceMin.toLocaleString('en-IN');
+      return this.i18n.t(place.kind === 'hotel' ? 'From ₹{price}/night' : 'From ₹{price}', { price });
+    }
     return place.priceText ? place.priceText : null;
   }
 

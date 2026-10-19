@@ -2,6 +2,7 @@ import { AfterViewChecked, Component, ElementRef, NgZone, OnDestroy, OnInit, Vie
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
+import { I18nService } from 'src/app/i18n/i18n.service';
 import { Title, Meta } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
@@ -74,7 +75,8 @@ export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
     private zone: NgZone,
     private router: Router,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private i18n: I18nService
   ) {}
 
   ngOnInit(): void {
@@ -183,8 +185,8 @@ export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   stayPrice(place: ItineraryPlace): string | null {
-    if (place.priceMin) return `Listed from ₹${place.priceMin.toLocaleString('en-IN')}/night`;
-    if (place.priceText) return `Listed: ${place.priceText}`;
+    if (place.priceMin) return this.i18n.t('Listed from ₹{price}/night', { price: place.priceMin.toLocaleString('en-IN') });
+    if (place.priceText) return this.i18n.t('Listed: {price}', { price: place.priceText });
     return null;
   }
 

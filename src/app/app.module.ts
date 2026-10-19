@@ -1,4 +1,6 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeHi from '@angular/common/locales/hi';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -37,6 +39,10 @@ import { LocationPickerComponent } from './shared/location-picker/location-picke
 import { NavbarStickyDirective } from './navbar-sticky.directive';
 import { BackToTopDirective } from './back-to-top.directive';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { TranslatePipe } from './i18n/translate.pipe';
+import { storedLanguage } from './i18n/i18n.service';
+
+registerLocaleData(localeHi);
 
 @NgModule({
   declarations: [
@@ -68,7 +74,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     LoaderComponent,
     LocationPickerComponent,
     NavbarStickyDirective,
-    BackToTopDirective
+    BackToTopDirective,
+    TranslatePipe
   ],
   bootstrap: [AppComponent],
   imports: [
@@ -82,7 +89,9 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
   providers: [
     DatePipe,
     provideHttpClient(withInterceptorsFromDi()),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    // Dates and numbers follow the chosen language (fixed per page load)
+    { provide: LOCALE_ID, useFactory: () => (storedLanguage() === 'hi' ? 'hi' : 'en-US') }
   ]
 })
 export class AppModule {}

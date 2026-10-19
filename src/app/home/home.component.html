@@ -3,10 +3,10 @@
 <section class="container section">
   <div class="section-head">
     <div>
-      <p class="eyebrow">Popular right now</p>
-      <h2>Where will you go next?</h2>
+      <p class="eyebrow">{{ 'Popular right now' | t }}</p>
+      <h2>{{ 'Where will you go next?' | t }}</h2>
     </div>
-    <a routerLink="/explore" class="link">Explore any destination →</a>
+    <a routerLink="/explore" class="link">{{ 'Explore any destination →' | t }}</a>
   </div>
   <div class="dest-grid">
     <article class="dest" *ngFor="let d of destinations" [style.background]="d.gradient">
@@ -17,8 +17,8 @@
         <p class="best">{{ d.bestFor }}</p>
       </div>
       <div class="dest-actions">
-        <a class="btn btn-light btn-sm" routerLink="/plan-trip" [queryParams]="{ destination: d.name }">Plan a trip</a>
-        <a class="btn btn-outline-light btn-sm" [routerLink]="['/explore', d.name]">Explore</a>
+        <a class="btn btn-light btn-sm" routerLink="/plan-trip" [queryParams]="{ destination: d.name }">{{ 'Plan a trip' | t }}</a>
+        <a class="btn btn-outline-light btn-sm" [routerLink]="['/explore', d.name]">{{ 'Explore' | t }}</a>
       </div>
     </article>
   </div>
@@ -26,48 +26,48 @@
 
 <section class="how">
   <div class="container section">
-    <p class="eyebrow">How it works</p>
-    <h2>A day-by-day plan in under a minute</h2>
+    <p class="eyebrow">{{ 'How it works' | t }}</p>
+    <h2>{{ 'A day-by-day plan in under a minute' | t }}</h2>
     <div class="steps">
       <div class="step">
         <span class="num">1</span>
-        <h3>Tell us where and when</h3>
-        <p>Destination, dates, who's coming, your budget and what you enjoy.</p>
+        <h3>{{ 'Tell us where and when' | t }}</h3>
+        <p>{{ "Destination, dates, who's coming, your budget and what you enjoy." | t }}</p>
       </div>
       <div class="step">
         <span class="num">2</span>
-        <h3>Get a plan built from real places</h3>
-        <p>Sights, meals and stays from travel guides and verified local businesses, grouped by area so you spend less time travelling.</p>
+        <h3>{{ 'Get a plan built from real places' | t }}</h3>
+        <p>{{ 'Sights, meals and stays from travel guides and verified local businesses, grouped by area so you spend less time travelling.' | t }}</p>
       </div>
       <div class="step">
         <span class="num">3</span>
-        <h3>Tweak, share and book</h3>
-        <p>Swap any stop, share the plan on WhatsApp, and check prices for your dates.</p>
+        <h3>{{ 'Tweak, share and book' | t }}</h3>
+        <p>{{ 'Swap any stop, share the plan on WhatsApp, and check prices for your dates.' | t }}</p>
       </div>
     </div>
-    <a routerLink="/plan-trip" class="btn btn-primary btn-lg mt-3">Plan my trip, it's free</a>
+    <a routerLink="/plan-trip" class="btn btn-primary btn-lg mt-3">{{ "Plan my trip, it's free" | t }}</a>
   </div>
 </section>
 
 <section class="container section">
-  <p class="eyebrow">Why CitiTour</p>
-  <h2>Planning you can trust</h2>
+  <p class="eyebrow">{{ 'Why CitiTour' | t }}</p>
+  <h2>{{ 'Planning you can trust' | t }}</h2>
   <div class="why">
-    <div><i class="fa fa-map-signs"></i><h3>Real places only</h3><p>Every stop comes from travel guides, maps or a verified business. AI arranges the plan; it never invents places.</p></div>
-    <div><i class="fa fa-inr"></i><h3>Built for Indian travellers</h3><p>Budgets in rupees, homestays and dhabas alongside hotels, and plans you can share on WhatsApp.</p></div>
-    <div><i class="fa fa-pencil"></i><h3>Your trip, your way</h3><p>Save trips, swap places, move stops between days and plan again any time.</p></div>
-    <div><i class="fa fa-check-circle"></i><h3>Verified local businesses</h3><p>Homestays, restaurants and guides listed by their owners and reviewed by us. Contact them directly.</p></div>
+    <div><i class="fa fa-map-signs"></i><h3>{{ 'Real places only' | t }}</h3><p>{{ 'Every stop comes from travel guides, maps or a verified business. AI arranges the plan; it never invents places.' | t }}</p></div>
+    <div><i class="fa fa-inr"></i><h3>{{ 'Built for Indian travellers' | t }}</h3><p>{{ 'Budgets in rupees, homestays and dhabas alongside hotels, and plans you can share on WhatsApp.' | t }}</p></div>
+    <div><i class="fa fa-pencil"></i><h3>{{ 'Your trip, your way' | t }}</h3><p>{{ 'Save trips, swap places, move stops between days and plan again any time.' | t }}</p></div>
+    <div><i class="fa fa-check-circle"></i><h3>{{ 'Verified local businesses' | t }}</h3><p>{{ 'Homestays, restaurants and guides listed by their owners and reviewed by us. Contact them directly.' | t }}</p></div>
   </div>
 </section>
 
 <section class="business">
   <div class="container section business-inner">
     <div>
-      <p class="eyebrow light">For hotels, homestays, restaurants &amp; guides</p>
-      <h2>Get found by travellers planning trips to your town</h2>
-      <p>List your business free. Travellers see it in their plans and message you on WhatsApp, with no commission on bookings.</p>
+      <p class="eyebrow light">{{ 'For hotels, homestays, restaurants & guides' | t }}</p>
+      <h2>{{ 'Get found by travellers planning trips to your town' | t }}</h2>
+      <p>{{ 'List your business free. Travellers see it in their plans and message you on WhatsApp, with no commission on bookings.' | t }}</p>
     </div>
-    <a routerLink="/list-your-business" class="btn btn-light btn-lg">List your business</a>
+    <a routerLink="/list-your-business" class="btn btn-light btn-lg">{{ 'List your business' | t }}</a>
   </div>
 </section>
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { I18nService } from '../i18n/i18n.service';
 
 @Component({
   selector: 'app-hero',
@@ -26,7 +27,8 @@ export class HeroComponent {
 
   constructor(
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private i18n: I18nService
   ) {}
 
   searchFor(destination: string): void {
@@ -37,7 +39,7 @@ export class HeroComponent {
   onSearch(): void {
     const query = this.searchQuery?.trim();
     if (!query) {
-      this.toastr.info('Enter a city or destination.');
+      this.toastr.info(this.i18n.t('Enter a city or destination.'));
       return;
     }
     localStorage.setItem('location', query);

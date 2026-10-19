@@ -1,16 +1,16 @@
 <div class="trip-page container py-4">
-  <div *ngIf="loading" class="state">Loading your trip…</div>
+  <div *ngIf="loading" class="state">{{ 'Loading your trip…' | t }}</div>
 
   <div *ngIf="error" class="state">
     <p>{{ error }}</p>
-    <a routerLink="/plan-trip" class="btn btn-primary">Plan a new trip</a>
+    <a routerLink="/plan-trip" class="btn btn-primary">{{ 'Plan a new trip' | t }}</a>
   </div>
 
   <ng-container *ngIf="itinerary as trip">
     <!-- Header -->
     <header class="trip-header">
       <div>
-        <p class="eyebrow">{{ trip.destination.name }} · {{ nights }} night{{ nights === 1 ? '' : 's' }} · {{ trip.request.travellers }} traveller{{ trip.request.travellers === 1 ? '' : 's' }}</p>
+        <p class="eyebrow">{{ trip.destination.name }} · {{ (nights === 1 ? '{n} night' : '{n} nights') | t: { n: nights } }} · {{ (trip.request.travellers === 1 ? '{n} traveller' : '{n} travellers') | t: { n: trip.request.travellers } }}</p>
         <h1 *ngIf="!editingTitle">
           {{ trip.title }}
           <button *ngIf="editing" class="btn btn-link btn-sm p-0 ms-1" (click)="startTitleEdit()" aria-label="Rename trip"><i class="fa fa-pencil"></i></button>
@@ -24,29 +24,29 @@
       </div>
       <div class="header-side">
         <div class="budget" *ngIf="trip.budget?.total">
-          <span class="label">Estimated budget</span>
+          <span class="label">{{ 'Estimated budget' | t }}</span>
           <strong>{{ trip.budget?.total }}</strong>
           <small *ngIf="trip.budget?.includes">{{ trip.budget?.includes }}</small>
         </div>
         <div class="trip-actions">
           <button *ngIf="!trip.canEdit" class="btn btn-primary btn-sm" (click)="saveTrip()" [disabled]="busy">
-            <i class="fa fa-bookmark"></i> Save to my trips
+            <i class="fa fa-bookmark"></i> {{ 'Save to my trips' | t }}
           </button>
           <button *ngIf="trip.canEdit" class="btn btn-sm" [class.btn-primary]="!editing" [class.btn-dark]="editing" (click)="toggleEditing()">
-            <i class="fa" [class.fa-pencil]="!editing" [class.fa-check]="editing"></i> {{ editing ? 'Done editing' : 'Edit trip' }}
+            <i class="fa" [class.fa-pencil]="!editing" [class.fa-check]="editing"></i> {{ (editing ? 'Done editing' : 'Edit trip') | t }}
           </button>
-          <a *ngIf="trip.canEdit" routerLink="/my-trips" class="btn btn-link btn-sm">My trips</a>
+          <a *ngIf="trip.canEdit" routerLink="/my-trips" class="btn btn-link btn-sm">{{ 'My trips' | t }}</a>
         </div>
         <div class="trip-actions">
-          <a class="btn btn-outline-secondary btn-sm" [href]="calendarUrl" download><i class="fa fa-calendar-plus-o"></i> Add to calendar</a>
-          <button class="btn btn-outline-secondary btn-sm" (click)="print()"><i class="fa fa-print"></i> Print / PDF</button>
+          <a class="btn btn-outline-secondary btn-sm" [href]="calendarUrl" download><i class="fa fa-calendar-plus-o"></i> {{ 'Add to calendar' | t }}</a>
+          <button class="btn btn-outline-secondary btn-sm" (click)="print()"><i class="fa fa-print"></i> {{ 'Print / PDF' | t }}</button>
         </div>
         <div class="share">
           <a class="btn btn-success btn-sm" [href]="whatsappUrl" target="_blank" rel="noopener" (click)="trackShare('whatsapp')">
-            <i class="fa fa-whatsapp"></i> Share on WhatsApp
+            <i class="fa fa-whatsapp"></i> {{ 'Share on WhatsApp' | t }}
           </a>
           <button class="btn btn-outline-secondary btn-sm" (click)="share()">
-            <i class="fa fa-link"></i> {{ copied ? 'Link copied' : 'Share link' }}
+            <i class="fa fa-link"></i> {{ (copied ? 'Link copied' : 'Share link') | t }}
           </button>
         </div>
       </div>
@@ -55,9 +55,9 @@
     <!-- Where to stay (primary revenue placement) -->
     <section class="stays" *ngIf="trip.stays.length || trip.links.allStays">
       <div class="section-head">
-        <h2>Where to stay</h2>
+        <h2>{{ 'Where to stay' | t }}</h2>
         <a [href]="trip.links.allStays" target="_blank" rel="sponsored noopener" class="see-all"
-           (click)="trackClick(trip.links.allStays, 'stays_all')">See all stays for your dates →</a>
+           (click)="trackClick(trip.links.allStays, 'stays_all')">{{ 'See all stays for your dates →' | t }}</a>
       </div>
       <div class="stay-grid">
         <button *ngIf="editing" class="add-card" (click)="openPicker('stay', 'stay')" [disabled]="busy">
@@ -67,9 +67,9 @@
           <button *ngIf="editing" class="remove-btn" (click)="removeStay(si)" [disabled]="busy" aria-label="Remove this stay">✕</button>
           <img *ngIf="stay.place.photo" class="stay-photo" [src]="listingService.photoUrl(stay.place.photo)" [alt]="stay.place.name">
           <div class="badges">
-            <span class="badge-sponsored" *ngIf="stay.place.sponsored">Sponsored</span>
-            <span class="badge-verified" *ngIf="stay.place.partner"><i class="fa fa-check-circle"></i> Verified by owner</span>
-            <span class="stay-kind" *ngIf="stay.place.priceBand">{{ stay.place.priceBand }}</span>
+            <span class="badge-sponsored" *ngIf="stay.place.sponsored">{{ 'Sponsored' | t }}</span>
+            <span class="badge-verified" *ngIf="stay.place.partner"><i class="fa fa-check-circle"></i> {{ 'Verified by owner' | t }}</span>
+            <span class="stay-kind" *ngIf="stay.place.priceBand">{{ stay.place.priceBand | t }}</span>
           </div>
           <h3>
             <a *ngIf="stay.place.partner && stay.place.listingId; else plainStayName" [routerLink]="['/place', stay.place.listingId]">{{ stay.place.name }}</a>
@@ -78,24 +78,24 @@
           <p class="muted" *ngIf="stay.place.kind === 'area'">{{ stay.place.description }}</p>
           <p *ngIf="stay.note">{{ stay.note }}</p>
           <p class="muted small" *ngIf="stay.place.area && stay.place.kind !== 'area'"><i class="fa fa-map-marker"></i> {{ stay.place.area }}</p>
-          <p class="price" *ngIf="!stay.place.partner && stayPrice(stay.place) as price">{{ price }} <span class="muted">· check today's price</span></p>
-          <p class="price" *ngIf="stay.place.partner && stay.place.priceMin">From ₹{{ stay.place.priceMin | number }}/{{ stay.place.priceUnit || 'night' }}</p>
+          <p class="price" *ngIf="!stay.place.partner && stayPrice(stay.place) as price">{{ price }} <span class="muted">{{ "· check today's price" | t }}</span></p>
+          <p class="price" *ngIf="stay.place.partner && stay.place.priceMin">{{ 'From ₹{price}/{unit}' | t: { price: (stay.place.priceMin | number), unit: ((stay.place.priceUnit || 'night') | t) } }}</p>
           <div class="actions" *ngIf="stay.place.partner">
             <a *ngIf="stay.place.whatsappLink" class="btn btn-success btn-sm" [href]="stay.place.whatsappLink" target="_blank" rel="noopener"
-               (click)="trackLead(stay.place, 'whatsapp', 'itinerary_stay')"><i class="fa fa-whatsapp"></i> Ask on WhatsApp</a>
+               (click)="trackLead(stay.place, 'whatsapp', 'itinerary_stay')"><i class="fa fa-whatsapp"></i> {{ 'Ask on WhatsApp' | t }}</a>
             <a *ngIf="stay.place.callLink" class="btn btn-outline-secondary btn-sm" [href]="stay.place.callLink"
-               (click)="trackLead(stay.place, 'call', 'itinerary_stay')"><i class="fa fa-phone"></i> Call</a>
+               (click)="trackLead(stay.place, 'call', 'itinerary_stay')"><i class="fa fa-phone"></i> {{ 'Call' | t }}</a>
             <a *ngIf="stay.place.websiteLink" class="btn btn-outline-secondary btn-sm" [href]="stay.place.websiteLink" target="_blank" rel="noopener"
-               (click)="trackLead(stay.place, 'website', 'itinerary_stay')">Website</a>
-            <a *ngIf="stay.place.mapsLink" class="btn btn-outline-secondary btn-sm" [href]="stay.place.mapsLink" target="_blank" rel="noopener">Map</a>
+               (click)="trackLead(stay.place, 'website', 'itinerary_stay')">{{ 'Website' | t }}</a>
+            <a *ngIf="stay.place.mapsLink" class="btn btn-outline-secondary btn-sm" [href]="stay.place.mapsLink" target="_blank" rel="noopener">{{ 'Map' | t }}</a>
           </div>
           <div class="actions" *ngIf="!stay.place.partner">
             <a *ngIf="stay.place.bookingLink" class="btn btn-primary btn-sm" [href]="stay.place.bookingLink" target="_blank" rel="sponsored noopener"
                (click)="trackClick(stay.place.bookingLink, 'itinerary_stay')">
-              {{ stay.place.kind === 'area' ? 'Find hotels here' : 'Check prices' }}
+              {{ (stay.place.kind === 'area' ? 'Find hotels here' : 'Check prices') | t }}
             </a>
             <a *ngIf="stay.place.mapsLink" class="btn btn-outline-secondary btn-sm" [href]="stay.place.mapsLink" target="_blank" rel="noopener"
-               (click)="trackClick(stay.place.mapsLink, 'itinerary_stay_map')">Map</a>
+               (click)="trackClick(stay.place.mapsLink, 'itinerary_stay_map')">{{ 'Map' | t }}</a>
           </div>
         </article>
       </div>
@@ -104,10 +104,10 @@
     <!-- Map -->
     <section class="map-section">
       <div class="day-filter">
-        <button class="chip" [class.active]="selectedDay === null" (click)="selectDay(null)">All days</button>
+        <button class="chip" [class.active]="selectedDay === null" (click)="selectDay(null)">{{ 'All days' | t }}</button>
         <button class="chip" *ngFor="let day of trip.days" [class.active]="selectedDay === day.day"
                 [style.borderColor]="dayColours[(day.day - 1) % dayColours.length]" (click)="selectDay(day.day)">
-          Day {{ day.day }}
+          {{ 'Day {n}' | t: { n: day.day } }}
         </button>
       </div>
       <div #mapContainer class="trip-map" role="img" [attr.aria-label]="'Map of the ' + trip.destination.name + ' itinerary'"></div>
@@ -119,36 +119,36 @@
     <section class="days">
       <article class="day" *ngFor="let day of trip.days" [style.borderLeftColor]="dayColours[(day.day - 1) % dayColours.length]">
         <header>
-          <h2>Day {{ day.day }} <span class="muted">· {{ day.date | date: 'EEE d MMM' }}</span></h2>
+          <h2>{{ 'Day {n}' | t: { n: day.day } }} <span class="muted">· {{ day.date | date: 'EEE d MMM' }}</span></h2>
           <p class="theme" *ngIf="day.theme">{{ day.theme }}</p>
-          <p class="muted small" *ngIf="day.kind === 'arrival'">Arrival day: a lighter plan</p>
-          <p class="muted small" *ngIf="day.kind === 'departure'">Departure day: morning only</p>
+          <p class="muted small" *ngIf="day.kind === 'arrival'">{{ 'Arrival day: a lighter plan' | t }}</p>
+          <p class="muted small" *ngIf="day.kind === 'departure'">{{ 'Departure day: morning only' | t }}</p>
         </header>
 
         <div class="item" *ngFor="let item of day.items; let ii = index" [class.meal]="isMeal(item)">
-          <div class="slot">{{ slotLabels[item.slot] }}</div>
+          <div class="slot">{{ slotLabels[item.slot] | t }}</div>
           <div class="body">
             <h3>
               <i class="fa {{ kindIcon(item.place.kind) }}"></i>
               <a *ngIf="item.place.partner && item.place.listingId; else plainItemName" [routerLink]="['/place', item.place.listingId]">{{ item.place.name }}</a>
               <ng-template #plainItemName>{{ item.place.name }}</ng-template>
-              <span class="badge-verified" *ngIf="item.place.partner"><i class="fa fa-check-circle"></i> Verified by owner</span>
+              <span class="badge-verified" *ngIf="item.place.partner"><i class="fa fa-check-circle"></i> {{ 'Verified by owner' | t }}</span>
             </h3>
             <p *ngIf="item.note">{{ item.note }}</p>
             <p class="muted small" *ngIf="!item.note && item.place.description">{{ item.place.description }}</p>
             <p class="muted small" *ngIf="item.place.cuisines?.length">{{ item.place.cuisines?.join(' · ') }}</p>
             <div class="actions">
               <a *ngIf="item.place.mapsLink" class="btn btn-outline-secondary btn-sm" [href]="item.place.mapsLink" target="_blank" rel="noopener"
-                 (click)="trackClick(item.place.mapsLink, 'itinerary_item_map')">Map</a>
+                 (click)="trackClick(item.place.mapsLink, 'itinerary_item_map')">{{ 'Map' | t }}</a>
               <ng-container *ngIf="item.place.partner; else affiliate">
                 <a *ngIf="item.place.whatsappLink" class="btn btn-success btn-sm" [href]="item.place.whatsappLink" target="_blank" rel="noopener"
-                   (click)="trackLead(item.place, 'whatsapp', 'itinerary_item')"><i class="fa fa-whatsapp"></i> WhatsApp</a>
+                   (click)="trackLead(item.place, 'whatsapp', 'itinerary_item')"><i class="fa fa-whatsapp"></i> {{ 'WhatsApp' | t }}</a>
                 <a *ngIf="item.place.callLink" class="btn btn-outline-secondary btn-sm" [href]="item.place.callLink"
-                   (click)="trackLead(item.place, 'call', 'itinerary_item')"><i class="fa fa-phone"></i> Call</a>
+                   (click)="trackLead(item.place, 'call', 'itinerary_item')"><i class="fa fa-phone"></i> {{ 'Call' | t }}</a>
               </ng-container>
               <ng-template #affiliate>
                 <a *ngIf="item.place.bookingLink" class="btn btn-primary btn-sm" [href]="item.place.bookingLink" target="_blank" rel="sponsored noopener"
-                   (click)="trackClick(item.place.bookingLink, 'itinerary_item')">{{ bookLabel(item.place) }}</a>
+                   (click)="trackClick(item.place.bookingLink, 'itinerary_item')">{{ bookLabel(item.place) | t }}</a>
               </ng-template>
             </div>
             <div class="edit-bar" *ngIf="editing">
@@ -169,31 +169,31 @@
           </div>
         </div>
 
-        <p class="muted" *ngIf="!day.items.length">Free time. Explore at your own pace.</p>
+        <p class="muted" *ngIf="!day.items.length">{{ 'Free time. Explore at your own pace.' | t }}</p>
         <div class="day-add" *ngIf="editing">
           <button class="btn btn-outline-secondary btn-sm" (click)="openPicker('activity', 'add', day.day)" [disabled]="busy"><i class="fa fa-plus"></i> Add a stop</button>
           <button class="btn btn-outline-secondary btn-sm" (click)="openPicker('meal', 'add', day.day)" [disabled]="busy"><i class="fa fa-cutlery"></i> Add a meal</button>
         </div>
         <a *ngIf="day.foodNearbyLink" class="food-link" [href]="day.foodNearbyLink" target="_blank" rel="noopener"
-           (click)="trackClick(day.foodNearbyLink, 'food_nearby')"><i class="fa fa-cutlery"></i> Find places to eat nearby</a>
+           (click)="trackClick(day.foodNearbyLink, 'food_nearby')"><i class="fa fa-cutlery"></i> {{ 'Find places to eat nearby' | t }}</a>
       </article>
     </section>
 
     <section class="cta-band">
       <div>
-        <h2>Ready to go?</h2>
+        <h2>{{ 'Ready to go?' | t }}</h2>
         <p>Lock in your stay early: prices for {{ trip.request.checkIn | date: 'MMMM' }} usually rise closer to the date.</p>
       </div>
       <div class="actions">
-        <a class="btn btn-primary" [href]="trip.links.allStays" target="_blank" rel="sponsored noopener" (click)="trackClick(trip.links.allStays, 'cta_stays')">Find hotels</a>
-        <a class="btn btn-outline-light" [href]="trip.links.allActivities" target="_blank" rel="sponsored noopener" (click)="trackClick(trip.links.allActivities, 'cta_activities')">Find activities</a>
+        <a class="btn btn-primary" [href]="trip.links.allStays" target="_blank" rel="sponsored noopener" (click)="trackClick(trip.links.allStays, 'cta_stays')">{{ 'Find hotels' | t }}</a>
+        <a class="btn btn-outline-light" [href]="trip.links.allActivities" target="_blank" rel="sponsored noopener" (click)="trackClick(trip.links.allActivities, 'cta_activities')">{{ 'Find activities' | t }}</a>
       </div>
     </section>
 
     <section class="packing" *ngIf="packing.length">
       <button class="packing-toggle" (click)="showPacking = !showPacking" [attr.aria-expanded]="showPacking">
-        <span><i class="fa fa-suitcase"></i> Packing checklist</span>
-        <span class="muted small">{{ packed.size }} of {{ packing.length }} packed <i class="fa" [class.fa-chevron-down]="!showPacking" [class.fa-chevron-up]="showPacking"></i></span>
+        <span><i class="fa fa-suitcase"></i> {{ 'Packing checklist' | t }}</span>
+        <span class="muted small">{{ '{done} of {total} packed' | t: { done: packed.size, total: packing.length } }} <i class="fa" [class.fa-chevron-down]="!showPacking" [class.fa-chevron-up]="showPacking"></i></span>
       </button>
       <div class="packing-body" *ngIf="showPacking">
         <div class="packing-group" *ngFor="let group of packingGroups">
@@ -207,7 +207,7 @@
     </section>
 
     <section class="tips" *ngIf="trip.tips?.length">
-      <h2>Good to know</h2>
+      <h2>{{ 'Good to know' | t }}</h2>
       <ul><li *ngFor="let tip of trip.tips">{{ tip }}</li></ul>
     </section>
 
@@ -247,9 +247,9 @@
         {{ trip.generatedBy === 'ai' ? 'Plan arranged with AI from these real places.' : 'Plan arranged automatically from these real places.' }}
         Check opening hours and prices before you go.
       </p>
-      <p>Booking links may earn CitiTour a commission at no extra cost to you.</p>
+      <p>{{ 'Booking links may earn CitiTour a commission at no extra cost to you.' | t }}</p>
       <p *ngIf="trip.hasPartners">Businesses marked "Verified by owner" were listed by their owners and reviewed by CitiTour. "Sponsored" listings pay for placement.</p>
-      <a routerLink="/plan-trip" class="btn btn-outline-primary btn-sm">Plan another trip</a>
+      <a routerLink="/plan-trip" class="btn btn-outline-primary btn-sm">{{ 'Plan another trip' | t }}</a>
       <a routerLink="/list-your-business" class="btn btn-link btn-sm">Own a business in {{ trip.destination.name }}? List it free</a>
     </footer>
   </ng-container>
