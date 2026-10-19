@@ -34,6 +34,8 @@ import { MyTripsComponent } from './pages/my-trips/my-trips.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
+import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/auth/reset-password/reset-password.component';
 import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { LocationPickerComponent } from './shared/location-picker/location-picker.component';
@@ -71,6 +73,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     PrivacyPolicyComponent,
     LoginComponent,
     RegisterComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
     UserDashboardComponent,
     LoaderComponent,
     LocationPickerComponent,

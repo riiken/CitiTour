@@ -9,6 +9,8 @@ import { SearchResultsComponent } from './components/search-results/search-resul
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
+import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/auth/reset-password/reset-password.component';
 import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { TripViewComponent } from './pages/trip-view/trip-view.component';
@@ -27,6 +29,8 @@ const routes: Routes = [
   { path: 'trip/:id', component: TripViewComponent, title: 'Your trip – CitiTour' },
   { path: 'login', component: LoginComponent, title: 'Log in – CitiTour' },
   { path: 'register', component: RegisterComponent, title: 'Create account – CitiTour' },
+  { path: 'forgot-password', component: ForgotPasswordComponent, title: 'Forgot password – CitiTour' },
+  { path: 'reset-password', component: ResetPasswordComponent, title: 'Set a new password – CitiTour' },
   { path: 'user-dashboard', component: UserDashboardComponent, canActivate: [AuthGuard], title: 'My account – CitiTour' },
   { path: 'my-trips', component: MyTripsComponent, canActivate: [AuthGuard], title: 'My trips – CitiTour' },
   { path: 'place/:id', component: PlaceComponent, title: 'CitiTour' },

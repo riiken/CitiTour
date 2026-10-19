@@ -206,6 +206,20 @@ export class AuthService {
     }
   }
 
+  /** Request a reset link (same response whether or not the email exists). */
+  forgotPassword(email: string): Observable<{ success: boolean; message: string }> {
+    return this.rawHttp.post<{ success: boolean; message: string }>(`${this.apiUrl}/forgot-password`, { email })
+      .pipe(catchError(this.handleError));
+  }
+
+  resetPassword(email: string, token: string, password: string): Observable<{ success: boolean; message: string }> {
+    return this.rawHttp.post<{ success: boolean; message: string }>(`${this.apiUrl}/reset-password`, { email, token, password })
+      .pipe(
+        tap(() => this.clearSession()),
+        catchError(this.handleError)
+      );
+  }
+
   // ---------------------------------------------------------------- tokens
 
   /**

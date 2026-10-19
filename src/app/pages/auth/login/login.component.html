@@ -53,11 +53,8 @@
 
       <!-- Remember Me & Forgot Password -->
       <div class="form-options">
-        <div class="remember-me">
-          <input type="checkbox" id="remember" />
-          <label for="remember">Remember me</label>
-        </div>
-        <a href="#" class="forgot-password">Forgot password?</a>
+        <span></span>
+        <a routerLink="/forgot-password" [queryParams]="{ email: f['email'].value || null }" class="forgot-password">Forgot password?</a>
       </div>
 
       <!-- Submit Button -->
