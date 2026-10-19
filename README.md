@@ -24,7 +24,7 @@ npx ng build --configuration production   # output: dist/citi-tour
 
 ## Deploy
 
-Render static site via `render.yaml`. Full steps (database, API, web app, revenue settings): [DEPLOY.md in the backend repo](https://github.com/riiken/Cititour-BEFNL/blob/rewire/DEPLOY.md).
+Render static site via `render.yaml`. Full steps (database, API, web app, revenue settings): [DEPLOY.md in the backend repo](https://github.com/riiken/Cititour-BEFNL/blob/master/DEPLOY.md).
 
 ## Main routes
 

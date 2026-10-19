@@ -4,7 +4,7 @@ services:
   - type: web
     name: cititour
     runtime: static
-    branch: rewire
+    branch: main
     buildCommand: npm ci && npx ng build --configuration production
     staticPublishPath: dist/citi-tour
     autoDeploy: true
