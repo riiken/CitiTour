@@ -108,6 +108,8 @@ export interface ExploreData {
   links: { allStays: string; allActivities: string };
 }
 
+export interface PackingItem { item: string; category: string; reason: string; }
+
 export interface TrackEvent {
   type: 'outbound_click' | 'share' | 'plan_view';
   partner?: string;
@@ -138,6 +140,16 @@ export class ItineraryService {
     const query: Record<string, string> = {};
     Object.entries(params).forEach(([key, value]) => { if (value) query[key] = String(value); });
     return this.http.get<{ data: ExploreData }>(`${this.baseUrl}/explore/${encodeURIComponent(destination)}`, { params: query })
+      .pipe(map(res => res.data));
+  }
+
+  /** Download link for the trip as calendar events (.ics). */
+  calendarUrl(id: string): string {
+    return `${this.baseUrl}/itineraries/${encodeURIComponent(id)}/calendar.ics`;
+  }
+
+  packing(id: string): Observable<PackingItem[]> {
+    return this.http.get<{ data: PackingItem[] }>(`${this.baseUrl}/itineraries/${encodeURIComponent(id)}/packing`)
       .pipe(map(res => res.data));
   }
 

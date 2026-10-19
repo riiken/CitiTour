@@ -78,3 +78,22 @@
 .options { list-style: none; padding: 0; margin: 0; overflow-y: auto; }
 .options li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #f1f3f5; }
 @media (max-width: 576px) { .picker { top: auto; height: 75vh; width: 100%; border-radius: 16px 16px 0 0; } }
+
+.packing { border: 1px solid #e9ecef; border-radius: 12px; margin: 24px 0; }
+.packing-toggle { width: 100%; display: flex; justify-content: space-between; align-items: center; background: none; border: none; padding: 14px 18px; font-weight: 600; font-size: 1.1rem; }
+.packing-toggle .fa-suitcase { color: #86B817; margin-right: 6px; }
+.packing-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; padding: 0 18px 18px; }
+.packing-group h3 { font-size: .9rem; text-transform: uppercase; color: #6c757d; letter-spacing: .04em; }
+.packing-item { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; cursor: pointer; }
+.packing-item input { margin-top: 4px; accent-color: #86B817; }
+.packing-item.done span { text-decoration: line-through; color: #adb5bd; }
+
+@media print {
+  .trip-actions, .share, .map-section, .day-filter, .picker, .picker-backdrop, .edit-bar, .day-add, .remove-btn, .add-card,
+  .actions, .cta-band, .see-all, .packing-toggle .fa, app-google-ads, app-weather-display, .food-link { display: none !important; }
+  .trip-page { max-width: none; padding: 0 !important; }
+  .day, .stay-card, .packing { box-shadow: none; break-inside: avoid; }
+  .stay-grid { grid-template-columns: repeat(3, 1fr); }
+  .packing-body { display: grid !important; }
+  a { color: inherit; text-decoration: none; }
+}

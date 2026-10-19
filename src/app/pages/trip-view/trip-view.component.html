@@ -37,6 +37,10 @@
           </button>
           <a *ngIf="trip.canEdit" routerLink="/my-trips" class="btn btn-link btn-sm">My trips</a>
         </div>
+        <div class="trip-actions">
+          <a class="btn btn-outline-secondary btn-sm" [href]="calendarUrl" download><i class="fa fa-calendar-plus-o"></i> Add to calendar</a>
+          <button class="btn btn-outline-secondary btn-sm" (click)="print()"><i class="fa fa-print"></i> Print / PDF</button>
+        </div>
         <div class="share">
           <a class="btn btn-success btn-sm" [href]="whatsappUrl" target="_blank" rel="noopener" (click)="trackShare('whatsapp')">
             <i class="fa fa-whatsapp"></i> Share on WhatsApp
@@ -183,6 +187,22 @@
       <div class="actions">
         <a class="btn btn-primary" [href]="trip.links.allStays" target="_blank" rel="sponsored noopener" (click)="trackClick(trip.links.allStays, 'cta_stays')">Find hotels</a>
         <a class="btn btn-outline-light" [href]="trip.links.allActivities" target="_blank" rel="sponsored noopener" (click)="trackClick(trip.links.allActivities, 'cta_activities')">Find activities</a>
+      </div>
+    </section>
+
+    <section class="packing" *ngIf="packing.length">
+      <button class="packing-toggle" (click)="showPacking = !showPacking" [attr.aria-expanded]="showPacking">
+        <span><i class="fa fa-suitcase"></i> Packing checklist</span>
+        <span class="muted small">{{ packed.size }} of {{ packing.length }} packed <i class="fa" [class.fa-chevron-down]="!showPacking" [class.fa-chevron-up]="showPacking"></i></span>
+      </button>
+      <div class="packing-body" *ngIf="showPacking">
+        <div class="packing-group" *ngFor="let group of packingGroups">
+          <h3>{{ group.category }}</h3>
+          <label *ngFor="let entry of group.items" class="packing-item" [class.done]="packed.has(entry.item)">
+            <input type="checkbox" [checked]="packed.has(entry.item)" (change)="togglePacked(entry.item)">
+            <span>{{ entry.item }}<small class="d-block muted">{{ entry.reason }}</small></span>
+          </label>
+        </div>
       </div>
     </section>
 

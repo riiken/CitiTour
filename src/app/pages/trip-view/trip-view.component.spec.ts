@@ -35,7 +35,23 @@ describe('TripViewComponent', () => {
     http = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
     http.expectOne(r => r.url.endsWith('/v1/itineraries/abcDEF123456')).flush({ success: true, data: itinerary });
+    http.match(r => r.url.endsWith('/packing')).forEach(req => req.flush({ data: [
+      { item: 'ID proof', category: 'Documents', reason: 'Hotels ask for it' },
+      { item: 'Umbrella', category: 'Clothing', reason: 'Monsoon' }
+    ] }));
     fixture.detectChanges();
+  });
+
+  it('offers calendar export and a packing checklist that remembers ticks', () => {
+    const el: HTMLElement = fixture.nativeElement;
+    expect((el.querySelector('a[download]') as HTMLAnchorElement).href).toContain('/v1/itineraries/abcDEF123456/calendar.ics');
+    const component = fixture.componentInstance;
+    localStorage.removeItem('packing:abcDEF123456');
+    component.togglePacked('Umbrella');
+    expect(JSON.parse(localStorage.getItem('packing:abcDEF123456')!)).toEqual(['Umbrella']);
+    component.showPacking = true;
+    fixture.detectChanges();
+    expect(el.textContent).toContain('1 of 2 packed');
   });
 
   it('renders stays with a sponsored booking link and the day plan', () => {

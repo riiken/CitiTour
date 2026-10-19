@@ -6,7 +6,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
 import {
-  Alternative, AlternativeGroup, Itinerary, ItineraryItem, ItineraryPlace, ItineraryService, Slot, TripEdit
+  Alternative, AlternativeGroup, Itinerary, ItineraryItem, ItineraryPlace, ItineraryService, PackingItem, Slot, TripEdit
 } from 'src/app/services/itinerary.service';
 import { DestinationService, ForecastDay, WeatherData } from 'src/app/services/destination.service';
 import { ListingService } from 'src/app/services/listing.service';
@@ -47,6 +47,12 @@ export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
     loading: boolean;
   } | null = null;
   private autoSave = false;
+
+  // Packing checklist (ticks are remembered on this device)
+  packing: PackingItem[] = [];
+  packingGroups: { category: string; items: PackingItem[] }[] = [];
+  packed = new Set<string>();
+  showPacking = false;
 
   weather: WeatherData | null = null;
   forecast: ForecastDay[] = [];
@@ -105,6 +111,7 @@ export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.title.setTitle(`${itinerary.title} – CitiTour`);
         this.meta.updateTag({ name: 'description', content: itinerary.summary || `Day-by-day plan for ${itinerary.destination.name}` });
         this.loadWeather(itinerary.destination.name);
+        this.loadPacking(itinerary.id);
       },
       error: err => {
         this.loading = false;
@@ -121,6 +128,44 @@ export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
       },
       error: () => { /* weather is optional */ }
     });
+  }
+
+  // ---------------------------------------------------------------- extras
+
+  get calendarUrl(): string {
+    return this.itinerary ? this.itineraryService.calendarUrl(this.itinerary.id) : '';
+  }
+
+  print(): void {
+    this.showPacking = true;
+    setTimeout(() => window.print(), 50);
+  }
+
+  private loadPacking(id: string): void {
+    this.itineraryService.packing(id).subscribe({
+      next: items => {
+        this.packing = items;
+        // Built once (not a getter) so checkboxes aren't re-created on every change detection
+        const groups = new Map<string, PackingItem[]>();
+        items.forEach(entry => groups.set(entry.category, [...(groups.get(entry.category) || []), entry]));
+        this.packingGroups = [...groups.entries()].map(([category, groupItems]) => ({ category, items: groupItems }));
+        try {
+          this.packed = new Set(JSON.parse(localStorage.getItem(`packing:${id}`) || '[]'));
+        } catch {
+          this.packed = new Set();
+        }
+      },
+      error: () => { this.packing = []; this.packingGroups = []; }
+    });
+  }
+
+  togglePacked(item: string): void {
+    if (this.packed.has(item)) this.packed.delete(item); else this.packed.add(item);
+    try {
+      localStorage.setItem(`packing:${this.itinerary?.id}`, JSON.stringify([...this.packed]));
+    } catch {
+      // storage unavailable: ticks last for this visit only
+    }
   }
 
   // ---------------------------------------------------------------- display
