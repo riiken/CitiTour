@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { TripPlannerComponent } from './pages/trip-planner/trip-planner.component';
 import { AboutComponent } from './components/about/about.component';
-import { ServicesComponent } from './components/services/services.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ExploreComponent } from './pages/explore/explore.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
@@ -42,7 +41,7 @@ const routes: Routes = [
   { path: 'partner/edit/:id', component: ListingFormComponent, canActivate: [AuthGuard], title: 'Edit listing – CitiTour' },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], title: 'Admin – CitiTour' },
   { path: 'about', component: AboutComponent, title: 'About – CitiTour' },
-  { path: 'services', component: ServicesComponent, title: 'Services – CitiTour' },
+  { path: 'services', redirectTo: '/about' },
   { path: 'contact', component: ContactComponent, title: 'Contact – CitiTour' },
   { path: 'privacy-policy', component: PrivacyPolicyComponent, title: 'Privacy policy – CitiTour' },
   // Retired demo pages

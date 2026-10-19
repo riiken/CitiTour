@@ -15,8 +15,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { AboutComponent } from './components/about/about.component';
 import { BookingComponent } from './components/booking/booking.component';
 import { ContactComponent } from './components/contact/contact.component';
-import { ProcessComponent } from './components/process/process.component';
-import { ServicesComponent } from './components/services/services.component';
 import { WeatherDisplayComponent } from './components/weather-display/weather-display.component';
 import { ImageGalleryComponent } from './components/image-gallery/image-gallery.component';
 import { TripPlannerComponent } from './pages/trip-planner/trip-planner.component';
@@ -50,8 +48,6 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     AboutComponent,
     BookingComponent,
     ContactComponent,
-    ProcessComponent,
-    ServicesComponent,
     WeatherDisplayComponent,
     ImageGalleryComponent,
     TripPlannerComponent,

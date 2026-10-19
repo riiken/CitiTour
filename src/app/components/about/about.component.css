@@ -1,12 +1,5 @@
-.btn-primary{
-    background-color:#86B817 !important;
-    border: none !important;
-  }
-  
-  .text-primary{
-    color: #86B817 !important;
-  }
-  
-  .bg-primary{
-    background-color: #86B817 !important;
-  }
+.about { max-width: 820px; }
+.eyebrow { color: #86B817; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; font-size: .8rem; }
+h2 { font-size: 1.25rem; margin-top: 28px; }
+li { margin-bottom: 8px; }
+.actions { display: flex; gap: 10px; margin-top: 24px; }

@@ -1,93 +1,34 @@
-/* General Styling */
-.home-content {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    padding: 20px 5%;
-    font-family: 'Roboto', sans-serif;
-    background: #f9f9f9;
-    height: 100vh !important;
-  }
-  
-  /* Hero Section */
-  .hero {
-    text-align: center;
-    padding: 50px 20px;
-    background: linear-gradient(135deg, #f54ea2, #ff7676);
-    color: white;
-    border-radius: 10px;
-  }
-  
-  .hero h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .hero p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-  }
-  
-  .search-bar {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  /* Business Grid Section */
-  .business-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 16px;
-  }
-  
-  .business-tile {
-    cursor: pointer;
-  }
-  
-  .business-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease-in-out;
-  }
-  
-  .business-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .business-image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-  }
-  
-  .business-info {
-    padding: 16px;
-  }
-  
-  .business-info h3 {
-    margin: 0 0 8px;
-  }
-  
-  .no-results {
-    text-align: center;
-    color: #666;
-    font-size: 1.2rem;
-    margin-top: 20px;
-  }
-  
-  /* Advertisement Section */
-  .ads-section {
-    text-align: center;
-    padding: 20px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
+.section { padding-top: 48px; padding-bottom: 48px; }
+.eyebrow { color: #86B817; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; font-size: .8rem; margin-bottom: 4px; }
+.eyebrow.light { color: #d8f5a2; }
+h2 { font-size: 1.9rem; margin-bottom: 20px; }
+.section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.link { font-weight: 600; margin-bottom: 24px; }
+
+.dest-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+.dest { border-radius: 16px; color: #fff; padding: 18px; min-height: 200px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 6px 18px rgba(0,0,0,.08); transition: transform .15s ease; }
+.dest:hover { transform: translateY(-3px); }
+.dest h3 { color: #fff; font-size: 1.6rem; margin: 0 0 6px; }
+.region { margin: 0; font-size: .8rem; opacity: .9; text-transform: uppercase; letter-spacing: .05em; }
+.tagline { margin: 0 0 8px; font-weight: 500; }
+.best { margin: 0; font-size: .82rem; opacity: .9; }
+.dest-actions { display: flex; gap: 8px; margin-top: 14px; }
+
+.how { background: #f4f9e8; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.step { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+.num { display: inline-flex; width: 34px; height: 34px; border-radius: 50%; background: #86B817; color: #fff; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 10px; }
+.step h3, .why h3 { font-size: 1.1rem; }
+
+.why { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; }
+.why .fa { font-size: 1.6rem; color: #86B817; margin-bottom: 8px; }
+
+.business { background: linear-gradient(135deg, #2b3035, #3d4a2a); color: #fff; }
+.business-inner { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+.business h2 { color: #fff; max-width: 640px; }
+.business p { opacity: .9; max-width: 640px; margin: 0; }
+
+@media (max-width: 576px) {
+  h2 { font-size: 1.5rem; }
+  .section { padding-top: 32px; padding-bottom: 32px; }
+}
