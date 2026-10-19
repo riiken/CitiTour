@@ -1,20 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { AddBusinessComponent } from './add-business/add-business.component';
-import { ViewBusinessComponent } from './view-business/view-business.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { TripPlannerComponent } from './pages/trip-planner/trip-planner.component';
-import { BlogsComponent } from './pages/blogs/blogs.component';
-import { PropertiesComponent } from './pages/properties/properties.component';
-import { ViewBlogComponent } from './pages/blogs/view-blog/view-blog.component';
 import { AboutComponent } from './components/about/about.component';
-import { BookingComponent } from './components/booking/booking.component';
-import { DestinationComponent } from './components/destination/destination.component';
-import { PackageComponent } from './components/package/package.component';
-import { ProcessComponent } from './components/process/process.component';
 import { ServicesComponent } from './components/services/services.component';
-import { HeroComponent } from './hero/hero.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
@@ -22,34 +11,41 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
+import { TripViewComponent } from './pages/trip-view/trip-view.component';
+import { PartnerLandingComponent } from './pages/partner/landing/partner-landing.component';
+import { PartnerDashboardComponent } from './pages/partner/dashboard/partner-dashboard.component';
+import { ListingFormComponent } from './pages/partner/listing-form/listing-form.component';
+import { AdminComponent } from './pages/admin/admin.component';
+import { PlaceComponent } from './pages/place/place.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'user-dashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'blogs', component: BlogsComponent },
-  { path: 'properties', component: PropertiesComponent },
-  { path: 'plan-trip', component: TripPlannerComponent },
-  { path: 'blog/:id', component: ViewBlogComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'booking', component: BookingComponent },
-  { path: 'destination', component: DestinationComponent },
-  { path: 'package', component: PackageComponent },
-  { path: 'process', component: ProcessComponent },
-  { path: 'services', component: ServicesComponent },
-  { path: 'hero', component: HeroComponent },
-  { path: 'contact', component: ContactComponent },
-  { path: 'search-results', component: SearchResultsComponent },
-  {path:'privacy-policy',component:PrivacyPolicyComponent},
-  { path: '**', redirectTo: '' },
-
+  { path: 'home', component: HomeComponent, title: 'CitiTour – AI trip planner for India' },
+  { path: 'search-results', component: SearchResultsComponent, title: 'Hotels, restaurants & tours – CitiTour' },
+  { path: 'plan-trip', component: TripPlannerComponent, title: 'Plan your trip – CitiTour' },
+  { path: 'trip/:id', component: TripViewComponent, title: 'Your trip – CitiTour' },
+  { path: 'login', component: LoginComponent, title: 'Log in – CitiTour' },
+  { path: 'register', component: RegisterComponent, title: 'Create account – CitiTour' },
+  { path: 'user-dashboard', component: UserDashboardComponent, canActivate: [AuthGuard], title: 'My account – CitiTour' },
+  { path: 'place/:id', component: PlaceComponent, title: 'CitiTour' },
+  { path: 'list-your-business', component: PartnerLandingComponent, title: 'List your business – CitiTour' },
+  { path: 'partner', component: PartnerDashboardComponent, canActivate: [AuthGuard], title: 'My listings – CitiTour' },
+  { path: 'partner/new', component: ListingFormComponent, canActivate: [AuthGuard], title: 'Add your business – CitiTour' },
+  { path: 'partner/edit/:id', component: ListingFormComponent, canActivate: [AuthGuard], title: 'Edit listing – CitiTour' },
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], title: 'Admin – CitiTour' },
+  { path: 'about', component: AboutComponent, title: 'About – CitiTour' },
+  { path: 'services', component: ServicesComponent, title: 'Services – CitiTour' },
+  { path: 'contact', component: ContactComponent, title: 'Contact – CitiTour' },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent, title: 'Privacy policy – CitiTour' },
+  // Retired demo pages
+  { path: 'booking', redirectTo: '/plan-trip' },
+  { path: 'destination', redirectTo: '/search-results' },
+  { path: 'dashboard', redirectTo: '/user-dashboard' },
+  { path: '**', redirectTo: '/home' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

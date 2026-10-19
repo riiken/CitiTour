@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   loading = false;
   submitted = false;
-  returnUrl: string = '/dashboard';
+  returnUrl: string = '/user-dashboard';
   hidePassword = true;
 
   constructor(
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   ) {
     // Redirect to dashboard if already logged in
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/user-dashboard']);
     }
   }
 
@@ -36,7 +36,10 @@ export class LoginComponent implements OnInit {
     });
 
     // Get return url from route parameters or default to '/dashboard'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+    const requested = this.route.snapshot.queryParams['returnUrl'];
+    // Only same-site paths are allowed as redirect targets
+    this.returnUrl = typeof requested === 'string' && requested.startsWith('/') && !requested.startsWith('//')
+      ? requested : '/user-dashboard';
   }
 
   // Convenience getter for easy access to form fields
@@ -60,7 +63,7 @@ export class LoginComponent implements OnInit {
     ).subscribe({
       next: (response) => {
         this.toastr.success('Login successful!', 'Welcome back');
-        this.router.navigate([this.returnUrl]);
+        this.router.navigateByUrl(this.returnUrl);
       },
       error: (error) => {
         this.toastr.error(error.message || 'Login failed', 'Error');
@@ -70,6 +73,6 @@ export class LoginComponent implements OnInit {
   }
 
   goToRegister(): void {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/register'], { queryParams: { returnUrl: this.returnUrl } });
   }
 }

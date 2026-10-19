@@ -1,162 +1,28 @@
-
-
 <app-booking (planTripEmmiter)="planTripEmmiter($event)"></app-booking>
 
-  <!-- Destination Data Section (Weather, Images, Travel Info) -->
-  <div class="destination-data-section mt-5" *ngIf="showDestinationData && travelData">
-    <div class="container">
-      <!-- Destination Overview -->
-      <div class="destination-overview mb-4">
-        <div class="row align-items-center">
-          <div class="col-md-8">
-            <h1 class="destination-title">{{ travelData.destination }}</h1>
-            <p class="destination-description" *ngIf="travelData.overview?.description">
-              {{ travelData.overview.description }}
-            </p>
-          </div>
-          <div class="col-md-4 text-end">
-            <span class="badge bg-success me-2">
-              <i class="bi bi-check-circle me-1"></i>
-              {{ travelData.completeness }}% Complete
-            </span>
-            <span class="badge bg-info">
-              <i class="bi bi-database me-1"></i>
-              {{ travelData.sources.length || 0 }} Sources
-            </span>
-          </div>
-        </div>
-      </div>
+<div class="container" *ngIf="error">
+  <div class="alert alert-warning d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <span>{{ error }}</span>
+    <button class="btn btn-sm btn-primary" (click)="retry()">Try again</button>
+  </div>
+</div>
 
-      <!-- Travel Recommendations -->
-      <div class="travel-recommendations mb-4" *ngIf="travelData.recommendations && travelData.recommendations.length > 0">
-        <h3><i class="bi bi-lightbulb me-2"></i>Travel Recommendations</h3>
-        <div class="row">
-          <div class="col-md-4" *ngFor="let rec of travelData.recommendations">
-            <div class="alert alert-info mb-3">
-              <i class="bi bi-info-circle me-2"></i>{{ rec }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Best Time to Visit -->
-      <div class="best-time-section mb-4" *ngIf="travelData.bestTimeToVisit">
-        <div class="card bg-primary text-white">
-          <div class="card-body">
-            <h4 class="card-title">
-              <i class="bi bi-calendar-check me-2"></i>
-              Best Time to Visit
-            </h4>
-            <div class="row">
-              <div class="col-md-8">
-                <p class="mb-2">
-                  <strong>Recommended Date:</strong> {{ travelData.bestTimeToVisit.bestDay | date: 'fullDate' }}
-                </p>
-                <p class="mb-2">
-                  <strong>Score:</strong> {{ travelData.bestTimeToVisit.score }}/100
-                </p>
-                <p class="mb-0">
-                  <strong>Reason:</strong> {{ travelData.bestTimeToVisit.reason }}
-                </p>
-              </div>
-              <div class="col-md-4" *ngIf="travelData.bestTimeToVisit && travelData.bestTimeToVisit.alternatives && travelData.bestTimeToVisit.alternatives.length > 0">
-                <p class="mb-1"><strong>Alternative Dates:</strong></p>
-                <ul class="list-unstyled">
-                  <li *ngFor="let alt of travelData.bestTimeToVisit.alternatives">
-                    {{ alt | date: 'mediumDate' }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Things To Do -->
-      <div class="things-to-do-section mb-4" *ngIf="travelData.thingsToDo && travelData.thingsToDo.length > 0">
-        <h3><i class="bi bi-list-check me-2"></i>Things To Do</h3>
-        <div class="row">
-          <div class="col-md-3" *ngFor="let activity of travelData.thingsToDo">
-            <div class="card mb-3">
-              <div class="card-body">
-                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                {{ activity }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Weather Display Component -->
-      <app-weather-display
-        [weather]="weather"
-        [forecast]="forecast"
-        [loading]="loading">
-      </app-weather-display>
-
-      <!-- Image Gallery Component -->
-      <app-image-gallery
-        [images]="images"
-        [loading]="loading"
-        [destination]="destination">
-      </app-image-gallery>
+<div class="container how-it-works py-4">
+  <div class="row g-4 text-center">
+    <div class="col-md-4">
+      <i class="fa fa-map-o fa-2x mb-2"></i>
+      <h5>Real places only</h5>
+      <p class="text-muted">Every stop comes from travel guides and maps, not made up.</p>
+    </div>
+    <div class="col-md-4">
+      <i class="fa fa-calendar fa-2x mb-2"></i>
+      <h5>Day-by-day plan</h5>
+      <p class="text-muted">Grouped by area so you spend time exploring, not travelling.</p>
+    </div>
+    <div class="col-md-4">
+      <i class="fa fa-whatsapp fa-2x mb-2"></i>
+      <h5>Share with your group</h5>
+      <p class="text-muted">Send the plan on WhatsApp and book stays for your dates.</p>
     </div>
   </div>
-
-  <!-- AI Recommendations Section -->
-  <div class="results mt-5" *ngIf="recommendations">
-    <h2>AI-Powered Trip Recommendations</h2>
-    <div class="recommendations row">
-
-      <!-- Travel Guide -->
-      <div class="col-12 col-md-4">
-        <h3>Travel Guide</h3>
-        <div class="d-flex flex-column">
-          <div class="card mb-3" *ngFor="let travel of recommendations?.travelGuide">
-            <div class="card-body">
-              <h5 class="card-title">{{ travel.placeName }}</h5>
-              <p class="card-text">{{ travel.explanation }}</p>
-              <small><strong>Location:</strong> {{ travel.location }}</small>
-              <br>
-              <small *ngIf="travel?.websiteLink"><strong>Link:</strong> <a [href]="travel.websiteLink" target="_blank">{{ travel.websiteLink }}</a></small>
-              <br>
-              <button class="btn btn-secondary mt-2 bg-primary" (click)="viewDetails(travel)">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Stay Guide -->
-      <div class="col-12 col-md-4">
-        <h3>Stay Guide</h3>
-        <div class="d-flex flex-column">
-          <div class="card mb-3" *ngFor="let stay of recommendations?.stayGuide">
-            <div class="card-body">
-              <h5 class="card-title">{{ stay.placeName || 'Stay Option' }}</h5>
-              <p class="card-text">{{ stay.explanation || 'Details not available' }}</p>
-              <small *ngIf="stay?.websiteLink"><strong>Link:</strong> <a [href]="stay.websiteLink" target="_blank">{{ stay.websiteLink }}</a></small>
-              <br>
-              <button class="btn btn-secondary mt-2 bg-primary" (click)="viewDetails(stay)">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Food Guide -->
-      <div class="col-12 col-md-4">
-        <h3>Food Guide</h3>
-        <div class="d-flex flex-column">
-          <div class="card mb-3" *ngFor="let food of recommendations?.foodGuide">
-            <div class="card-body">
-              <h5 class="card-title">{{ food.dishName || 'Food Option' }}</h5>
-              <p class="card-text">{{ food.explanation || 'Details not available' }}</p>
-              <small *ngIf="food?.websiteLink"><strong>Link:</strong> <a [href]="food.websiteLink" target="_blank">{{ food.websiteLink }}</a></small>
-              <br>
-              <button class="btn btn-secondary mt-2 bg-primary" (click)="viewDetails(food)">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
+</div>

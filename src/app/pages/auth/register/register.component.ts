@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+  returnUrl = '/user-dashboard';
   registerForm!: FormGroup;
   loading = false;
   submitted = false;
@@ -19,12 +20,16 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService,
     private toastr: ToastrService
   ) {
-    // Redirect to dashboard if already logged in
+    // Only same-site paths are allowed as redirect targets
+    const requested = this.route.snapshot.queryParams['returnUrl'];
+    this.returnUrl = typeof requested === 'string' && requested.startsWith('/') && !requested.startsWith('//')
+      ? requested : '/user-dashboard';
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigateByUrl(this.returnUrl);
     }
   }
 
@@ -37,7 +42,8 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(8),
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
       ]],
-      confirmPassword: ['', [Validators.required]]
+      confirmPassword: ['', [Validators.required]],
+      acceptTerms: [false, [Validators.requiredTrue]]
     }, {
       validators: this.passwordMatchValidator
     });
@@ -73,11 +79,12 @@ export class RegisterComponent implements OnInit {
     this.authService.register(
       this.f['name'].value,
       this.f['email'].value,
-      this.f['password'].value
+      this.f['password'].value,
+      this.f['acceptTerms'].value === true
     ).subscribe({
       next: (response) => {
         this.toastr.success('Registration successful!', 'Welcome to CitiTour');
-        this.router.navigate(['/dashboard']);
+        this.router.navigateByUrl(this.returnUrl);
       },
       error: (error) => {
         this.toastr.error(error.message || 'Registration failed', 'Error');
@@ -87,6 +94,6 @@ export class RegisterComponent implements OnInit {
   }
 
   goToLogin(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login'], { queryParams: { returnUrl: this.returnUrl } });
   }
 }

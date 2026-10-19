@@ -79,8 +79,8 @@ export class UserDashboardComponent implements OnInit {
     if (usage.limit === 'unlimited') return 0;
 
     const limit = typeof usage.limit === 'number' ? usage.limit : parseInt(usage.limit as string);
-    // AI usage has thisHour, others use total
-    const current = type === 'ai' && 'thisHour' in usage ? usage.thisHour : usage.total;
+    // AI quota is hourly; search and email quotas are daily
+    const current = type === 'ai' && 'thisHour' in usage ? usage.thisHour : ((usage as any).today ?? usage.total);
 
     return Math.min((current / limit) * 100, 100);
   }

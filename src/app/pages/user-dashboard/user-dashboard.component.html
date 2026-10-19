@@ -137,13 +137,13 @@
           <div class="stat-info">
             <h3>Location Searches</h3>
             <p class="stat-limit">
-              Limit: {{ usageStats.usage.search.limit === 'unlimited' ? 'Unlimited' : usageStats.usage.search.limit + '/15min' }}
+              Limit: {{ usageStats.usage.search.limit === 'unlimited' ? 'Unlimited' : usageStats.usage.search.limit + '/day' }}
             </p>
           </div>
         </div>
         <div class="stat-numbers">
           <div class="stat-value">
-            <span class="current">{{ usageStats.usage.search.total || 0 }}</span>
+            <span class="current">{{ $any(usageStats.usage.search).today ?? usageStats.usage.search.total ?? 0 }}</span>
             <span class="separator">/</span>
             <span class="limit">{{ usageStats.usage.search.limit === 'unlimited' ? '∞' : usageStats.usage.search.limit }}</span>
           </div>
@@ -172,13 +172,13 @@
           <div class="stat-info">
             <h3>Email Messages</h3>
             <p class="stat-limit">
-              Limit: {{ usageStats.usage.email.limit === 'unlimited' ? 'Unlimited' : usageStats.usage.email.limit + '/hour' }}
+              Limit: {{ usageStats.usage.email.limit === 'unlimited' ? 'Unlimited' : usageStats.usage.email.limit + '/day' }}
             </p>
           </div>
         </div>
         <div class="stat-numbers">
           <div class="stat-value">
-            <span class="current">{{ usageStats.usage.email.total || 0 }}</span>
+            <span class="current">{{ $any(usageStats.usage.email).today ?? usageStats.usage.email.total ?? 0 }}</span>
             <span class="separator">/</span>
             <span class="limit">{{ usageStats.usage.email.limit === 'unlimited' ? '∞' : usageStats.usage.email.limit }}</span>
           </div>

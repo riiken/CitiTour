@@ -1,43 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GoogleAdsService } from './services/google-ads.service';
 import { TripPlannerService } from './services/trip-planner.service';
-import { AdMob } from '@capacitor-community/admob';
-
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'CitiTour';
-  isSidebarOpen = true;
 
-  constructor(private googleAdsService:GoogleAdsService,private tripPlanner:TripPlannerService){}
+  constructor(private googleAdsService: GoogleAdsService, private tripPlanner: TripPlannerService) {}
 
-  ngOnInit(){
-    this.initializeAdMob();
-    this.isSidebarOpen = window.innerWidth <=768  ? false : true;
+  ngOnInit(): void {
+    this.googleAdsService.initialize();
     this.setCurrentUserCountry();
   }
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
 
-  async initializeAdMob() {
-    await AdMob.initialize({
-      initializeForTesting: false,
+  /** Detect the visitor's currency once; prices are converted client-side. */
+  private setCurrentUserCountry(): void {
+    if (localStorage.getItem('currency')) return;
+    this.tripPlanner.getUserLocation().subscribe({
+      next: (data: any) => {
+        if (data?.currency) localStorage.setItem('currency', data.currency);
+      },
+      error: () => { /* fall back to USD in CurrencyServiceService */ }
     });
-  }
-
-  setCurrentUserCountry(){
-    this.tripPlanner.getUserLocation().subscribe((data) => {
-      console.log(data);
-      localStorage.setItem('currency',data?.currency);
-    });
-  }
-
-  closeSidebarEvent(val:boolean){
-    console.log(val);
   }
 }

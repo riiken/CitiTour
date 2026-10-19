@@ -1,9 +1,9 @@
-<div class="ads-container">
-     <ins class="adsbygoogle"
-          style="display:block"
-          data-ad-client="ca-pub-6764912423351872"
-          data-ad-slot="9809359294"
-          data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
- </div>
- 
+<div class="ads-container" *ngIf="enabled">
+  <span class="ads-label">Advertisement</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       [attr.data-ad-client]="client"
+       [attr.data-ad-slot]="slot"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+</div>

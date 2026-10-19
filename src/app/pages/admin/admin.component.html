@@ -1,0 +1,56 @@
+<div class="container py-4">
+  <h1>Admin</h1>
+
+  <div class="alert alert-warning" *ngIf="forbidden">
+    You need admin access. Add your email to <code>ADMIN_EMAILS</code> in the backend settings, then log out and back in.
+  </div>
+
+  <ng-container *ngIf="!forbidden">
+    <div class="kpis" *ngIf="overview">
+      <div class="kpi"><span>Live listings</span><strong>{{ overview.listings['approved'] || 0 }}</strong></div>
+      <div class="kpi"><span>Waiting for review</span><strong>{{ overview.listings['pending'] || 0 }}</strong></div>
+      <div class="kpi"><span>Trip plans (30 days)</span><strong>{{ overview.last30Days.plans }}</strong></div>
+      <div class="kpi"><span>Business enquiries (30 days)</span><strong>{{ sum(overview.last30Days.leads) }}</strong></div>
+      <div class="kpi"><span>Partner clicks (30 days)</span><strong>{{ sum(overview.last30Days.outboundClicks) }}</strong>
+        <small *ngFor="let entry of entries(overview.last30Days.outboundClicks)">{{ entry[0] }}: {{ entry[1] }}</small>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button *ngFor="let tab of tabs" [class.active]="status === tab.status" (click)="select(tab.status)">{{ tab.label }}</button>
+    </div>
+
+    <p *ngIf="loading">Loading…</p>
+    <p class="muted" *ngIf="!loading && !listings.length">Nothing here.</p>
+
+    <article class="review" *ngFor="let listing of listings">
+      <div class="photos">
+        <img *ngFor="let photo of listing.photos.slice(0, 3)" [src]="listingService.photoUrl(photo)" alt="">
+        <span class="muted small" *ngIf="!listing.photos.length">No photos</span>
+      </div>
+      <div class="details">
+        <h2><a *ngIf="listing.status === 'approved'; else plainName" [routerLink]="['/place', listing.id]">{{ listing.name }}</a><ng-template #plainName>{{ listing.name }}</ng-template> <span class="muted small">· {{ listing.type }}<span *ngIf="listing.subtype"> / {{ listing.subtype }}</span></span></h2>
+        <p class="small muted">{{ listing.city }} · {{ listing.address }} ·
+          <a [href]="'https://www.google.com/maps/search/?api=1&query=' + listing.lat + ',' + listing.lon" target="_blank" rel="noopener">check pin</a></p>
+        <p *ngIf="listing.description">{{ listing.description }}</p>
+        <p class="small">
+          <span *ngIf="listing.priceMin">₹{{ listing.priceMin }}<span *ngIf="listing.priceMax">–{{ listing.priceMax }}</span> / {{ listing.priceUnit }} · </span>
+          <span *ngIf="listing.contact.whatsapp">WhatsApp {{ listing.contact.whatsapp }} · </span>
+          <span *ngIf="listing.contact.phone">Phone {{ listing.contact.phone }} · </span>
+          <a *ngIf="listing.contact.website" [href]="listing.contact.website" target="_blank" rel="noopener nofollow">website</a>
+        </p>
+        <p class="small muted">Owner: {{ listing.owner?.name }} ({{ listing.owner?.email }}) · {{ listing.views }} views · {{ listing.leads }} enquiries</p>
+        <p class="small text-danger" *ngIf="listing.rejectionReason">Rejected: {{ listing.rejectionReason }}</p>
+      </div>
+      <div class="actions">
+        <button class="btn btn-success btn-sm" *ngIf="listing.status !== 'approved'" (click)="approve(listing)">Approve</button>
+        <button class="btn btn-outline-danger btn-sm" *ngIf="listing.status !== 'rejected'" (click)="reject(listing)">Reject</button>
+        <button class="btn btn-sm" [class.btn-primary]="!listing.featured" [class.btn-outline-secondary]="listing.featured"
+          *ngIf="listing.status === 'approved'" (click)="toggleFeatured(listing)">
+          {{ listing.featured ? 'Unfeature' : 'Feature' }}
+        </button>
+        <small class="muted" *ngIf="listing.featured && listing.featuredUntil">until {{ listing.featuredUntil | date: 'mediumDate' }}</small>
+      </div>
+    </article>
+  </ng-container>
+</div>

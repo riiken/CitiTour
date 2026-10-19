@@ -2,32 +2,19 @@
 
   <div class="container-fluid position-relative p-0" [style.background]="!mobileVersion ? '#484E54' : ''">
     <nav appNavbarSticky class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-        <a href="" class="navbar-brand p-0">
+        <a routerLink="/home" class="navbar-brand p-0">
             <h1 class="text-primary m-0"><i class="fa fa-map-marker me-3"></i>Cititour</h1>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <button class="navbar-toggler" type="button" aria-label="Toggle navigation" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="fa fa-bars"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
-                <a routerLink="/home" class="nav-item nav-link active" (click)="navClicked('home')" [ngClass]="{'active':activeNav === 'home'}">Home</a>
-                <a routerLink="/about" class="nav-item nav-link" (click)="navClicked('about')" [ngClass]="{'active':activeNav === 'about'}">About</a>
-                <a routerLink="/services" class="nav-item nav-link" (click)="navClicked('services')" [ngClass]="{'active':activeNav === 'services'}">Services</a>
-                <!-- <a routerLink="/package" class="nav-item nav-link" (click)="navClicked('package')" [ngClass]="{'active':activeNav === 'package'}">Packages</a> -->
-                <!-- <a routerLink="/plan-trip" class="nav-item nav-link" (click)="navClicked('plantrip')" [ngClass]="{'active':activeNav === 'plantrip'}">Plan</a> -->
-                <!-- <a routerLink="/destination" class="nav-item nav-link" (click)="navClicked('destination')" [ngClass]="{'active':activeNav === 'destination'}">Destination</a> -->
+                <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link">Home</a>
+                <a routerLink="/plan-trip" routerLinkActive="active" class="nav-item nav-link">Plan a trip</a>
 
-                <!-- <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                    <div class="dropdown-menu m-0">
-                        <a href="destination.html" class="dropdown-item">Destination</a>
-                        <a href="booking.html" class="dropdown-item">Booking</a>
-                        <a href="team.html" class="dropdown-item">Travel Guides</a>
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        <a href="404.html" class="dropdown-item">404 Page</a>
-                    </div>
-                </div> -->
-                <a routerLink="/contact" class="nav-item nav-link" (click)="navClicked('contact')" [ngClass]="{'active':activeNav === 'contact'}">Contact</a>
+                <a routerLink="/list-your-business" routerLinkActive="active" class="nav-item nav-link">List your business</a>
+                <a routerLink="/contact" routerLinkActive="active" class="nav-item nav-link">Contact</a>
             </div>
 
             <!-- Auth Buttons -->
@@ -55,6 +42,8 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" (click)="goToDashboard()"><i class="fa fa-dashboard me-2"></i>Dashboard</a></li>
+                            <li><a class="dropdown-item" routerLink="/partner"><i class="fa fa-building me-2"></i>My listings</a></li>
+                            <li *ngIf="currentUser?.role === 'admin'"><a class="dropdown-item" routerLink="/admin"><i class="fa fa-shield me-2"></i>Admin</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item text-danger" (click)="logout()"><i class="fa fa-sign-out me-2"></i>Logout</a></li>
                         </ul>

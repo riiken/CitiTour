@@ -1,6 +1,6 @@
-<div class="weather-container" *ngIf="!loading && weather">
+<div class="weather-container" *ngIf="!loading && (weather || forecast?.length)">
   <!-- Current Weather Card -->
-  <div class="current-weather card mb-4">
+  <div class="current-weather card mb-4" *ngIf="weather">
     <div class="card-body">
       <h3 class="card-title mb-4">
         <i class="bi bi-cloud-sun me-2"></i>
@@ -153,7 +153,7 @@
 </div>
 
 <!-- No Weather Data -->
-<div class="alert alert-info" *ngIf="!loading && !weather">
+<div class="alert alert-info" *ngIf="!loading && !weather && !forecast?.length">
   <i class="bi bi-info-circle me-2"></i>
   No weather data available. Try searching for a destination.
 </div>

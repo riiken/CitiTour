@@ -52,7 +52,10 @@
               {{tour?.cancellation}}
             </div>
             </div>
-            <a [href]="tour?.url" target="_blank" class="btn btn-primary view-btn">View</a>
+            <div class="d-flex gp-5 flex-wrap">
+              <a *ngIf="tour?.url" [href]="tour.url" target="_blank" rel="noopener" class="btn btn-outline-secondary view-btn">Details</a>
+              <a *ngIf="tour?.bookingUrl" [href]="tour.bookingUrl" target="_blank" rel="sponsored noopener" class="btn btn-primary view-btn">Book activity</a>
+            </div>
           </div>
         </div>
       </div>

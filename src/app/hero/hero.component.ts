@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
-import { SearchRecommendationService } from '../services/search-recommendation.service';
-import { LoaderService } from '../services/loader.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { GoogleAdsService } from '../services/google-ads.service';
 
 @Component({
   selector: 'app-hero',
@@ -20,44 +17,30 @@ import { GoogleAdsService } from '../services/google-ads.service';
         style({ opacity: 1 }),
         animate('300ms', style({ opacity: 0 })),
       ])
-    ]),
-    trigger('barAnimation', [
-      transition(':enter', [
-        style({ width: '0%' }),
-        animate('3s ease-out', style({ width: '100%' }))
-      ])
     ])
   ]
 })
 export class HeroComponent {
-  searchQuery: string = '';
-  searchRecommendation:any;
-  constructor(private ads:GoogleAdsService,private searchRecommendationService:SearchRecommendationService,private loaderService:LoaderService,private router:Router,private toastr: ToastrService){
+  searchQuery = '';
+  readonly popularDestinations = ['Goa', 'Jaipur', 'Manali', 'Udaipur', 'Rishikesh', 'Kerala'];
 
+  constructor(
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
+
+  searchFor(destination: string): void {
+    this.searchQuery = destination;
+    this.onSearch();
   }
 
   onSearch(): void {
-    this.loaderService.show();
-    this.ads.showAd('interstitial')
-    if (this.searchQuery?.trim()) {
-      this.searchRecommendationService.getSearchRecommendationFromAPi(this.searchQuery?.trim()).subscribe((res:any)=>{
-        console.log(res);
-        this.searchRecommendation = res['data'];
-        this.searchRecommendationService.setSearchRecommendation(this.searchRecommendation);
-        this.loaderService.hide();
-        localStorage.setItem('location',this.searchQuery);
-        this.searchQuery = '';
-        this.router.navigate(['search-results'],{ state: { searchRecommendation: this.searchRecommendation } })
-      },(err)=>{
-        this.toastr.error(err.message);
-      this.loaderService.hide();
-
-        return;
-      })
-    } else {
-      console.warn('Search query is empty');
-      this.loaderService.hide();
-      
+    const query = this.searchQuery?.trim();
+    if (!query) {
+      this.toastr.info('Enter a city or destination.');
+      return;
     }
+    localStorage.setItem('location', query);
+    this.router.navigate(['/plan-trip'], { queryParams: { destination: query } });
   }
 }

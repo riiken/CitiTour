@@ -103,10 +103,14 @@
 
       <!-- Terms and Conditions -->
       <div class="terms-checkbox">
-        <input type="checkbox" id="terms" required />
+        <input type="checkbox" id="terms" formControlName="acceptTerms"
+               [class.is-invalid]="submitted && f['acceptTerms'].errors" />
         <label for="terms">
-          I agree to the <a href="/privacy-policy" target="_blank">Terms & Conditions</a>
+          I agree to the <a routerLink="/privacy-policy" target="_blank">Terms &amp; Privacy Policy</a>
         </label>
+      </div>
+      <div class="invalid-feedback d-block" *ngIf="submitted && f['acceptTerms'].errors">
+        Please accept the Terms &amp; Privacy Policy to create an account
       </div>
 
       <!-- Submit Button -->

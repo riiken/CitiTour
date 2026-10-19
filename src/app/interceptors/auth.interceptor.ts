@@ -6,77 +6,43 @@ import {
   HttpInterceptor,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, filter, take, switchMap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { environment } from '../environment';
+
+// Requests where a 401 means "wrong credentials", not "session expired"
+const NO_SESSION_HANDLING = /\/auth\/(login|register|refresh|logout)$/;
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  private isRefreshing = false;
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    // Add token to request if user is logged in
-    const accessToken = this.authService.getAccessToken();
-
-    if (accessToken) {
-      request = this.addToken(request, accessToken);
+    // Only our own API gets the token, and never the login/register/refresh calls
+    const isOwnApi = request.url.startsWith(environment.apiUrl);
+    if (!isOwnApi || NO_SESSION_HANDLING.test(request.url)) {
+      return next.handle(request);
     }
 
-    return next.handle(request).pipe(
+    const accessToken = this.authService.getAccessToken();
+    const authorised = accessToken ? this.withToken(request, accessToken) : request;
+
+    return next.handle(authorised).pipe(
       catchError(error => {
-        if (error instanceof HttpErrorResponse && error.status === 401) {
-          return this.handle401Error(request, next);
-        } else {
-          return throwError(() => error);
+        // Expired access token: renew once (shared across requests) and retry
+        if (error instanceof HttpErrorResponse && error.status === 401 && accessToken) {
+          return this.authService.refreshSession().pipe(
+            switchMap(newToken => next.handle(this.withToken(request, newToken))),
+            catchError(() => throwError(() => error))
+          );
         }
+        return throwError(() => error);
       })
     );
   }
 
-  /**
-   * Add JWT token to request headers
-   */
-  private addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
-    return request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-  }
-
-  /**
-   * Handle 401 Unauthorized errors
-   * Attempt to refresh the access token
-   */
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!this.isRefreshing) {
-      this.isRefreshing = true;
-      this.refreshTokenSubject.next(null);
-
-      return this.authService.refreshToken().pipe(
-        switchMap((response: any) => {
-          this.isRefreshing = false;
-          this.refreshTokenSubject.next(response.data.accessToken);
-          return next.handle(this.addToken(request, response.data.accessToken));
-        }),
-        catchError((err) => {
-          this.isRefreshing = false;
-          this.authService.logout();
-          return throwError(() => err);
-        })
-      );
-    } else {
-      // Wait for the token refresh to complete
-      return this.refreshTokenSubject.pipe(
-        filter(token => token != null),
-        take(1),
-        switchMap(token => {
-          return next.handle(this.addToken(request, token));
-        })
-      );
-    }
+  private withToken(request: HttpRequest<unknown>, token: string): HttpRequest<unknown> {
+    return request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
   }
 }

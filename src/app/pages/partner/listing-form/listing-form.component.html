@@ -1,0 +1,145 @@
+<div class="container py-4 form-page">
+  <a routerLink="/partner" class="back">← My listings</a>
+  <h1>{{ listingId ? 'Edit your listing' : 'Add your business' }}</h1>
+  <p class="muted">Listings are free. We review every listing before it appears to travellers.</p>
+
+  <div class="alert alert-warning" *ngIf="listing?.status === 'rejected' && listing?.rejectionReason">
+    <strong>What to fix:</strong> {{ listing?.rejectionReason }}
+  </div>
+  <div class="alert alert-danger" *ngIf="errors.length">
+    <ul class="mb-0"><li *ngFor="let error of errors">{{ error }}</li></ul>
+  </div>
+
+  <form (ngSubmit)="save()" #listingForm="ngForm">
+    <section>
+      <h2>1. What kind of business?</h2>
+      <div class="type-picker">
+        <button type="button" *ngFor="let type of types" class="type" [class.active]="model.type === type.value" (click)="setType(type.value)">
+          <i class="fa {{ type.icon }}"></i> {{ type.label }}
+        </button>
+      </div>
+      <div class="row g-3 mt-1">
+        <div class="col-md-6">
+          <label class="form-label" for="name">Business name *</label>
+          <input id="name" name="name" class="form-control" [(ngModel)]="model.name" required maxlength="120">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="subtype">Category</label>
+          <select id="subtype" name="subtype" class="form-select" [(ngModel)]="model.subtype">
+            <option value="">Choose…</option>
+            <option *ngFor="let sub of subtypes[model.type]" [value]="sub.value">{{ sub.label }}</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label class="form-label" for="description">Description</label>
+          <textarea id="description" name="description" class="form-control" rows="4" maxlength="1500" [(ngModel)]="model.description"
+            placeholder="What makes your place special? What should travellers know?"></textarea>
+          <small class="muted">{{ (model.description || '').length }}/1500</small>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Where are you?</h2>
+      <app-location-picker [lat]="model.lat" [lon]="model.lon" [cityHint]="model.city" (locationChange)="onLocation($event)"></app-location-picker>
+      <div class="row g-3 mt-1">
+        <div class="col-md-5">
+          <label class="form-label" for="city">City / town *</label>
+          <input id="city" name="city" class="form-control" [(ngModel)]="model.city" required maxlength="100" placeholder="Filled in from your location">
+        </div>
+        <div class="col-md-7">
+          <label class="form-label" for="address">Address shown to travellers</label>
+          <input id="address" name="address" class="form-control" [(ngModel)]="model.address" maxlength="250" placeholder="e.g. 12 Lal Ghat, near Jagdish Temple">
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Prices &amp; details</h2>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label" for="priceMin">{{ priceLabel }}: from</label>
+          <input id="priceMin" name="priceMin" type="number" min="0" class="form-control" [(ngModel)]="model.priceMin">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label" for="priceMax">up to</label>
+          <input id="priceMax" name="priceMax" type="number" min="0" class="form-control" [(ngModel)]="model.priceMax">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label" for="openingHours">Opening hours</label>
+          <input id="openingHours" name="openingHours" class="form-control" [(ngModel)]="model.openingHours" maxlength="120"
+            [placeholder]="model.type === 'stay' ? 'Check-in 12pm, check-out 11am' : 'e.g. 8am–10pm, closed Mondays'">
+        </div>
+        <div class="col-md-6" *ngIf="model.type === 'activity'">
+          <label class="form-label" for="duration">Duration</label>
+          <input id="duration" name="duration" class="form-control" [(ngModel)]="model.duration" maxlength="60" placeholder="e.g. 3 hours, full day">
+        </div>
+      </div>
+
+      <div class="mt-3" *ngIf="model.type === 'stay'">
+        <span class="form-label d-block">Amenities</span>
+        <button type="button" class="chip" *ngFor="let amenity of amenityOptions"
+          [class.active]="model.amenities?.includes(amenity)" (click)="toggle('amenities', amenity)">{{ amenity }}</button>
+      </div>
+      <div class="mt-3" *ngIf="model.type === 'restaurant'">
+        <span class="form-label d-block">Cuisines</span>
+        <button type="button" class="chip" *ngFor="let cuisine of cuisineOptions"
+          [class.active]="model.cuisines?.includes(cuisine)" (click)="toggle('cuisines', cuisine)">{{ cuisine }}</button>
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="checkbox" id="vegOnly" name="vegOnly" [(ngModel)]="model.vegOnly">
+          <label class="form-check-label" for="vegOnly">Pure vegetarian</label>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. How travellers reach you</h2>
+      <p class="muted small">Add at least one. Travellers contact you directly; CitiTour takes no commission on bookings.</p>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label" for="whatsapp">WhatsApp number</label>
+          <input id="whatsapp" name="whatsapp" class="form-control" [(ngModel)]="model.contact.whatsapp" placeholder="98765 43210">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="phone">Phone</label>
+          <input id="phone" name="phone" class="form-control" [(ngModel)]="model.contact.phone">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="email">Email</label>
+          <input id="email" name="email" type="email" class="form-control" [(ngModel)]="model.contact.email">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="website">Website</label>
+          <input id="website" name="website" class="form-control" [(ngModel)]="model.contact.website" placeholder="https://">
+        </div>
+        <div class="col-12">
+          <label class="form-label" for="bookingUrl">Direct booking link (optional)</label>
+          <input id="bookingUrl" name="bookingUrl" class="form-control" [(ngModel)]="model.contact.bookingUrl" placeholder="https://">
+        </div>
+      </div>
+    </section>
+
+    <div class="save-bar">
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="saving">
+        {{ saving ? 'Saving…' : listingId ? 'Save changes' : 'Save and continue' }}
+      </button>
+      <small class="muted" *ngIf="listingId">Changes are reviewed before going live.</small>
+    </div>
+  </form>
+
+  <section id="photos" class="photos-section" *ngIf="listingId">
+    <h2>5. Photos</h2>
+    <p class="muted small">Up to 6 photos. Real photos of your place get more enquiries. Images are resized automatically.</p>
+    <div class="photo-grid">
+      <div class="photo" *ngFor="let photo of listing?.photos">
+        <img [src]="listingService.photoUrl(photo)" alt="Listing photo">
+        <button type="button" class="btn btn-sm btn-light remove" (click)="deletePhoto(photo)" aria-label="Remove photo">×</button>
+      </div>
+      <label class="photo add" *ngIf="(listing?.photos?.length || 0) < 6">
+        <input type="file" accept="image/jpeg,image/png,image/webp" multiple (change)="onPhotosSelected($event)" hidden [disabled]="uploading">
+        <span>{{ uploading ? 'Uploading…' : '+ Add photos' }}</span>
+      </label>
+    </div>
+    <a routerLink="/partner" class="btn btn-outline-primary mt-3">Done</a>
+  </section>
+</div>

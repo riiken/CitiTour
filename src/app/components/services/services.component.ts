@@ -15,6 +15,6 @@ export class ServicesComponent {
   ];
 
   navigateToHome(){
-    this.router.navigate(['/search-results'])
+    this.router.navigate(['/plan-trip'])
   }
 }
