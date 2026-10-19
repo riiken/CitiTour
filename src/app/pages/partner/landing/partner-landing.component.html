@@ -1,0 +1,43 @@
+<section class="hero">
+  <div class="container">
+    <p class="eyebrow">For hotels, homestays, restaurants &amp; tour operators</p>
+    <h1>Get found by travellers planning trips to your city</h1>
+    <p class="lead">List your business on CitiTour for free. Our trip planner suggests verified local businesses in day-by-day itineraries, and travellers contact you directly on WhatsApp.</p>
+    <a class="btn btn-primary btn-lg" [routerLink]="isLoggedIn ? '/partner/new' : '/register'"
+    [queryParams]="isLoggedIn ? null : { returnUrl: '/partner/new' }">List your business, it's free</a>
+    @if (isLoggedIn) {
+      <a class="btn btn-link" routerLink="/partner">Manage my listings</a>
+    }
+    @if (!isLoggedIn) {
+      <a class="btn btn-link" routerLink="/login" [queryParams]="{ returnUrl: '/partner' }">I already have an account</a>
+    }
+  </div>
+</section>
+
+<section class="container benefits">
+  <div class="benefit">
+    <i class="fa fa-map-signs fa-2x"></i>
+    <h3>Appear in trip plans</h3>
+    <p>When travellers plan a trip near you, verified businesses can be included in their day-by-day plan.</p>
+  </div>
+  <div class="benefit">
+    <i class="fa fa-whatsapp fa-2x"></i>
+    <h3>Direct enquiries</h3>
+    <p>Travellers message or call you directly, with their dates already in the message. No commission on bookings.</p>
+  </div>
+  <div class="benefit">
+    <i class="fa fa-line-chart fa-2x"></i>
+    <h3>See your results</h3>
+    <p>Track how many travellers viewed your listing and contacted you.</p>
+  </div>
+</section>
+
+<section class="container steps">
+  <h2>How it works</h2>
+  <ol>
+    <li><strong>Create an account</strong> and add your business: location on the map, prices, photos and how to reach you.</li>
+    <li><strong>We review it</strong> (usually within 2 working days) so travellers only see real, verified businesses.</li>
+    <li><strong>Get enquiries</strong> from travellers planning trips to your area.</li>
+  </ol>
+  <p class="muted">Want more visibility? Ask us about <strong>Featured</strong> placement, shown with a clear "Sponsored" label.</p>
+</section>

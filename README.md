@@ -1,27 +1,38 @@
-# CitiTour
+# CitiTour (web app)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.10.
+Angular app for CitiTour: day-by-day trip plans built from real places, shareable trip pages, a business listing portal and an admin page. The API lives in [Cititour-BEFNL](https://github.com/riiken/Cititour-BEFNL).
 
-## Development server
+## Run locally
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Needs Node 24.15+ (or 22.22.3+), as Angular 22 requires. With nvm: `nvm use` (reads `.nvmrc`).
 
-## Code scaffolding
+```bash
+npm install
+npm start            # http://localhost:4200 (expects the API on http://localhost:5000)
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Start the API first (see the backend README / `npm run dev`).
 
-## Build
+## Test & build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+npx ng test --watch=false --browsers=ChromeHeadless
+npx ng build --configuration production   # output: dist/citi-tour
+```
 
-## Running unit tests
+`src/app/environment.ts` is used in development and replaced by `src/app/environment.prod.ts` in production builds (API URL, AdSense IDs).
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Deploy
 
-## Running end-to-end tests
+Render static site via `render.yaml`. Full steps (database, API, web app, revenue settings): [DEPLOY.md in the backend repo](https://github.com/riiken/Cititour-BEFNL/blob/master/DEPLOY.md).
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Main routes
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+| Route | What |
+|---|---|
+| `/plan-trip` | Trip form → creates a plan |
+| `/trip/:id` | Shareable trip page (save, edit, share, book) |
+| `/my-trips` | Saved trips |
+| `/list-your-business`, `/partner` | Business owner portal |
+| `/place/:id` | Public business page |
+| `/admin` | Listing moderation and overview (admins only) |

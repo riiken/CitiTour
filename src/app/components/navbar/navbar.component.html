@@ -1,37 +1,69 @@
 
 
-  <div class="container-fluid position-relative p-0" [style.background]="!mobileVersion ? '#484E54' : ''">
-    <nav appNavbarSticky class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-        <a href="" class="navbar-brand p-0">
-            <h1 class="text-primary m-0"><i class="fa fa-map-marker me-3"></i>Cititour</h1>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="fa fa-bars"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto py-0">
-                <a routerLink="/home" class="nav-item nav-link active" (click)="navClicked('home')" [ngClass]="{'active':activeNav === 'home'}">Home</a>
-                <a routerLink="/about" class="nav-item nav-link" (click)="navClicked('about')" [ngClass]="{'active':activeNav === 'about'}">About</a>
-                <a routerLink="/services" class="nav-item nav-link" (click)="navClicked('services')" [ngClass]="{'active':activeNav === 'services'}">Services</a>
-                <!-- <a routerLink="/package" class="nav-item nav-link" (click)="navClicked('package')" [ngClass]="{'active':activeNav === 'package'}">Packages</a> -->
-                <!-- <a routerLink="/plan-trip" class="nav-item nav-link" (click)="navClicked('plantrip')" [ngClass]="{'active':activeNav === 'plantrip'}">Plan</a> -->
-                <!-- <a routerLink="/destination" class="nav-item nav-link" (click)="navClicked('destination')" [ngClass]="{'active':activeNav === 'destination'}">Destination</a> -->
+<div class="container-fluid position-relative p-0" [style.background]="!mobileVersion ? '#484E54' : ''">
+  <nav appNavbarSticky class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+    <a routerLink="/home" class="navbar-brand p-0">
+      <h1 class="text-primary m-0"><i class="fa fa-map-marker me-3"></i>Cititour</h1>
+    </a>
+    <button class="navbar-toggler" type="button" aria-label="Toggle navigation" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="fa fa-bars"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="navbar-nav ms-auto py-0">
+        <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link">{{ 'Home' | t }}</a>
+        <a routerLink="/explore" routerLinkActive="active" class="nav-item nav-link">{{ 'Explore' | t }}</a>
+        <a routerLink="/plan-trip" routerLinkActive="active" class="nav-item nav-link">{{ 'Plan a trip' | t }}</a>
+        @if (isLoggedIn) {
+          <a routerLink="/my-trips" routerLinkActive="active" class="nav-item nav-link">{{ 'My trips' | t }}</a>
+        }
 
-                <!-- <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                    <div class="dropdown-menu m-0">
-                        <a href="destination.html" class="dropdown-item">Destination</a>
-                        <a href="booking.html" class="dropdown-item">Booking</a>
-                        <a href="team.html" class="dropdown-item">Travel Guides</a>
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        <a href="404.html" class="dropdown-item">404 Page</a>
-                    </div>
-                </div> -->
-                <a routerLink="/contact" class="nav-item nav-link" (click)="navClicked('contact')" [ngClass]="{'active':activeNav === 'contact'}">Contact</a>
-            </div>
-            <!-- <a href="" class="btn btn-primary rounded-pill py-2 px-4">Register</a> -->
-        </div>
-    </nav>
+        <a routerLink="/list-your-business" routerLinkActive="active" class="nav-item nav-link">{{ 'List your business' | t }}</a>
+        <a routerLink="/contact" routerLinkActive="active" class="nav-item nav-link">{{ 'Contact' | t }}</a>
+      </div>
+
+      <!-- Language -->
+      <div class="lang-switch ms-lg-3" role="group" [attr.aria-label]="'Language' | t">
+        <button type="button" [class.active]="i18n.lang === 'en'" (click)="i18n.setLanguage('en')" lang="en">EN</button>
+        <button type="button" [class.active]="i18n.lang === 'hi'" (click)="i18n.setLanguage('hi')" lang="hi">हिं</button>
+      </div>
+
+      <!-- Auth Buttons -->
+      <div class="d-flex align-items-center ms-3">
+        <!-- Not Logged In -->
+        @if (!isLoggedIn) {
+          <button class="btn btn-outline-primary rounded-pill py-2 px-4 me-2" (click)="goToLogin()">
+            <i class="fa fa-sign-in me-2"></i>{{ 'Login' | t }}
+          </button>
+          <button class="btn btn-primary rounded-pill py-2 px-4" (click)="goToRegister()">
+            <i class="fa fa-user-plus me-2"></i>{{ 'Register' | t }}
+          </button>
+        }
+
+        <!-- Logged In -->
+        @if (isLoggedIn) {
+          <div class="dropdown">
+            <button class="btn btn-primary rounded-pill py-2 px-3 dropdown-toggle d-flex align-items-center"
+              type="button"
+              id="userDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <div class="user-avatar me-2">{{ getUserInitial() }}</div>
+              <span class="d-none d-md-inline">{{ currentUser?.name || 'User' }}</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" (click)="goToDashboard()"><i class="fa fa-dashboard me-2"></i>{{ 'Dashboard' | t }}</a></li>
+              <li><a class="dropdown-item" routerLink="/my-trips"><i class="fa fa-suitcase me-2"></i>{{ 'My trips' | t }}</a></li>
+              <li><a class="dropdown-item" routerLink="/partner"><i class="fa fa-building me-2"></i>{{ 'My listings' | t }}</a></li>
+              @if (currentUser?.role === 'admin') {
+                <li><a class="dropdown-item" routerLink="/admin"><i class="fa fa-shield me-2"></i>{{ 'Admin' | t }}</a></li>
+              }
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" (click)="logout()"><i class="fa fa-sign-out me-2"></i>{{ 'Logout' | t }}</a></li>
+            </ul>
+          </div>
+        }
+      </div>
+    </div>
+  </nav>
 </div>
 
-  

@@ -1,43 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { GoogleAdsService } from './services/google-ads.service';
-import { TripPlannerService } from './services/trip-planner.service';
-import { AdMob } from '@capacitor-community/admob';
-
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'CitiTour';
-  isSidebarOpen = true;
 
-  constructor(private googleAdsService:GoogleAdsService,private tripPlanner:TripPlannerService){}
+  constructor(private googleAdsService: GoogleAdsService) {}
 
-  ngOnInit(){
-    this.initializeAdMob();
-    this.isSidebarOpen = window.innerWidth <=768  ? false : true;
-    this.setCurrentUserCountry();
-  }
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
-
-  async initializeAdMob() {
-    await AdMob.initialize({
-      initializeForTesting: false,
-    });
-  }
-
-  setCurrentUserCountry(){
-    this.tripPlanner.getUserLocation().subscribe((data) => {
-      console.log(data);
-      localStorage.setItem('currency',data?.currency);
-    });
-  }
-
-  closeSidebarEvent(val:boolean){
-    console.log(val);
+  ngOnInit(): void {
+    this.googleAdsService.initialize();
   }
 }

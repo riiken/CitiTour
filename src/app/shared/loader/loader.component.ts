@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
-  selector: 'app-loader',
-  templateUrl: './loader.component.html',
-  styleUrls: ['./loader.component.css']
+    selector: 'app-loader',
+    templateUrl: './loader.component.html',
+    styleUrls: ['./loader.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
-export class LoaderComponent {
-
-  isLoading = false;  // Controls the visibility of the loader
-  currentMessage = 'Exploring the Best Locations...';  // Initial loading message
+export class LoaderComponent implements OnDestroy {
+  isLoading = false;
+  currentMessage = 'Exploring the Best Locations...';
   private messages = [
     'Exploring the Best Locations...',
     'Finding Hidden Gems...',
@@ -17,29 +19,33 @@ export class LoaderComponent {
     'Your Next Adventure Awaits...'
   ];
   private messageIndex = 0;
-  private intervalId: any;
+  private intervalId: ReturnType<typeof setInterval> | null = null;
+  private subscription: Subscription;
 
   constructor(private loaderService: LoaderService) {
-    // Subscribe to loading status from the LoaderService
-    this.loaderService.loading$.subscribe((loading) => {
+    this.subscription = this.loaderService.loading$.subscribe((loading) => {
       this.isLoading = loading;
-      this.startMessageRotation();
+      loading ? this.startMessageRotation() : this.stopMessageRotation();
     });
   }
 
-  ngOnDestroy() {
-    // Clear the interval when the component is destroyed
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.stopMessageRotation();
   }
 
-  // Start the message rotation
-  private startMessageRotation() {
-    console.log("object");
+  private startMessageRotation(): void {
+    if (this.intervalId) return;
     this.intervalId = setInterval(() => {
       this.messageIndex = (this.messageIndex + 1) % this.messages.length;
       this.currentMessage = this.messages[this.messageIndex];
     }, 5000);
+  }
+
+  private stopMessageRotation(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
   }
 }

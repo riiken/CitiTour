@@ -1,0 +1,99 @@
+<div class="container py-4">
+  <h1>Admin</h1>
+
+  @if (forbidden) {
+    <div class="alert alert-warning">
+      You need admin access. Add your email to <code>ADMIN_EMAILS</code> in the backend settings, then log out and back in.
+    </div>
+  }
+
+  @if (!forbidden) {
+    @if (overview) {
+      <div class="kpis">
+        <div class="kpi"><span>Live listings</span><strong>{{ overview.listings['approved'] || 0 }}</strong></div>
+        <div class="kpi"><span>Waiting for review</span><strong>{{ overview.listings['pending'] || 0 }}</strong></div>
+        <div class="kpi"><span>Trip plans (30 days)</span><strong>{{ overview.last30Days.plans }}</strong></div>
+        <div class="kpi"><span>Business enquiries (30 days)</span><strong>{{ sum(overview.last30Days.leads) }}</strong></div>
+        <div class="kpi"><span>Partner clicks (30 days)</span><strong>{{ sum(overview.last30Days.outboundClicks) }}</strong>
+        @for (entry of entries(overview.last30Days.outboundClicks); track entry) {
+          <small>{{ entry[0] }}: {{ entry[1] }}</small>
+        }
+      </div>
+    </div>
+  }
+  <div class="tabs">
+    @for (tab of tabs; track tab) {
+      <button [class.active]="status === tab.status" (click)="select(tab.status)">{{ tab.label }}</button>
+    }
+  </div>
+  @if (loading) {
+    <p>Loading…</p>
+  }
+  @if (!loading && !listings.length) {
+    <p class="muted">Nothing here.</p>
+  }
+  @for (listing of listings; track listing) {
+    <article class="review">
+      <div class="photos">
+        @for (photo of listing.photos.slice(0, 3); track photo) {
+          <img [src]="listingService.photoUrl(photo)" alt="">
+        }
+        @if (!listing.photos.length) {
+          <span class="muted small">No photos</span>
+        }
+      </div>
+      <div class="details">
+        <h2>@if (listing.status === 'approved') {
+          <a [routerLink]="['/place', listing.id]">{{ listing.name }}</a>
+        } @else {
+          {{ listing.name }}
+          } <span class="muted small">· {{ listing.type }}@if (listing.subtype) {
+          <span> / {{ listing.subtype }}</span>
+        }</span></h2>
+        <p class="small muted">{{ listing.city }} · {{ listing.address }} ·
+          <a [href]="'https://www.google.com/maps/search/?api=1&query=' + listing.lat + ',' + listing.lon" target="_blank" rel="noopener">check pin</a></p>
+          @if (listing.description) {
+            <p>{{ listing.description }}</p>
+          }
+          <p class="small">
+            @if (listing.priceMin) {
+              <span>₹{{ listing.priceMin }}@if (listing.priceMax) {
+                <span>–{{ listing.priceMax }}</span>
+              } / {{ listing.priceUnit }} · </span>
+            }
+            @if (listing.contact.whatsapp) {
+              <span>WhatsApp {{ listing.contact.whatsapp }} · </span>
+            }
+            @if (listing.contact.phone) {
+              <span>Phone {{ listing.contact.phone }} · </span>
+            }
+            @if (listing.contact.website) {
+              <a [href]="listing.contact.website" target="_blank" rel="noopener nofollow">website</a>
+            }
+          </p>
+          <p class="small muted">Owner: {{ listing.owner?.name }} ({{ listing.owner?.email }}) · {{ listing.views }} views · {{ listing.leads }} enquiries</p>
+          @if (listing.rejectionReason) {
+            <p class="small text-danger">Rejected: {{ listing.rejectionReason }}</p>
+          }
+        </div>
+        <div class="actions">
+          @if (listing.status !== 'approved') {
+            <button class="btn btn-success btn-sm" (click)="approve(listing)">Approve</button>
+          }
+          @if (listing.status !== 'rejected') {
+            <button class="btn btn-outline-danger btn-sm" (click)="reject(listing)">Reject</button>
+          }
+          @if (listing.status === 'approved') {
+            <button class="btn btn-sm" [class.btn-primary]="!listing.featured" [class.btn-outline-secondary]="listing.featured"
+              (click)="toggleFeatured(listing)">
+              {{ listing.featured ? 'Unfeature' : 'Feature' }}
+            </button>
+          }
+          @if (listing.featured && listing.featuredUntil) {
+            <small class="muted">until {{ listing.featuredUntil | date: 'mediumDate' }}</small>
+          }
+        </div>
+      </article>
+    }
+  }
+</div>

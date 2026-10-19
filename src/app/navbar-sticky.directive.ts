@@ -1,14 +1,15 @@
 import { Directive, HostListener, Renderer2, ElementRef, OnInit } from '@angular/core';
 
 @Directive({
-  selector: '[appNavbarSticky]'
+    selector: '[appNavbarSticky]',
+    standalone: false
 })
 export class NavbarStickyDirective {
 
   constructor(private renderer: Renderer2, private el: ElementRef) { }
 
   
-  @HostListener('window:scroll', ['$event'])
+  @HostListener('window:scroll')
   onScroll(): void {
     const scrollTop = window.scrollY;
     if (scrollTop > 45) {

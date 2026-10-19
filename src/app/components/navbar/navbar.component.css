@@ -10,3 +10,63 @@
 .bg-primary{
   background-color: #86B817 !important;
 }
+
+/* User Avatar in Navbar */
+.user-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+  margin-top: 0.5rem !important;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.dropdown-item {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  transform: translateX(3px);
+}
+
+.dropdown-item i {
+  width: 20px;
+  display: inline-block;
+}
+
+.dropdown-item.text-danger:hover {
+  background-color: #fff5f5;
+  color: #dc3545 !important;
+}
+
+/* Auth Buttons */
+.btn-outline-primary {
+  border-color: #86B817 !important;
+  color: #86B817 !important;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: #86B817 !important;
+  color: white !important;
+}
+.lang-switch { display: inline-flex; border: 1px solid rgba(255,255,255,.5); border-radius: 999px; overflow: hidden; margin: 8px 0; }
+.lang-switch button { border: none; background: transparent; color: #fff; padding: 4px 10px; font-size: .85rem; font-weight: 600; }
+.lang-switch button.active { background: #86B817; color: #fff; }
+@media (max-width: 991px) { .lang-switch { border-color: #ced4da; } .lang-switch button { color: #495057; } .lang-switch button.active { color: #fff; } }

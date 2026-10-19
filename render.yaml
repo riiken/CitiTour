@@ -1,0 +1,33 @@
+# Render Blueprint for the CitiTour web app (static site).
+# Render dashboard -> New -> Blueprint -> pick this repo.
+services:
+  - type: web
+    name: cititour
+    runtime: static
+    branch: main
+    buildCommand: npm ci && npx ng build --configuration production
+    staticPublishPath: dist/citi-tour
+    autoDeploy: true
+    pullRequestPreviewsEnabled: false
+    envVars:
+      # Angular 22 needs Node 22.22.3+ or 24.15+ (see .nvmrc)
+      - key: NODE_VERSION
+        value: "24"
+    routes:
+      # Single-page app: every path serves index.html (deep links like /trip/abc work on refresh)
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN

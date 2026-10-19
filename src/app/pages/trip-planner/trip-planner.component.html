@@ -1,60 +1,30 @@
-
-
 <app-booking (planTripEmmiter)="planTripEmmiter($event)"></app-booking>
-  <!-- Recommendations Section -->
-  <div class="results mt-5" *ngIf="recommendations">
-    <h2>AI Recommendations</h2>
-    <div class="recommendations row">
 
-      <!-- Travel Guide -->
-      <div class="col-12 col-md-4">
-        <h3>Travel Guide</h3>
-        <div class="d-flex flex-column">
-          <div class="card mb-3" *ngFor="let travel of recommendations?.travelGuide">
-            <div class="card-body">
-              <h5 class="card-title">{{ travel.placeName }}</h5>
-              <p class="card-text">{{ travel.explanation }}</p>
-              <small><strong>Location:</strong> {{ travel.location }}</small>
-              <br>
-              <small *ngIf="travel?.websiteLink"><strong>Link:</strong> <a [href]="travel.websiteLink" target="_blank">{{ travel.websiteLink }}</a></small>
-              <br>
-              <button class="btn btn-secondary mt-2 bg-primary" (click)="viewDetails(travel)">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Stay Guide -->
-      <div class="col-12 col-md-4">
-        <h3>Stay Guide</h3>
-        <div class="d-flex flex-column">
-          <div class="card mb-3" *ngFor="let stay of recommendations?.stayGuide">
-            <div class="card-body">
-              <h5 class="card-title">{{ stay.placeName || 'Stay Option' }}</h5>
-              <p class="card-text">{{ stay.explanation || 'Details not available' }}</p>
-              <small *ngIf="stay?.websiteLink"><strong>Link:</strong> <a [href]="stay.websiteLink" target="_blank">{{ stay.websiteLink }}</a></small>
-              <br>
-              <button class="btn btn-secondary mt-2 bg-primary" (click)="viewDetails(stay)">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Food Guide -->
-      <div class="col-12 col-md-4">
-        <h3>Food Guide</h3>
-        <div class="d-flex flex-column">
-          <div class="card mb-3" *ngFor="let food of recommendations?.foodGuide">
-            <div class="card-body">
-              <h5 class="card-title">{{ food.dishName || 'Food Option' }}</h5>
-              <p class="card-text">{{ food.explanation || 'Details not available' }}</p>
-              <small *ngIf="food?.websiteLink"><strong>Link:</strong> <a [href]="food.websiteLink" target="_blank">{{ food.websiteLink }}</a></small>
-              <br>
-              <button class="btn btn-secondary mt-2 bg-primary" (click)="viewDetails(food)">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
+@if (error) {
+  <div class="container">
+    <div class="alert alert-warning d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <span>{{ error }}</span>
+      <button class="btn btn-sm btn-primary" (click)="retry()">{{ 'Try again' | t }}</button>
     </div>
   </div>
+}
+
+<div class="container how-it-works py-4">
+  <div class="row g-4 text-center">
+    <div class="col-md-4">
+      <i class="fa fa-map-o fa-2x mb-2"></i>
+      <h5>{{ 'Real places only' | t }}</h5>
+      <p class="text-muted">{{ 'Every stop comes from travel guides and maps, not made up.' | t }}</p>
+    </div>
+    <div class="col-md-4">
+      <i class="fa fa-calendar fa-2x mb-2"></i>
+      <h5>{{ 'Day-by-day plan' | t }}</h5>
+      <p class="text-muted">{{ 'Grouped by area so you spend time exploring, not travelling.' | t }}</p>
+    </div>
+    <div class="col-md-4">
+      <i class="fa fa-whatsapp fa-2x mb-2"></i>
+      <h5>{{ 'Share with your group' | t }}</h5>
+      <p class="text-muted">{{ 'Send the plan on WhatsApp and book stays for your dates.' | t }}</p>
+    </div>
+  </div>
+</div>

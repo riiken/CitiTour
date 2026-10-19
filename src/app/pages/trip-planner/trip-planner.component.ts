@@ -1,73 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/services/loader.service';
-import { TripPlannerService } from 'src/app/services/trip-planner.service';
+import { TripRequest } from 'src/app/services/trip-planner.service';
+import { ItineraryService } from 'src/app/services/itinerary.service';
+import { apiErrorMessage } from 'src/app/services/api-error';
 
 @Component({
-  selector: 'app-trip-planner',
-  templateUrl: './trip-planner.component.html',
-  styleUrls: ['./trip-planner.component.css']
+    selector: 'app-trip-planner',
+    templateUrl: './trip-planner.component.html',
+    styleUrls: ['./trip-planner.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class TripPlannerComponent {
-  tripData = {
-    location: '',
-    time: '',
-    travelers: 1,
-    budget: 1000,
-    activities:{
-      sightseeing:false,
-      adventure:false,
-      beach:true,
-    }
-  };
-  recommendations: any;
+  error: string | null = null;
+  planning = false;
+  private lastPlan: TripRequest | null = null;
 
-  constructor(private tripplannerservice:TripPlannerService,private loaderService:LoaderService){
-    console.log(this.tripplannerservice.getTripData());
-  }
+  constructor(
+    private itineraryService: ItineraryService,
+    private loaderService: LoaderService,
+    private router: Router
+  ) {}
 
-  ngOnInit(){
-    const { destination, checkIn, checkOut } = this.tripplannerservice.getTripData();
-    if(destination && checkIn && checkOut){
-      this.getRecommendations();
-    }
-    
-  }
-
-  // Function to handle form submission
-  onSubmit() {
-    console.log('Trip planning form submitted:', this.tripData);
-    
-    // Dummy response for now, you can replace it with an API call in the future
-    this.getRecommendations();
-  }
-
-  getRecommendations() {
+  planTripEmmiter(plan: TripRequest): void {
+    if (this.planning) return;
+    this.lastPlan = plan;
+    this.planning = true;
+    this.error = null;
     this.loaderService.show();
-    const { destination, checkIn, checkOut } = this.tripplannerservice.getTripData();
 
-    let query = `Plan a trip to ${destination} from ${checkIn} to ${checkOut}`;
-    query += `.`;
-
-    console.log(query);
-    this.tripplannerservice.getTripRecommentdation(query).subscribe((res:any)=>{
-      console.log(res);
-      this.recommendations = res['guides'];
-      this.loaderService.hide();
-    })
-    // You can also send this query to an API or use it as needed
+    this.itineraryService.create(plan).subscribe({
+      next: itinerary => {
+        this.planning = false;
+        this.loaderService.hide();
+        this.router.navigate(['/trip', itinerary.id]);
+      },
+      error: err => {
+        this.planning = false;
+        this.loaderService.hide();
+        this.error = apiErrorMessage(err, 'We could not build your trip right now. Please try again.');
+      }
+    });
   }
 
-
-  // Dummy method for "View Details" button (you can extend it for navigation)
-  viewDetails(rec: any) {
-    // Here you can redirect to a detailed page or show a modal with more information
-    console.log('Viewing details for:', rec);
-  }
-
-  planTripEmmiter(plan:any){
-    const { destination, checkIn, checkOut } = plan;
-    if(destination && checkIn && checkOut){
-      this.getRecommendations();
-    }
+  retry(): void {
+    if (this.lastPlan) this.planTripEmmiter(this.lastPlan);
   }
 }

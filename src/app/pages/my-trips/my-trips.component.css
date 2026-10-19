@@ -1,0 +1,12 @@
+.my-trips { max-width: 1000px; }
+h2 { font-size: 1.2rem; margin: 20px 0 10px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.trip { position: relative; border: 1px solid #e9ecef; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+.trip:hover { border-color: #86B817; }
+.trip-link { display: block; padding: 16px; color: inherit; text-decoration: none; }
+.trip h3 { font-size: 1.1rem; margin: 2px 0 6px; }
+.eyebrow { color: #86B817; text-transform: uppercase; font-weight: 600; font-size: .78rem; margin: 0; }
+.muted { color: #6c757d; margin: 0 0 4px; }
+.small { font-size: .85rem; margin: 0; }
+.delete { position: absolute; top: 8px; right: 8px; }
+.empty { text-align: center; padding: 48px 16px; border: 2px dashed #dee2e6; border-radius: 12px; }

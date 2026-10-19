@@ -1,0 +1,13 @@
+.hero { background: linear-gradient(135deg, #2b3035, #3d4a2a); color: #fff; padding: 64px 0; }
+.hero h1 { color: #fff; font-size: 2.3rem; max-width: 760px; }
+.hero .lead { max-width: 680px; opacity: .9; margin: 16px 0 24px; }
+.eyebrow { color: #a9d34c; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; font-size: .85rem; }
+.hero .btn-link { color: #fff; }
+.benefits { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; padding: 40px 12px; }
+.benefit { border: 1px solid #e9ecef; border-radius: 12px; padding: 20px; }
+.benefit .fa { color: #86B817; margin-bottom: 8px; }
+.benefit h3 { font-size: 1.15rem; }
+.steps { padding-bottom: 48px; }
+.steps li { margin-bottom: 8px; }
+.muted { color: #6c757d; }
+@media (max-width: 576px) { .hero h1 { font-size: 1.6rem; } }

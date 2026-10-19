@@ -1,7 +1,8 @@
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[appBackToTop]'
+    selector: '[appBackToTop]',
+    standalone: false
 })
 export class BackToTopDirective {
 

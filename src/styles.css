@@ -1,3 +1,6 @@
+/* Map styles (Leaflet) */
+@import 'leaflet/dist/leaflet.css';
+
 /* Include any global CSS here */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~font-awesome/css/font-awesome.min.css';
@@ -565,3 +568,9 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Printing: only the page content */
+@media print {
+  app-navbar, app-loader, .toast-container, .back-to-top { display: none !important; }
+  body { background: #fff !important; }
+}

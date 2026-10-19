@@ -1,0 +1,129 @@
+/* CitiTour Color Theme - Based on #86B817 */
+
+:root {
+  /* Primary Color Palette */
+  --primary-color: #86B817;
+  --primary-light: #9DD01F;
+  --primary-dark: #6A9112;
+  --primary-lighter: #B5E84E;
+  --primary-darker: #4F6B0D;
+
+  /* Secondary Colors */
+  --secondary-color: #7CA616;
+  --accent-color: #A8D825;
+
+  /* Gradient Colors */
+  --gradient-start: #86B817;
+  --gradient-end: #6A9112;
+
+  /* Neutral Colors */
+  --text-dark: #333333;
+  --text-light: #666666;
+  --text-muted: #999999;
+  --border-color: #e0e0e0;
+  --background-light: #f7f7f7;
+  --white: #ffffff;
+
+  /* Status Colors with Green Theme */
+  --success-color: #86B817;
+  --info-color: #7CA616;
+  --warning-color: #D8A816;
+  --danger-color: #D84316;
+}
+
+/* Global Button Overrides */
+.btn-primary,
+.btn.btn-primary {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.btn-primary:hover,
+.btn.btn-primary:hover {
+  background-color: var(--primary-dark) !important;
+  border-color: var(--primary-dark) !important;
+}
+
+.btn-primary:focus,
+.btn.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(134, 184, 23, 0.5) !important;
+}
+
+/* Bootstrap Badge Overrides */
+.badge.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.badge.bg-success {
+  background-color: var(--primary-color) !important;
+}
+
+.badge.bg-info {
+  background-color: var(--primary-light) !important;
+}
+
+/* Bootstrap Alert Overrides */
+.alert-primary {
+  background-color: rgba(134, 184, 23, 0.1) !important;
+  border-color: var(--primary-light) !important;
+  color: var(--primary-darker) !important;
+}
+
+.alert-info {
+  background-color: rgba(134, 184, 23, 0.15) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--primary-darker) !important;
+}
+
+/* Links */
+a {
+  color: var(--primary-color);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+/* Form Controls */
+.form-control:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(134, 184, 23, 0.25) !important;
+}
+
+/* Progress Bar */
+.progress-bar {
+  background-color: var(--primary-color) !important;
+}
+
+/* Text Colors */
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-success {
+  color: var(--primary-color) !important;
+}
+
+/* Background Colors */
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-success {
+  background-color: var(--primary-color) !important;
+}
+
+/* Custom Gradient Class */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+}
+
+.gradient-primary-reverse {
+  background: linear-gradient(135deg, var(--gradient-end) 0%, var(--gradient-start) 100%);
+}
+
+/* Border Colors */
+.border-primary {
+  border-color: var(--primary-color) !important;
+}

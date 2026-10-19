@@ -1,0 +1,285 @@
+@if (!loading) {
+  <div class="dashboard-container">
+    <!-- Header Section -->
+    <div class="dashboard-header">
+      <div class="header-content">
+        <div class="user-info">
+          <div class="avatar">
+            {{ (currentUser && currentUser.name) ? currentUser.name.charAt(0).toUpperCase() : '?' }}
+          </div>
+          <div class="user-details">
+            <h1>{{ currentUser?.name }}</h1>
+            <p class="user-email">{{ currentUser?.email }}</p>
+            <span class="tier-badge" [ngClass]="getTierBadgeClass()">
+              {{ currentUser?.tier?.toUpperCase() }} PLAN
+            </span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-outline" (click)="toggleChangePassword()">
+            <i class="fa fa-key"></i> Change Password
+          </button>
+          <button class="btn btn-danger" (click)="logout()">
+            <i class="fa fa-sign-out"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Change Password Section -->
+    @if (showChangePassword) {
+      <div class="change-password-section">
+        <div class="section-card">
+          <h3>Change Password</h3>
+          <div class="password-form">
+            <div class="form-group">
+              <label>Current Password</label>
+              <input
+                type="password"
+                [(ngModel)]="currentPassword"
+                class="form-control"
+                placeholder="Enter current password"
+                />
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input
+                type="password"
+                [(ngModel)]="newPassword"
+                class="form-control"
+                placeholder="Enter new password (8+ characters)"
+                />
+            </div>
+            <div class="form-group">
+              <label>Confirm New Password</label>
+              <input
+                type="password"
+                [(ngModel)]="confirmNewPassword"
+                class="form-control"
+                placeholder="Confirm new password"
+                />
+            </div>
+            <div class="form-actions">
+              <button
+                class="btn btn-primary"
+                (click)="changePassword()"
+                [disabled]="changingPassword"
+                >
+                @if (!changingPassword) {
+                  <span>Update Password</span>
+                }
+                @if (changingPassword) {
+                  <span>
+                    <i class="fa fa-spinner fa-spin"></i> Updating...
+                  </span>
+                }
+              </button>
+              <button class="btn btn-outline" (click)="toggleChangePassword()">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <button class="action-card" (click)="goToPlanTrip()">
+        <i class="fa fa-plane"></i>
+        <span>Plan New Trip</span>
+      </button>
+      @if (proAvailable && currentUser?.tier === 'free') {
+        <button class="action-card" (click)="goToUpgrade()">
+          <i class="fa fa-star"></i>
+          <span>Upgrade to Pro</span>
+        </button>
+      }
+    </div>
+    <!-- Usage Stats Section -->
+    @if (usageStats) {
+      <div class="usage-section">
+        <h2>Usage Statistics</h2>
+        <div class="stats-grid">
+          <!-- AI Requests -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-icon ai-icon">
+                <i class="fa fa-magic"></i>
+              </div>
+              <div class="stat-info">
+                <h3>AI Recommendations</h3>
+                <p class="stat-limit">
+                  Limit: {{ usageStats.usage.ai.limit === 'unlimited' ? 'Unlimited' : usageStats.usage.ai.limit + '/hour' }}
+                </p>
+              </div>
+            </div>
+            <div class="stat-numbers">
+              <div class="stat-value">
+                <span class="current">{{ usageStats.usage.ai.thisHour || 0 }}</span>
+                <span class="separator">/</span>
+                <span class="limit">{{ usageStats.usage.ai.limit === 'unlimited' ? '∞' : usageStats.usage.ai.limit }}</span>
+              </div>
+              <div class="stat-remaining">
+                {{ usageStats.usage.ai.remaining === 'unlimited' ? 'Unlimited' : usageStats.usage.ai.remaining + ' remaining' }}
+              </div>
+            </div>
+            @if (usageStats.usage.ai.limit !== 'unlimited') {
+              <div class="usage-bar">
+                <div
+                  class="usage-fill"
+                  [ngClass]="getUsageBarClass(getUsagePercentage('ai'))"
+                  [style.width.%]="getUsagePercentage('ai')"
+                ></div>
+              </div>
+            }
+            <div class="stat-footer">
+              Total this hour: {{ usageStats.usage.ai.thisHour || 0 }} requests
+            </div>
+          </div>
+          <!-- Search Requests -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-icon search-icon">
+                <i class="fa fa-search"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Location Searches</h3>
+                <p class="stat-limit">
+                  Limit: {{ usageStats.usage.search.limit === 'unlimited' ? 'Unlimited' : usageStats.usage.search.limit + '/day' }}
+                </p>
+              </div>
+            </div>
+            <div class="stat-numbers">
+              <div class="stat-value">
+                <span class="current">{{ $any(usageStats.usage.search).today ?? usageStats.usage.search.total ?? 0 }}</span>
+                <span class="separator">/</span>
+                <span class="limit">{{ usageStats.usage.search.limit === 'unlimited' ? '∞' : usageStats.usage.search.limit }}</span>
+              </div>
+              <div class="stat-remaining">
+                {{ usageStats.usage.search.remaining === 'unlimited' ? 'Unlimited' : usageStats.usage.search.remaining + ' remaining' }}
+              </div>
+            </div>
+            @if (usageStats.usage.search.limit !== 'unlimited') {
+              <div class="usage-bar">
+                <div
+                  class="usage-fill"
+                  [ngClass]="getUsageBarClass(getUsagePercentage('search'))"
+                  [style.width.%]="getUsagePercentage('search')"
+                ></div>
+              </div>
+            }
+            <div class="stat-footer">
+              Total searches: {{ usageStats.usage.search.total || 0 }}
+            </div>
+          </div>
+          <!-- Email Requests -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <div class="stat-icon email-icon">
+                <i class="fa fa-envelope"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Email Messages</h3>
+                <p class="stat-limit">
+                  Limit: {{ usageStats.usage.email.limit === 'unlimited' ? 'Unlimited' : usageStats.usage.email.limit + '/day' }}
+                </p>
+              </div>
+            </div>
+            <div class="stat-numbers">
+              <div class="stat-value">
+                <span class="current">{{ $any(usageStats.usage.email).today ?? usageStats.usage.email.total ?? 0 }}</span>
+                <span class="separator">/</span>
+                <span class="limit">{{ usageStats.usage.email.limit === 'unlimited' ? '∞' : usageStats.usage.email.limit }}</span>
+              </div>
+              <div class="stat-remaining">
+                {{ usageStats.usage.email.remaining === 'unlimited' ? 'Unlimited' : usageStats.usage.email.remaining + ' remaining' }}
+              </div>
+            </div>
+            @if (usageStats.usage.email.limit !== 'unlimited') {
+              <div class="usage-bar">
+                <div
+                  class="usage-fill"
+                  [ngClass]="getUsageBarClass(getUsagePercentage('email'))"
+                  [style.width.%]="getUsagePercentage('email')"
+                ></div>
+              </div>
+            }
+            <div class="stat-footer">
+              Total sent: {{ usageStats.usage.email.total || 0 }} messages
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+    <!-- Upgrade CTA (for free users) -->
+    @if (proAvailable && currentUser?.tier === 'free') {
+      <div class="upgrade-cta">
+        <div class="cta-content">
+          <div class="cta-icon">
+            <i class="fa fa-rocket"></i>
+          </div>
+          <div class="cta-text">
+            <h3>Upgrade to Pro for Unlimited Access</h3>
+            <p>Get unlimited AI recommendations, searches, and priority support</p>
+            <ul class="cta-features">
+              <li><i class="fa fa-check"></i> Unlimited AI trip planning</li>
+              <li><i class="fa fa-check"></i> Unlimited location searches</li>
+              <li><i class="fa fa-check"></i> Priority customer support</li>
+              <li><i class="fa fa-check"></i> Advanced travel insights</li>
+            </ul>
+          </div>
+          <div class="cta-action">
+            <button class="btn btn-premium" (click)="goToUpgrade()">
+              Upgrade to Pro - $9.99/month
+            </button>
+            <p class="cta-note">Cancel anytime. No hidden fees.</p>
+          </div>
+        </div>
+      </div>
+    }
+    <!-- Account Info -->
+    <div class="account-info">
+      <h2>Account Information</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Account Created</label>
+          <span class="value">{{ currentUser?.createdAt | date: 'medium' }}</span>
+        </div>
+        <div class="info-item">
+          <label>Last Login</label>
+          <span class="value">{{ currentUser?.lastLogin | date: 'medium' }}</span>
+        </div>
+        <div class="info-item">
+          <label>Email Verified</label>
+          <span class="value">
+            <span [class.verified]="currentUser?.isEmailVerified" [class.unverified]="!currentUser?.isEmailVerified">
+              {{ currentUser?.isEmailVerified ? 'Verified ✓' : 'Not Verified' }}
+            </span>
+          </span>
+        </div>
+        <div class="info-item">
+          <label for="tripReminders">Trip reminder emails</label>
+          <span class="value">
+            <label class="reminder-toggle">
+              <input type="checkbox" id="tripReminders" [checked]="tripReminders" (change)="setTripReminders($any($event.target).checked)" [disabled]="savingReminders">
+              {{ tripReminders ? 'On: weather and tips 2 days before saved trips' : 'Off' }}
+            </label>
+          </span>
+        </div>
+        @if (usageStats && usageStats.subscription && usageStats.subscription.status) {
+          <div class="info-item">
+            <label>Subscription Status</label>
+            <span class="value">{{ usageStats.subscription.status }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Loading State -->
+@if (loading) {
+  <div class="loading-container">
+    <i class="fa fa-spinner fa-spin fa-3x"></i>
+    <p>Loading your dashboard...</p>
+  </div>
+}

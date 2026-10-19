@@ -1,0 +1,156 @@
+<div class="image-gallery-container">
+  <!-- Gallery Header -->
+  @if (!loading && images && images.length > 0) {
+    <div class="gallery-header mb-4">
+      <h3>
+        <i class="bi bi-images me-2"></i>
+        Photo Gallery
+        <span class="badge bg-primary ms-2">{{ images.length }}</span>
+      </h3>
+      @if (destination) {
+        <p class="text-muted">
+          Explore beautiful images of {{ destination }}
+        </p>
+      }
+    </div>
+  }
+
+  <!-- Image Grid -->
+  @if (!loading && images && images.length > 0) {
+    <div class="image-grid">
+      @for (image of images; track trackByIndex(i, image); let i = $index) {
+        <div
+          class="gallery-item"
+          (click)="openLightbox(i)"
+          >
+          <div class="image-wrapper">
+            <img
+              [src]="getThumbnailUrl(image)"
+              [alt]="image.description || 'Destination image'"
+              (error)="onImageError($event)"
+              loading="lazy"
+              class="gallery-image"
+              />
+            <div class="image-overlay">
+              <div class="overlay-content">
+                <i class="bi bi-zoom-in"></i>
+                @if (image.description) {
+                  <p class="overlay-text">
+                    {{ image.description }}
+                  </p>
+                }
+              </div>
+            </div>
+          </div>
+          @if (image.photographer) {
+            <div class="image-info">
+              <small class="text-muted">
+                <i class="bi bi-camera me-1"></i>
+                {{ image.photographer }}
+              </small>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading images...</span>
+      </div>
+      <p class="mt-3 text-muted">Loading images...</p>
+    </div>
+  }
+
+  <!-- No Images State -->
+  @if (!loading && (!images || images.length === 0)) {
+    <div class="alert alert-info">
+      <i class="bi bi-info-circle me-2"></i>
+      No images available. Try searching for a destination to see photos.
+    </div>
+  }
+</div>
+
+<!-- Lightbox Modal -->
+@if (lightboxVisible && currentImage) {
+  <div
+    class="lightbox-modal"
+    (click)="closeLightbox()"
+    (keydown)="onKeyDown($event)"
+    tabindex="0"
+    >
+    <div class="lightbox-overlay"></div>
+    <div class="lightbox-content" (click)="$event.stopPropagation()">
+      <!-- Close Button -->
+      <button
+        class="lightbox-close"
+        (click)="closeLightbox()"
+        aria-label="Close lightbox"
+        >
+        <i class="bi bi-x-lg"></i>
+      </button>
+      <!-- Previous Button -->
+      @if (images.length > 1) {
+        <button
+          class="lightbox-nav lightbox-prev"
+          (click)="previousImage()"
+          aria-label="Previous image"
+          >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+      }
+      <!-- Image -->
+      <div class="lightbox-image-wrapper">
+        <img
+          [src]="getImageUrl(currentImage)"
+          [alt]="currentImage.description || 'Destination image'"
+          class="lightbox-image"
+          (error)="onImageError($event)"
+          />
+      </div>
+      <!-- Next Button -->
+      @if (images.length > 1) {
+        <button
+          class="lightbox-nav lightbox-next"
+          (click)="nextImage()"
+          aria-label="Next image"
+          >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      }
+      <!-- Image Info -->
+      <div class="lightbox-info">
+        @if (images.length > 1) {
+          <div class="lightbox-counter">
+            {{ getImageCounter() }}
+          </div>
+        }
+        @if (currentImage.description) {
+          <div class="lightbox-description">
+            <p class="mb-2">{{ currentImage.description }}</p>
+          </div>
+        }
+        @if (getPhotographerCredit(currentImage)) {
+          <div class="lightbox-credit">
+            <small class="text-muted">
+              <i class="bi bi-camera me-1"></i>
+              {{ getPhotographerCredit(currentImage) }}
+            </small>
+          </div>
+        }
+        <!-- Keyboard Shortcuts Hint -->
+        @if (images.length > 1) {
+          <div class="lightbox-hints mt-2">
+            <small class="text-muted">
+              <i class="bi bi-keyboard me-1"></i>
+              Use arrow keys to navigate, ESC to close
+            </small>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
