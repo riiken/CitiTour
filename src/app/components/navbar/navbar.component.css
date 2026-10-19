@@ -70,3 +70,7 @@
 .lang-switch button { border: none; background: transparent; color: #fff; padding: 4px 10px; font-size: .85rem; font-weight: 600; }
 .lang-switch button.active { background: #86B817; color: #fff; }
 @media (max-width: 991px) { .lang-switch { border-color: #ced4da; } .lang-switch button { color: #495057; } .lang-switch button.active { color: #fff; } }
+/* Scrolled (white) navbar: dark text so the inactive language stays visible */
+.sticky-top .lang-switch { border-color: #ced4da; }
+.sticky-top .lang-switch button { color: #495057; }
+.sticky-top .lang-switch button.active { color: #fff; }

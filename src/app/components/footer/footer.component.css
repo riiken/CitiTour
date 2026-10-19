@@ -1,0 +1,56 @@
+.site-footer {
+  background: #2b3035;
+  color: #ced4da;
+  padding: 48px 0 24px;
+  margin-top: 48px;
+  font-size: 15px;
+}
+
+.brand {
+  color: var(--primary);
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+h3 {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+a {
+  display: block;
+  color: #ced4da;
+  text-decoration: none;
+  padding: 3px 0;
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--primary);
+}
+
+.destinations {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 12px;
+}
+
+.disclosure {
+  margin: 32px 0 8px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  font-size: 13px;
+  color: #adb5bd;
+}
+
+.copyright {
+  font-size: 13px;
+  color: #868e96;
+  margin: 0;
+}
+
+@media print {
+  .site-footer { display: none; }
+}

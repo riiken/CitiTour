@@ -29,6 +29,8 @@ import { PlaceComponent } from './pages/place/place.component';
 import { MyTripsComponent } from './pages/my-trips/my-trips.component';
 import { ExploreComponent } from './pages/explore/explore.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
+import { TermsComponent } from './pages/terms/terms.component';
+import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password.component';
@@ -66,6 +68,8 @@ registerLocaleData(localeHi);
     MyTripsComponent,
     ExploreComponent,
     PrivacyPolicyComponent,
+    TermsComponent,
+    FooterComponent,
     LoginComponent,
     RegisterComponent,
     ForgotPasswordComponent,

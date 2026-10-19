@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /partner
+Disallow: /user-dashboard
+Disallow: /my-trips
+Disallow: /reset-password
+
+Sitemap: https://cititour.aionboard.net/sitemap.xml

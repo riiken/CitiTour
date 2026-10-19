@@ -162,5 +162,12 @@ export const HINDI: Record<string, string> = {
   'From ₹{price}/night': '₹{price}/रात से',
   'From ₹{price}/{unit}': '₹{price}/{unit} से',
   'night': 'रात',
-  'person': 'व्यक्ति'
+  'person': 'व्यक्ति',
+  'Day-by-day trip plans for India, built only from real places, with maps, stays and booking links.': 'भारत के लिए दिन-ब-दिन यात्रा योजनाएँ, केवल असली जगहों से बनी, नक्शे, ठहरने की जगहों और बुकिंग लिंक के साथ।',
+  'Plan': 'योजना',
+  'Popular destinations': 'लोकप्रिय जगहें',
+  'About': 'हमारे बारे में',
+  'Terms of use': 'उपयोग की शर्तें',
+  'Privacy policy': 'गोपनीयता नीति',
+  'Some booking and tour links earn us a commission at no extra cost to you. Featured partner listings are always marked "Sponsored".': 'कुछ बुकिंग और टूर लिंक से हमें कमीशन मिलता है, आपको कोई अतिरिक्त खर्च नहीं। फ़ीचर्ड पार्टनर लिस्टिंग पर हमेशा "प्रायोजित" लिखा होता है।',
 };

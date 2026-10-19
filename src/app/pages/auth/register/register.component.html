@@ -136,12 +136,12 @@
         <input type="checkbox" id="terms" formControlName="acceptTerms"
           [class.is-invalid]="submitted && f['acceptTerms'].errors" />
         <label for="terms">
-          I agree to the <a routerLink="/privacy-policy" target="_blank">Terms &amp; Privacy Policy</a>
+          I agree to the <a routerLink="/terms" target="_blank">Terms of use</a> and <a routerLink="/privacy-policy" target="_blank">Privacy Policy</a>
         </label>
       </div>
       @if (submitted && f['acceptTerms'].errors) {
         <div class="invalid-feedback d-block">
-          Please accept the Terms &amp; Privacy Policy to create an account
+          Please accept the Terms of use and Privacy Policy to create an account
         </div>
       }
 

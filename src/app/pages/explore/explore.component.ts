@@ -1,6 +1,7 @@
 import { AfterViewChecked, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Meta, Title } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
+import { SeoService } from '../../services/seo.service';
 import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
 import { ExploreData, ExploreSection, ItineraryPlace, ItineraryService } from 'src/app/services/itinerary.service';
@@ -48,7 +49,7 @@ export class ExploreComponent implements OnInit, AfterViewChecked, OnDestroy {
     private itineraryService: ItineraryService,
     public listingService: ListingService,
     private title: Title,
-    private meta: Meta,
+    private seo: SeoService,
     private zone: NgZone,
     private i18n: I18nService
   ) {}
@@ -100,11 +101,10 @@ export class ExploreComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.data = data;
         this.loading = false;
         this.active = this.sections.find(section => data.counts[section]) || 'see';
-        this.title.setTitle(`Things to do, stay & eat in ${data.destination.name} – CitiTour`);
-        this.meta.updateTag({
-          name: 'description',
-          content: `Explore ${data.destination.name}: ${data.counts.see} sights, ${data.counts.stay} places to stay and ${data.counts.eat} places to eat, with maps and booking links.`
-        });
+        this.seo.setPage(
+          `Things to do, stay & eat in ${data.destination.name} – CitiTour`,
+          `Explore ${data.destination.name}: ${data.counts.see} sights, ${data.counts.stay} places to stay and ${data.counts.eat} places to eat, with maps and booking links.`
+        );
         this.zone.runOutsideAngular(() => this.drawMarkers());
       },
       error: err => {
