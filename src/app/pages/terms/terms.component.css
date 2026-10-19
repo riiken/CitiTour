@@ -1,0 +1,16 @@
+.terms {
+  max-width: 820px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  line-height: 1.65;
+}
+
+h1 { margin-bottom: 4px; }
+
+h2 {
+  font-size: 20px;
+  margin-top: 28px;
+  color: var(--primary);
+}
+
+.updated { color: #868e96; }

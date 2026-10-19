@@ -1,0 +1,36 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <h2 class="brand"><i class="fa fa-map-marker me-2"></i>CitiTour</h2>
+        <p>{{ 'Day-by-day trip plans for India, built only from real places, with maps, stays and booking links.' | t }}</p>
+      </div>
+      <div class="col-lg-2 col-6">
+        <h3>{{ 'Plan' | t }}</h3>
+        <a routerLink="/plan-trip">{{ 'Plan a trip' | t }}</a>
+        <a routerLink="/explore">{{ 'Explore' | t }}</a>
+        <a routerLink="/my-trips">{{ 'My trips' | t }}</a>
+      </div>
+      <div class="col-lg-3 col-6">
+        <h3>{{ 'Popular destinations' | t }}</h3>
+        <div class="destinations">
+          @for (name of destinations; track name) {
+            <a [routerLink]="['/explore', name]">{{ name }}</a>
+          }
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <h3>CitiTour</h3>
+        <a routerLink="/list-your-business">{{ 'List your business' | t }}</a>
+        <a routerLink="/about">{{ 'About' | t }}</a>
+        <a routerLink="/contact">{{ 'Contact' | t }}</a>
+        <a routerLink="/terms">{{ 'Terms of use' | t }}</a>
+        <a routerLink="/privacy-policy">{{ 'Privacy policy' | t }}</a>
+      </div>
+    </div>
+    <p class="disclosure">
+      {{ 'Some booking and tour links earn us a commission at no extra cost to you. Featured partner listings are always marked "Sponsored".' | t }}
+    </p>
+    <p class="copyright">© {{ year }} CitiTour</p>
+  </div>
+</footer>

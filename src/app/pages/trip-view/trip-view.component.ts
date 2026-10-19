@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { I18nService } from 'src/app/i18n/i18n.service';
-import { Title, Meta } from '@angular/platform-browser';
+import { SeoService } from '../../services/seo.service';
 import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
 import {
@@ -72,8 +72,7 @@ export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
     private itineraryService: ItineraryService,
     private destinationService: DestinationService,
     public listingService: ListingService,
-    private title: Title,
-    private meta: Meta,
+    private seo: SeoService,
     private zone: NgZone,
     private router: Router,
     private authService: AuthService,
@@ -112,8 +111,7 @@ export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.autoSave = false;
           if (!itinerary.canEdit && this.isLoggedIn) this.saveTrip();
         }
-        this.title.setTitle(`${itinerary.title} – CitiTour`);
-        this.meta.updateTag({ name: 'description', content: itinerary.summary || `Day-by-day plan for ${itinerary.destination.name}` });
+        this.seo.setPage(`${itinerary.title} – CitiTour`, itinerary.summary || `Day-by-day plan for ${itinerary.destination.name}`);
         this.loadWeather(itinerary.destination.name);
         this.loadPacking(itinerary.id);
       },

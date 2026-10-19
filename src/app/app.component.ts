@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { GoogleAdsService } from './services/google-ads.service';
+import { SeoService } from './services/seo.service';
 
 @Component({
     selector: 'app-root',
@@ -11,9 +12,10 @@ import { GoogleAdsService } from './services/google-ads.service';
 export class AppComponent implements OnInit {
   title = 'CitiTour';
 
-  constructor(private googleAdsService: GoogleAdsService) {}
+  constructor(private googleAdsService: GoogleAdsService, private seo: SeoService) {}
 
   ngOnInit(): void {
     this.googleAdsService.initialize();
+    this.seo.init();
   }
 }

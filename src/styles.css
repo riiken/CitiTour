@@ -96,8 +96,20 @@
   color: #FFFFFF !important;
   font-size: 18px;
   font-weight: 600;
+  white-space: nowrap;
   outline: none;
   transition: .5s;
+}
+
+/* Tighter menu between the collapse breakpoint and wide screens, so items stay on one line */
+@media (min-width: 992px) and (max-width: 1399.98px) {
+  .navbar-light .navbar-nav .nav-link {
+    margin-right: 16px;
+    font-size: 16px;
+  }
+  .navbar-light .navbar-brand h1 {
+    font-size: 2rem;
+  }
 }
 
 .sticky-top.navbar-light .navbar-nav .nav-link {
@@ -571,6 +583,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Printing: only the page content */
 @media print {
-  app-navbar, app-loader, .toast-container, .back-to-top { display: none !important; }
+  app-navbar, app-footer, app-loader, .toast-container, .back-to-top { display: none !important; }
   body { background: #fff !important; }
 }
