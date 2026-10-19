@@ -82,7 +82,7 @@
       <i class="fa fa-plane"></i>
       <span>Plan New Trip</span>
     </button>
-    <button class="action-card" (click)="goToUpgrade()" *ngIf="currentUser?.tier === 'free'">
+    <button class="action-card" (click)="goToUpgrade()" *ngIf="proAvailable && currentUser?.tier === 'free'">
       <i class="fa fa-star"></i>
       <span>Upgrade to Pro</span>
     </button>
@@ -201,7 +201,7 @@
   </div>
 
   <!-- Upgrade CTA (for free users) -->
-  <div class="upgrade-cta" *ngIf="currentUser?.tier === 'free'">
+  <div class="upgrade-cta" *ngIf="proAvailable && currentUser?.tier === 'free'">
     <div class="cta-content">
       <div class="cta-icon">
         <i class="fa fa-rocket"></i>
@@ -243,6 +243,15 @@
           <span [class.verified]="currentUser?.isEmailVerified" [class.unverified]="!currentUser?.isEmailVerified">
             {{ currentUser?.isEmailVerified ? 'Verified ✓' : 'Not Verified' }}
           </span>
+        </span>
+      </div>
+      <div class="info-item">
+        <label for="tripReminders">Trip reminder emails</label>
+        <span class="value">
+          <label class="reminder-toggle">
+            <input type="checkbox" id="tripReminders" [checked]="tripReminders" (change)="setTripReminders($any($event.target).checked)" [disabled]="savingReminders">
+            {{ tripReminders ? 'On: weather and tips 2 days before saved trips' : 'Off' }}
+          </label>
         </span>
       </div>
       <div class="info-item" *ngIf="usageStats && usageStats.subscription && usageStats.subscription.status">

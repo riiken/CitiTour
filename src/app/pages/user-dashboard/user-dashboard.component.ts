@@ -59,6 +59,29 @@ export class UserDashboardComponent implements OnInit {
     });
   }
 
+  // Pro plans need online payments (not live yet); hide upgrade prompts until then
+  readonly proAvailable = false;
+  savingReminders = false;
+
+  get tripReminders(): boolean {
+    return this.currentUser?.notifications?.tripReminders !== false;
+  }
+
+  setTripReminders(enabled: boolean): void {
+    this.savingReminders = true;
+    this.authService.updateNotifications(enabled).subscribe({
+      next: (response: any) => {
+        this.savingReminders = false;
+        if (response?.data?.user) this.currentUser = response.data.user;
+        this.toastr.success(enabled ? 'Trip reminders turned on' : 'Trip reminders turned off');
+      },
+      error: (err: Error) => {
+        this.savingReminders = false;
+        this.toastr.error(err.message);
+      }
+    });
+  }
+
   getTierBadgeClass(): string {
     if (!this.currentUser) return 'badge-free';
 

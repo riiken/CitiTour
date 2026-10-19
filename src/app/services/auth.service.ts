@@ -11,6 +11,7 @@ export interface User {
   email: string;
   tier: 'free' | 'pro' | 'premium';
   role?: 'user' | 'admin';
+  notifications?: { tripReminders: boolean };
   isEmailVerified: boolean;
   usage: {
     aiRequests: number;
@@ -305,6 +306,19 @@ export class AuthService {
 
   updateProfile(name: string): Observable<any> {
     return this.http.patch<any>(`${this.apiUrl}/profile`, { name }).pipe(
+      tap(response => {
+        if (response.success) {
+          this.currentUserSubject.next(response.data.user);
+          localStorage.setItem(STORAGE.user, JSON.stringify(response.data.user));
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  /** Turn trip reminder emails on or off. */
+  updateNotifications(tripReminders: boolean): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/profile`, { tripReminders }).pipe(
       tap(response => {
         if (response.success) {
           this.currentUserSubject.next(response.data.user);

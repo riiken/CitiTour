@@ -542,3 +542,6 @@
     grid-template-columns: 1fr;
   }
 }
+
+.reminder-toggle { display: inline-flex; gap: 8px; align-items: center; font-weight: 500; cursor: pointer; }
+.reminder-toggle input { accent-color: #86B817; width: 18px; height: 18px; }
