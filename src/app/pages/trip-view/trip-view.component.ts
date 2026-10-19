@@ -1,9 +1,13 @@
 import { AfterViewChecked, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 import { Title, Meta } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
-import { Itinerary, ItineraryItem, ItineraryPlace, ItineraryService } from 'src/app/services/itinerary.service';
+import {
+  Alternative, AlternativeGroup, Itinerary, ItineraryItem, ItineraryPlace, ItineraryService, Slot, TripEdit
+} from 'src/app/services/itinerary.service';
 import { DestinationService, ForecastDay, WeatherData } from 'src/app/services/destination.service';
 import { ListingService } from 'src/app/services/listing.service';
 import { apiErrorMessage } from 'src/app/services/search-recommendation.service';
@@ -28,6 +32,22 @@ export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
   copied = false;
   selectedDay: number | null = null;
 
+  // Editing
+  editing = false;
+  busy = false;
+  editingTitle = false;
+  titleDraft = '';
+  picker: {
+    group: AlternativeGroup;
+    mode: 'add' | 'replace' | 'stay';
+    day?: number;
+    index?: number;
+    slot: Slot | null;
+    options: Alternative[];
+    loading: boolean;
+  } | null = null;
+  private autoSave = false;
+
   weather: WeatherData | null = null;
   forecast: ForecastDay[] = [];
 
@@ -45,10 +65,14 @@ export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
     public listingService: ListingService,
     private title: Title,
     private meta: Meta,
-    private zone: NgZone
+    private zone: NgZone,
+    private router: Router,
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
+    this.autoSave = this.route.snapshot.queryParamMap.get('save') === '1';
     this.subscription = this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) this.load(id);
@@ -73,6 +97,11 @@ export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
       next: itinerary => {
         this.itinerary = itinerary;
         this.loading = false;
+        this.zone.runOutsideAngular(() => this.drawMarkers());
+        if (this.autoSave) {
+          this.autoSave = false;
+          if (!itinerary.canEdit && this.isLoggedIn) this.saveTrip();
+        }
         this.title.setTitle(`${itinerary.title} – CitiTour`);
         this.meta.updateTag({ name: 'description', content: itinerary.summary || `Day-by-day plan for ${itinerary.destination.name}` });
         this.loadWeather(itinerary.destination.name);
@@ -125,6 +154,120 @@ export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
   selectDay(day: number | null): void {
     this.selectedDay = this.selectedDay === day ? null : day;
     this.zone.runOutsideAngular(() => this.drawMarkers());
+  }
+
+  // ---------------------------------------------------------------- saving & editing
+
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn;
+  }
+
+  /** Save to My trips (as an editable copy); logged-out users log in first. */
+  saveTrip(): void {
+    if (!this.itinerary) return;
+    if (!this.isLoggedIn) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: `/trip/${this.itinerary.id}?save=1` } });
+      return;
+    }
+    this.busy = true;
+    this.itineraryService.saveCopy(this.itinerary.id).subscribe({
+      next: saved => {
+        this.busy = false;
+        this.toastr.success('Saved to My trips. You can now edit it.');
+        this.router.navigate(['/trip', saved.id], { replaceUrl: true });
+      },
+      error: err => {
+        this.busy = false;
+        this.toastr.error(apiErrorMessage(err, 'Could not save this trip'));
+      }
+    });
+  }
+
+  toggleEditing(): void {
+    this.editing = !this.editing;
+    this.picker = null;
+  }
+
+  private apply(change: TripEdit, success?: string): void {
+    if (!this.itinerary || this.busy) return;
+    this.busy = true;
+    this.itineraryService.edit(this.itinerary.id, change).subscribe({
+      next: updated => {
+        this.itinerary = updated;
+        this.busy = false;
+        this.picker = null;
+        this.zone.runOutsideAngular(() => this.drawMarkers());
+        if (success) this.toastr.success(success);
+      },
+      error: err => {
+        this.busy = false;
+        this.toastr.error(apiErrorMessage(err, 'That change could not be saved'));
+      }
+    });
+  }
+
+  removeItem(day: number, index: number): void {
+    this.apply({ op: 'remove', day, index });
+  }
+
+  moveItem(day: number, index: number, toDay: string): void {
+    const target = Number(toDay);
+    if (!target || target === day) return;
+    const item = this.itinerary?.days.find(d => d.day === day)?.items[index];
+    const slot: Slot | undefined = item && this.isMeal(item) ? item.slot : undefined;
+    this.apply({ op: 'move', day, index, toDay: target, slot: slot || (item?.slot as Slot) }, `Moved to day ${target}`);
+  }
+
+  removeStay(index: number): void {
+    this.apply({ op: 'stay_remove', index });
+  }
+
+  startTitleEdit(): void {
+    this.titleDraft = this.itinerary?.title || '';
+    this.editingTitle = true;
+  }
+
+  saveTitle(): void {
+    this.editingTitle = false;
+    const title = this.titleDraft.trim();
+    if (title.length >= 2 && title !== this.itinerary?.title) this.apply({ op: 'title', title });
+  }
+
+  /** Open the list of real places that can be added or swapped in. */
+  openPicker(group: AlternativeGroup, mode: 'add' | 'replace' | 'stay', day?: number, index?: number): void {
+    if (!this.itinerary) return;
+    const item = day && index !== undefined ? this.itinerary.days.find(d => d.day === day)?.items[index] : undefined;
+    const defaultSlot: Slot | null = mode === 'replace' ? (item?.slot as Slot) : group === 'meal' ? 'lunch' : group === 'activity' ? 'afternoon' : null;
+    this.picker = { group, mode, day, index, slot: defaultSlot, options: [], loading: true };
+    this.itineraryService.alternatives(this.itinerary.id, group, day).subscribe({
+      next: options => {
+        if (this.picker) {
+          this.picker.options = options;
+          this.picker.loading = false;
+        }
+      },
+      error: err => {
+        this.picker = null;
+        this.toastr.error(apiErrorMessage(err, 'Could not load places'));
+      }
+    });
+  }
+
+  slotChoices(group: AlternativeGroup): Slot[] {
+    return group === 'meal' ? ['lunch', 'dinner'] : ['morning', 'afternoon', 'evening'];
+  }
+
+  choose(option: Alternative): void {
+    const picker = this.picker;
+    if (!picker) return;
+    const place = { kind: option.kind, name: option.name };
+    if (picker.mode === 'stay') {
+      this.apply({ op: 'stay_add', place }, `${option.name} added`);
+    } else if (picker.mode === 'replace' && picker.day && picker.index !== undefined) {
+      this.apply({ op: 'replace', day: picker.day, index: picker.index, place }, `Swapped in ${option.name}`);
+    } else if (picker.day && picker.slot) {
+      this.apply({ op: 'add', day: picker.day, slot: picker.slot, place }, `${option.name} added to day ${picker.day}`);
+    }
   }
 
   // ---------------------------------------------------------------- sharing

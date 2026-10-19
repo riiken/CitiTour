@@ -12,6 +12,7 @@
             <div class="navbar-nav ms-auto py-0">
                 <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link">Home</a>
                 <a routerLink="/plan-trip" routerLinkActive="active" class="nav-item nav-link">Plan a trip</a>
+                <a *ngIf="isLoggedIn" routerLink="/my-trips" routerLinkActive="active" class="nav-item nav-link">My trips</a>
 
                 <a routerLink="/list-your-business" routerLinkActive="active" class="nav-item nav-link">List your business</a>
                 <a routerLink="/contact" routerLinkActive="active" class="nav-item nav-link">Contact</a>
@@ -42,6 +43,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" (click)="goToDashboard()"><i class="fa fa-dashboard me-2"></i>Dashboard</a></li>
+                            <li><a class="dropdown-item" routerLink="/my-trips"><i class="fa fa-suitcase me-2"></i>My trips</a></li>
                             <li><a class="dropdown-item" routerLink="/partner"><i class="fa fa-building me-2"></i>My listings</a></li>
                             <li *ngIf="currentUser?.role === 'admin'"><a class="dropdown-item" routerLink="/admin"><i class="fa fa-shield me-2"></i>Admin</a></li>
                             <li><hr class="dropdown-divider"></li>

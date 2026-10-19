@@ -67,8 +67,36 @@ export interface Itinerary {
   guide?: { title: string; url: string };
   generatedBy?: 'ai' | 'rules';
   hasPartners?: boolean;
+  canEdit?: boolean;
+  edited?: boolean;
+  updatedAt?: string;
   createdAt?: string;
 }
+
+export interface TripSummary {
+  id: string;
+  title: string;
+  destination: string;
+  checkIn: string;
+  checkOut: string;
+  travellers: number;
+  days: number;
+  stops: number;
+  edited: boolean;
+  updatedAt: string;
+}
+
+export type AlternativeGroup = 'activity' | 'meal' | 'stay';
+export interface Alternative extends ItineraryPlace { distanceKm: number | null; }
+
+export type TripEdit =
+  | { op: 'remove'; day: number; index: number }
+  | { op: 'move'; day: number; index: number; toDay: number; slot?: Slot }
+  | { op: 'add'; day: number; slot: Slot; place: { kind: PlaceKind; name: string } }
+  | { op: 'replace'; day: number; index: number; place: { kind: PlaceKind; name: string } }
+  | { op: 'stay_remove'; index: number }
+  | { op: 'stay_add'; place: { kind: PlaceKind; name: string } }
+  | { op: 'title'; title: string };
 
 export interface TrackEvent {
   type: 'outbound_click' | 'share' | 'plan_view';
@@ -93,6 +121,32 @@ export class ItineraryService {
   get(id: string): Observable<Itinerary> {
     return this.http
       .get<{ success: boolean; data: Itinerary }>(`${this.baseUrl}/itineraries/${encodeURIComponent(id)}`)
+      .pipe(map(res => res.data));
+  }
+
+  myTrips(): Observable<TripSummary[]> {
+    return this.http.get<{ data: TripSummary[] }>(`${this.baseUrl}/me/trips`).pipe(map(res => res.data));
+  }
+
+  /** Save someone's trip as my own editable copy (returns the trip I can edit). */
+  saveCopy(id: string): Observable<Itinerary> {
+    return this.http.post<{ data: Itinerary }>(`${this.baseUrl}/itineraries/${encodeURIComponent(id)}/copy`, {})
+      .pipe(map(res => res.data));
+  }
+
+  remove(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/itineraries/${encodeURIComponent(id)}`);
+  }
+
+  alternatives(id: string, group: AlternativeGroup, day?: number): Observable<Alternative[]> {
+    const params: Record<string, string> = { group };
+    if (day) params['day'] = String(day);
+    return this.http.get<{ data: Alternative[] }>(`${this.baseUrl}/itineraries/${encodeURIComponent(id)}/alternatives`, { params })
+      .pipe(map(res => res.data));
+  }
+
+  edit(id: string, change: TripEdit): Observable<Itinerary> {
+    return this.http.patch<{ data: Itinerary }>(`${this.baseUrl}/itineraries/${encodeURIComponent(id)}`, change)
       .pipe(map(res => res.data));
   }
 

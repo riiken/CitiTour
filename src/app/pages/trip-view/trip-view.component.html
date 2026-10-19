@@ -11,7 +11,14 @@
     <header class="trip-header">
       <div>
         <p class="eyebrow">{{ trip.destination.name }} · {{ nights }} night{{ nights === 1 ? '' : 's' }} · {{ trip.request.travellers }} traveller{{ trip.request.travellers === 1 ? '' : 's' }}</p>
-        <h1>{{ trip.title }}</h1>
+        <h1 *ngIf="!editingTitle">
+          {{ trip.title }}
+          <button *ngIf="editing" class="btn btn-link btn-sm p-0 ms-1" (click)="startTitleEdit()" aria-label="Rename trip"><i class="fa fa-pencil"></i></button>
+        </h1>
+        <div class="title-edit" *ngIf="editingTitle">
+          <input class="form-control" [(ngModel)]="titleDraft" maxlength="100" (keyup.enter)="saveTitle()" aria-label="Trip title">
+          <button class="btn btn-primary btn-sm" (click)="saveTitle()">Save</button>
+        </div>
         <p class="dates">{{ trip.request.checkIn | date: 'EEE d MMM' }} – {{ trip.request.checkOut | date: 'EEE d MMM y' }}</p>
         <p class="summary" *ngIf="trip.summary">{{ trip.summary }}</p>
       </div>
@@ -20,6 +27,15 @@
           <span class="label">Estimated budget</span>
           <strong>{{ trip.budget?.total }}</strong>
           <small *ngIf="trip.budget?.includes">{{ trip.budget?.includes }}</small>
+        </div>
+        <div class="trip-actions">
+          <button *ngIf="!trip.canEdit" class="btn btn-primary btn-sm" (click)="saveTrip()" [disabled]="busy">
+            <i class="fa fa-bookmark"></i> Save to my trips
+          </button>
+          <button *ngIf="trip.canEdit" class="btn btn-sm" [class.btn-primary]="!editing" [class.btn-dark]="editing" (click)="toggleEditing()">
+            <i class="fa" [class.fa-pencil]="!editing" [class.fa-check]="editing"></i> {{ editing ? 'Done editing' : 'Edit trip' }}
+          </button>
+          <a *ngIf="trip.canEdit" routerLink="/my-trips" class="btn btn-link btn-sm">My trips</a>
         </div>
         <div class="share">
           <a class="btn btn-success btn-sm" [href]="whatsappUrl" target="_blank" rel="noopener" (click)="trackShare('whatsapp')">
@@ -40,7 +56,11 @@
            (click)="trackClick(trip.links.allStays, 'stays_all')">See all stays for your dates →</a>
       </div>
       <div class="stay-grid">
-        <article class="stay-card" *ngFor="let stay of trip.stays" [class.partner]="stay.place.partner">
+        <button *ngIf="editing" class="add-card" (click)="openPicker('stay', 'stay')" [disabled]="busy">
+          <i class="fa fa-plus"></i> Add a place to stay
+        </button>
+        <article class="stay-card" *ngFor="let stay of trip.stays; let si = index" [class.partner]="stay.place.partner">
+          <button *ngIf="editing" class="remove-btn" (click)="removeStay(si)" [disabled]="busy" aria-label="Remove this stay">✕</button>
           <img *ngIf="stay.place.photo" class="stay-photo" [src]="listingService.photoUrl(stay.place.photo)" [alt]="stay.place.name">
           <div class="badges">
             <span class="badge-sponsored" *ngIf="stay.place.sponsored">Sponsored</span>
@@ -101,7 +121,7 @@
           <p class="muted small" *ngIf="day.kind === 'departure'">Departure day: morning only</p>
         </header>
 
-        <div class="item" *ngFor="let item of day.items" [class.meal]="isMeal(item)">
+        <div class="item" *ngFor="let item of day.items; let ii = index" [class.meal]="isMeal(item)">
           <div class="slot">{{ slotLabels[item.slot] }}</div>
           <div class="body">
             <h3>
@@ -127,10 +147,29 @@
                    (click)="trackClick(item.place.bookingLink, 'itinerary_item')">{{ bookLabel(item.place) }}</a>
               </ng-template>
             </div>
+            <div class="edit-bar" *ngIf="editing">
+              <button class="btn btn-outline-primary btn-sm" (click)="openPicker(isMeal(item) ? 'meal' : 'activity', 'replace', day.day, ii)" [disabled]="busy">
+                <i class="fa fa-exchange"></i> Swap
+              </button>
+              <select class="form-select form-select-sm move" [disabled]="busy" (change)="moveItem(day.day, ii, $any($event.target).value); $any($event.target).value = ''"
+                      aria-label="Move to another day">
+                <option value="">Move to…</option>
+                <ng-container *ngFor="let other of trip.days">
+                  <option *ngIf="other.day !== day.day" [value]="other.day">Day {{ other.day }}</option>
+                </ng-container>
+              </select>
+              <button class="btn btn-outline-danger btn-sm" (click)="removeItem(day.day, ii)" [disabled]="busy" aria-label="Remove">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
           </div>
         </div>
 
         <p class="muted" *ngIf="!day.items.length">Free time. Explore at your own pace.</p>
+        <div class="day-add" *ngIf="editing">
+          <button class="btn btn-outline-secondary btn-sm" (click)="openPicker('activity', 'add', day.day)" [disabled]="busy"><i class="fa fa-plus"></i> Add a stop</button>
+          <button class="btn btn-outline-secondary btn-sm" (click)="openPicker('meal', 'add', day.day)" [disabled]="busy"><i class="fa fa-cutlery"></i> Add a meal</button>
+        </div>
         <a *ngIf="day.foodNearbyLink" class="food-link" [href]="day.foodNearbyLink" target="_blank" rel="noopener"
            (click)="trackClick(day.foodNearbyLink, 'food_nearby')"><i class="fa fa-cutlery"></i> Find places to eat nearby</a>
       </article>
@@ -153,6 +192,32 @@
     </section>
 
     <app-google-ads></app-google-ads>
+
+    <div class="picker-backdrop" *ngIf="picker" (click)="picker = null"></div>
+    <aside class="picker" *ngIf="picker as p" role="dialog" aria-label="Choose a place">
+      <header>
+        <h2>{{ p.mode === 'stay' ? 'Add a place to stay' : p.mode === 'replace' ? 'Swap with…' : (p.group === 'meal' ? 'Add a meal' : 'Add a stop') + ' on day ' + p.day }}</h2>
+        <button class="btn-close" (click)="picker = null" aria-label="Close"></button>
+      </header>
+      <div class="slot-choice" *ngIf="p.mode === 'add'">
+        <span>When:</span>
+        <button *ngFor="let slot of slotChoices(p.group)" class="chip" [class.active]="p.slot === slot" (click)="p.slot = slot">{{ slotLabels[slot] }}</button>
+      </div>
+      <p class="muted" *ngIf="p.loading">Finding nearby places…</p>
+      <p class="muted" *ngIf="!p.loading && !p.options.length">No more places available here. Try another day or category.</p>
+      <ul class="options">
+        <li *ngFor="let option of p.options">
+          <div>
+            <strong>{{ option.name }}</strong>
+            <span class="badge-verified" *ngIf="option.partner"><i class="fa fa-check-circle"></i> Verified</span>
+            <small class="d-block muted">
+              <span *ngIf="option.distanceKm !== null">{{ option.distanceKm }} km away · </span>{{ option.description || option.area || option.kind }}
+            </small>
+          </div>
+          <button class="btn btn-primary btn-sm" (click)="choose(option)" [disabled]="busy">Choose</button>
+        </li>
+      </ul>
+    </aside>
 
     <footer class="sources">
       <p>

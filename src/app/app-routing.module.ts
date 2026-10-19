@@ -17,6 +17,7 @@ import { PartnerDashboardComponent } from './pages/partner/dashboard/partner-das
 import { ListingFormComponent } from './pages/partner/listing-form/listing-form.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { PlaceComponent } from './pages/place/place.component';
+import { MyTripsComponent } from './pages/my-trips/my-trips.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'Log in – CitiTour' },
   { path: 'register', component: RegisterComponent, title: 'Create account – CitiTour' },
   { path: 'user-dashboard', component: UserDashboardComponent, canActivate: [AuthGuard], title: 'My account – CitiTour' },
+  { path: 'my-trips', component: MyTripsComponent, canActivate: [AuthGuard], title: 'My trips – CitiTour' },
   { path: 'place/:id', component: PlaceComponent, title: 'CitiTour' },
   { path: 'list-your-business', component: PartnerLandingComponent, title: 'List your business – CitiTour' },
   { path: 'partner', component: PartnerDashboardComponent, canActivate: [AuthGuard], title: 'My listings – CitiTour' },

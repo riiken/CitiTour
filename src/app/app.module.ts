@@ -30,6 +30,7 @@ import { PartnerDashboardComponent } from './pages/partner/dashboard/partner-das
 import { ListingFormComponent } from './pages/partner/listing-form/listing-form.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { PlaceComponent } from './pages/place/place.component';
+import { MyTripsComponent } from './pages/my-trips/my-trips.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
@@ -66,6 +67,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ListingFormComponent,
     AdminComponent,
     PlaceComponent,
+    MyTripsComponent,
     PrivacyPolicyComponent,
     LoginComponent,
     RegisterComponent,

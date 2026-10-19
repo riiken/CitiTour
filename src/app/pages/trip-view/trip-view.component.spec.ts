@@ -26,7 +26,10 @@ describe('TripViewComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TripViewComponent],
-      providers: [{ provide: ActivatedRoute, useValue: { paramMap: of(convertToParamMap({ id: 'abcDEF123456' })) } }]
+      providers: [{ provide: ActivatedRoute, useValue: {
+        paramMap: of(convertToParamMap({ id: 'abcDEF123456' })),
+        snapshot: { queryParamMap: convertToParamMap({}) }
+      } }]
     });
     fixture = TestBed.createComponent(TripViewComponent);
     http = TestBed.inject(HttpTestingController);
@@ -54,5 +57,33 @@ describe('TripViewComponent', () => {
 
   it('builds a WhatsApp share link', () => {
     expect(fixture.componentInstance.whatsappUrl).toContain('https://wa.me/?text=');
+  });
+
+  it('offers "Save to my trips" when the viewer does not own the trip', () => {
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.textContent).toContain('Save to my trips');
+    expect(el.textContent).not.toContain('Edit trip');
+  });
+
+  it('owners can edit: removing a stop sends the edit and shows the result', () => {
+    fixture.componentInstance.itinerary = { ...(itinerary as any), canEdit: true };
+    fixture.componentInstance.toggleEditing();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Done editing');
+
+    fixture.componentInstance.removeItem(1, 0);
+    const req = http.expectOne(r => r.method === 'PATCH' && r.url.endsWith('/v1/itineraries/abcDEF123456'));
+    expect(req.request.body).toEqual({ op: 'remove', day: 1, index: 0 });
+    req.flush({ data: { ...itinerary, canEdit: true, days: [{ ...itinerary.days[0], items: [] }] } });
+    expect(fixture.componentInstance.itinerary!.days[0].items.length).toBe(0);
+  });
+
+  it('opens real alternatives and swaps one in', () => {
+    fixture.componentInstance.itinerary = { ...(itinerary as any), canEdit: true };
+    fixture.componentInstance.openPicker('activity', 'replace', 1, 0);
+    http.expectOne(r => r.url.includes('/alternatives')).flush({ data: [{ kind: 'attraction', name: 'Jagdish Temple', distanceKm: 0.4 }] });
+    fixture.componentInstance.choose(fixture.componentInstance.picker!.options[0]);
+    const req = http.expectOne(r => r.method === 'PATCH');
+    expect(req.request.body).toEqual({ op: 'replace', day: 1, index: 0, place: { kind: 'attraction', name: 'Jagdish Temple' } });
   });
 });

@@ -60,3 +60,21 @@
 .badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .badge-sponsored { font-size: .7rem; font-weight: 700; text-transform: uppercase; background: #fff3bf; color: #8a6d00; padding: 1px 8px; border-radius: 999px; }
 .badge-verified { font-size: .72rem; font-weight: 600; color: #2b8a3e; }
+
+.trip-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.title-edit { display: flex; gap: 8px; max-width: 520px; margin-bottom: 6px; }
+.stay-card { position: relative; }
+.remove-btn { position: absolute; top: 8px; right: 8px; z-index: 2; border: none; background: #fff; border-radius: 50%; width: 28px; height: 28px; box-shadow: 0 1px 4px rgba(0,0,0,.2); color: #c92a2a; }
+.add-card { border: 2px dashed #ced4da; border-radius: 12px; background: #fff; min-height: 140px; font-weight: 600; color: #495057; }
+.add-card:hover { border-color: #86B817; color: #86B817; }
+.edit-bar { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #dee2e6; }
+.edit-bar .move { width: auto; }
+.day-add { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.picker-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 1040; }
+.picker { position: fixed; z-index: 1050; right: 0; top: 0; bottom: 0; width: min(440px, 100%); background: #fff; box-shadow: -4px 0 20px rgba(0,0,0,.15); display: flex; flex-direction: column; padding: 16px; }
+.picker header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.picker h2 { font-size: 1.15rem; margin: 0; }
+.slot-choice { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+.options { list-style: none; padding: 0; margin: 0; overflow-y: auto; }
+.options li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #f1f3f5; }
+@media (max-width: 576px) { .picker { top: auto; height: 75vh; width: 100%; border-radius: 16px 16px 0 0; } }
