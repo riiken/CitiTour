@@ -9,18 +9,20 @@
     <a routerLink="/explore" class="link">{{ 'Explore any destination →' | t }}</a>
   </div>
   <div class="dest-grid">
-    <article class="dest" *ngFor="let d of destinations" [style.background]="d.gradient">
-      <div class="dest-body">
-        <p class="region">{{ d.region }}</p>
-        <h3>{{ d.name }}</h3>
-        <p class="tagline">{{ d.tagline }}</p>
-        <p class="best">{{ d.bestFor }}</p>
-      </div>
-      <div class="dest-actions">
-        <a class="btn btn-light btn-sm" routerLink="/plan-trip" [queryParams]="{ destination: d.name }">{{ 'Plan a trip' | t }}</a>
-        <a class="btn btn-outline-light btn-sm" [routerLink]="['/explore', d.name]">{{ 'Explore' | t }}</a>
-      </div>
-    </article>
+    @for (d of destinations; track d) {
+      <article class="dest" [style.background]="d.gradient">
+        <div class="dest-body">
+          <p class="region">{{ d.region }}</p>
+          <h3>{{ d.name }}</h3>
+          <p class="tagline">{{ d.tagline }}</p>
+          <p class="best">{{ d.bestFor }}</p>
+        </div>
+        <div class="dest-actions">
+          <a class="btn btn-light btn-sm" routerLink="/plan-trip" [queryParams]="{ destination: d.name }">{{ 'Plan a trip' | t }}</a>
+          <a class="btn btn-outline-light btn-sm" [routerLink]="['/explore', d.name]">{{ 'Explore' | t }}</a>
+        </div>
+      </article>
+    }
   </div>
 </section>
 

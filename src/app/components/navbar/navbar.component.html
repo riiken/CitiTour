@@ -1,66 +1,69 @@
 
 
-  <div class="container-fluid position-relative p-0" [style.background]="!mobileVersion ? '#484E54' : ''">
-    <nav appNavbarSticky class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-        <a routerLink="/home" class="navbar-brand p-0">
-            <h1 class="text-primary m-0"><i class="fa fa-map-marker me-3"></i>Cititour</h1>
-        </a>
-        <button class="navbar-toggler" type="button" aria-label="Toggle navigation" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="fa fa-bars"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto py-0">
-                <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link">{{ 'Home' | t }}</a>
-                <a routerLink="/explore" routerLinkActive="active" class="nav-item nav-link">{{ 'Explore' | t }}</a>
-                <a routerLink="/plan-trip" routerLinkActive="active" class="nav-item nav-link">{{ 'Plan a trip' | t }}</a>
-                <a *ngIf="isLoggedIn" routerLink="/my-trips" routerLinkActive="active" class="nav-item nav-link">{{ 'My trips' | t }}</a>
+<div class="container-fluid position-relative p-0" [style.background]="!mobileVersion ? '#484E54' : ''">
+  <nav appNavbarSticky class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+    <a routerLink="/home" class="navbar-brand p-0">
+      <h1 class="text-primary m-0"><i class="fa fa-map-marker me-3"></i>Cititour</h1>
+    </a>
+    <button class="navbar-toggler" type="button" aria-label="Toggle navigation" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="fa fa-bars"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="navbar-nav ms-auto py-0">
+        <a routerLink="/home" routerLinkActive="active" class="nav-item nav-link">{{ 'Home' | t }}</a>
+        <a routerLink="/explore" routerLinkActive="active" class="nav-item nav-link">{{ 'Explore' | t }}</a>
+        <a routerLink="/plan-trip" routerLinkActive="active" class="nav-item nav-link">{{ 'Plan a trip' | t }}</a>
+        @if (isLoggedIn) {
+          <a routerLink="/my-trips" routerLinkActive="active" class="nav-item nav-link">{{ 'My trips' | t }}</a>
+        }
 
-                <a routerLink="/list-your-business" routerLinkActive="active" class="nav-item nav-link">{{ 'List your business' | t }}</a>
-                <a routerLink="/contact" routerLinkActive="active" class="nav-item nav-link">{{ 'Contact' | t }}</a>
-            </div>
+        <a routerLink="/list-your-business" routerLinkActive="active" class="nav-item nav-link">{{ 'List your business' | t }}</a>
+        <a routerLink="/contact" routerLinkActive="active" class="nav-item nav-link">{{ 'Contact' | t }}</a>
+      </div>
 
-            <!-- Language -->
-            <div class="lang-switch ms-lg-3" role="group" [attr.aria-label]="'Language' | t">
-                <button type="button" [class.active]="i18n.lang === 'en'" (click)="i18n.setLanguage('en')" lang="en">EN</button>
-                <button type="button" [class.active]="i18n.lang === 'hi'" (click)="i18n.setLanguage('hi')" lang="hi">हिं</button>
-            </div>
+      <!-- Language -->
+      <div class="lang-switch ms-lg-3" role="group" [attr.aria-label]="'Language' | t">
+        <button type="button" [class.active]="i18n.lang === 'en'" (click)="i18n.setLanguage('en')" lang="en">EN</button>
+        <button type="button" [class.active]="i18n.lang === 'hi'" (click)="i18n.setLanguage('hi')" lang="hi">हिं</button>
+      </div>
 
-            <!-- Auth Buttons -->
-            <div class="d-flex align-items-center ms-3">
-                <!-- Not Logged In -->
-                <ng-container *ngIf="!isLoggedIn">
-                    <button class="btn btn-outline-primary rounded-pill py-2 px-4 me-2" (click)="goToLogin()">
-                        <i class="fa fa-sign-in me-2"></i>{{ 'Login' | t }}
-                    </button>
-                    <button class="btn btn-primary rounded-pill py-2 px-4" (click)="goToRegister()">
-                        <i class="fa fa-user-plus me-2"></i>{{ 'Register' | t }}
-                    </button>
-                </ng-container>
+      <!-- Auth Buttons -->
+      <div class="d-flex align-items-center ms-3">
+        <!-- Not Logged In -->
+        @if (!isLoggedIn) {
+          <button class="btn btn-outline-primary rounded-pill py-2 px-4 me-2" (click)="goToLogin()">
+            <i class="fa fa-sign-in me-2"></i>{{ 'Login' | t }}
+          </button>
+          <button class="btn btn-primary rounded-pill py-2 px-4" (click)="goToRegister()">
+            <i class="fa fa-user-plus me-2"></i>{{ 'Register' | t }}
+          </button>
+        }
 
-                <!-- Logged In -->
-                <ng-container *ngIf="isLoggedIn">
-                    <div class="dropdown">
-                        <button class="btn btn-primary rounded-pill py-2 px-3 dropdown-toggle d-flex align-items-center"
-                                type="button"
-                                id="userDropdown"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                            <div class="user-avatar me-2">{{ getUserInitial() }}</div>
-                            <span class="d-none d-md-inline">{{ currentUser?.name || 'User' }}</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" (click)="goToDashboard()"><i class="fa fa-dashboard me-2"></i>{{ 'Dashboard' | t }}</a></li>
-                            <li><a class="dropdown-item" routerLink="/my-trips"><i class="fa fa-suitcase me-2"></i>{{ 'My trips' | t }}</a></li>
-                            <li><a class="dropdown-item" routerLink="/partner"><i class="fa fa-building me-2"></i>{{ 'My listings' | t }}</a></li>
-                            <li *ngIf="currentUser?.role === 'admin'"><a class="dropdown-item" routerLink="/admin"><i class="fa fa-shield me-2"></i>{{ 'Admin' | t }}</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" (click)="logout()"><i class="fa fa-sign-out me-2"></i>{{ 'Logout' | t }}</a></li>
-                        </ul>
-                    </div>
-                </ng-container>
-            </div>
-        </div>
-    </nav>
+        <!-- Logged In -->
+        @if (isLoggedIn) {
+          <div class="dropdown">
+            <button class="btn btn-primary rounded-pill py-2 px-3 dropdown-toggle d-flex align-items-center"
+              type="button"
+              id="userDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <div class="user-avatar me-2">{{ getUserInitial() }}</div>
+              <span class="d-none d-md-inline">{{ currentUser?.name || 'User' }}</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" (click)="goToDashboard()"><i class="fa fa-dashboard me-2"></i>{{ 'Dashboard' | t }}</a></li>
+              <li><a class="dropdown-item" routerLink="/my-trips"><i class="fa fa-suitcase me-2"></i>{{ 'My trips' | t }}</a></li>
+              <li><a class="dropdown-item" routerLink="/partner"><i class="fa fa-building me-2"></i>{{ 'My listings' | t }}</a></li>
+              @if (currentUser?.role === 'admin') {
+                <li><a class="dropdown-item" routerLink="/admin"><i class="fa fa-shield me-2"></i>{{ 'Admin' | t }}</a></li>
+              }
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" (click)="logout()"><i class="fa fa-sign-out me-2"></i>{{ 'Logout' | t }}</a></li>
+            </ul>
+          </div>
+        }
+      </div>
+    </div>
+  </nav>
 </div>
 
-  

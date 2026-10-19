@@ -4,44 +4,67 @@
     <a routerLink="/partner/new" class="btn btn-primary"><i class="fa fa-plus"></i> Add a business</a>
   </div>
 
-  <p *ngIf="loading">Loading…</p>
-  <div class="alert alert-warning" *ngIf="error">{{ error }}</div>
+  @if (loading) {
+    <p>Loading…</p>
+  }
+  @if (error) {
+    <div class="alert alert-warning">{{ error }}</div>
+  }
 
-  <div class="empty" *ngIf="!loading && !error && !listings.length">
-    <h2>No listings yet</h2>
-    <p>Add your hotel, homestay, restaurant or activity. It's free and takes about 5 minutes.</p>
-    <a routerLink="/partner/new" class="btn btn-primary">Add your first business</a>
-  </div>
+  @if (!loading && !error && !listings.length) {
+    <div class="empty">
+      <h2>No listings yet</h2>
+      <p>Add your hotel, homestay, restaurant or activity. It's free and takes about 5 minutes.</p>
+      <a routerLink="/partner/new" class="btn btn-primary">Add your first business</a>
+    </div>
+  }
 
-  <div class="listing" *ngFor="let listing of listings">
-    <div class="thumb">
-      <img *ngIf="listing.photos.length; else noPhoto" [src]="listingService.photoUrl(listing.photos[0])" [alt]="listing.name">
-      <ng-template #noPhoto><i class="fa {{ typeIcon(listing.type) }} fa-2x"></i></ng-template>
-    </div>
-    <div class="info">
-      <div class="d-flex align-items-center gap-2 flex-wrap">
-        <h2>{{ listing.name }}</h2>
-        <span class="status status-{{ listing.status }}">{{ statusLabels[listing.status] }}</span>
-        <span class="status status-featured" *ngIf="listing.featured">Featured</span>
+  @for (listing of listings; track listing) {
+    <div class="listing">
+      <div class="thumb">
+        @if (listing.photos.length) {
+          <img [src]="listingService.photoUrl(listing.photos[0])" [alt]="listing.name">
+        } @else {
+          <i class="fa {{ typeIcon(listing.type) }} fa-2x"></i>
+        }
       </div>
-      <p class="muted">{{ listing.city }}<span *ngIf="listing.address"> · {{ listing.address }}</span></p>
-      <p class="alert alert-danger py-1 px-2 mb-2" *ngIf="listing.status === 'rejected' && listing.rejectionReason">
-        <strong>What to fix:</strong> {{ listing.rejectionReason }}
-      </p>
-      <p class="muted small" *ngIf="listing.status === 'pending'">We're reviewing this listing. It will appear in trip plans once approved.</p>
-      <div class="stats">
-        <span><i class="fa fa-eye"></i> {{ listing.views }} views</span>
-        <span><i class="fa fa-whatsapp"></i> {{ listing.leads }} enquiries</span>
-        <span><i class="fa fa-picture-o"></i> {{ listing.photos.length }} photos</span>
+      <div class="info">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <h2>{{ listing.name }}</h2>
+          <span class="status status-{{ listing.status }}">{{ statusLabels[listing.status] }}</span>
+          @if (listing.featured) {
+            <span class="status status-featured">Featured</span>
+          }
+        </div>
+        <p class="muted">{{ listing.city }}@if (listing.address) {
+          <span> · {{ listing.address }}</span>
+        }</p>
+        @if (listing.status === 'rejected' && listing.rejectionReason) {
+          <p class="alert alert-danger py-1 px-2 mb-2">
+            <strong>What to fix:</strong> {{ listing.rejectionReason }}
+          </p>
+        }
+        @if (listing.status === 'pending') {
+          <p class="muted small">We're reviewing this listing. It will appear in trip plans once approved.</p>
+        }
+        <div class="stats">
+          <span><i class="fa fa-eye"></i> {{ listing.views }} views</span>
+          <span><i class="fa fa-whatsapp"></i> {{ listing.leads }} enquiries</span>
+          <span><i class="fa fa-picture-o"></i> {{ listing.photos.length }} photos</span>
+        </div>
+      </div>
+      <div class="actions">
+        @if (listing.status === 'approved') {
+          <a [routerLink]="['/place', listing.id]" class="btn btn-primary btn-sm">View &amp; share page</a>
+        }
+        <a [routerLink]="['/partner/edit', listing.id]" class="btn btn-outline-secondary btn-sm">Edit</a>
+        @if (listing.status !== 'rejected') {
+          <button class="btn btn-outline-secondary btn-sm" (click)="togglePause(listing)">
+            {{ listing.status === 'paused' ? 'Resume' : 'Pause' }}
+          </button>
+        }
+        <button class="btn btn-outline-danger btn-sm" (click)="remove(listing)">Delete</button>
       </div>
     </div>
-    <div class="actions">
-      <a *ngIf="listing.status === 'approved'" [routerLink]="['/place', listing.id]" class="btn btn-primary btn-sm">View &amp; share page</a>
-      <a [routerLink]="['/partner/edit', listing.id]" class="btn btn-outline-secondary btn-sm">Edit</a>
-      <button class="btn btn-outline-secondary btn-sm" (click)="togglePause(listing)" *ngIf="listing.status !== 'rejected'">
-        {{ listing.status === 'paused' ? 'Resume' : 'Pause' }}
-      </button>
-      <button class="btn btn-outline-danger btn-sm" (click)="remove(listing)">Delete</button>
-    </div>
-  </div>
+  }
 </div>

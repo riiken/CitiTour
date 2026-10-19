@@ -1,159 +1,157 @@
-<div class="weather-container" *ngIf="!loading && (weather || forecast?.length)">
-  <!-- Current Weather Card -->
-  <div class="current-weather card mb-4" *ngIf="weather">
-    <div class="card-body">
-      <h3 class="card-title mb-4">
-        <i class="bi bi-cloud-sun me-2"></i>
-        Current Weather
-      </h3>
-
-      <div class="row align-items-center">
-        <!-- Temperature & Icon -->
-        <div class="col-md-6 text-center mb-3 mb-md-0">
-          <div class="weather-icon-large">
-            <img
-              [src]="getWeatherIcon(weather.icon)"
-              [alt]="weather.description"
-              class="img-fluid"
-            />
-          </div>
-          <div class="temperature-display" [ngClass]="getTempColorClass(weather.temperature)">
-            <span class="temp-value">{{ weather.temperature }}</span>
-            <span class="temp-unit">°{{ weather.units === 'metric' ? 'C' : 'F' }}</span>
-          </div>
-          <p class="weather-description text-capitalize mb-0">
-            {{ weather.description }}
-          </p>
-        </div>
-
-        <!-- Weather Details -->
-        <div class="col-md-6">
-          <div class="weather-details">
-            <div class="detail-item">
-              <i class="bi bi-thermometer-half text-danger"></i>
-              <span class="detail-label">Feels Like:</span>
-              <span class="detail-value">{{ weather.feelsLike }}°</span>
+@if (!loading && (weather || forecast?.length)) {
+  <div class="weather-container">
+    <!-- Current Weather Card -->
+    @if (weather) {
+      <div class="current-weather card mb-4">
+        <div class="card-body">
+          <h3 class="card-title mb-4">
+            <i class="bi bi-cloud-sun me-2"></i>
+            Current Weather
+          </h3>
+          <div class="row align-items-center">
+            <!-- Temperature & Icon -->
+            <div class="col-md-6 text-center mb-3 mb-md-0">
+              <div class="weather-icon-large">
+                <img
+                  [src]="getWeatherIcon(weather.icon)"
+                  [alt]="weather.description"
+                  class="img-fluid"
+                  />
+              </div>
+              <div class="temperature-display" [ngClass]="getTempColorClass(weather.temperature)">
+                <span class="temp-value">{{ weather.temperature }}</span>
+                <span class="temp-unit">°{{ weather.units === 'metric' ? 'C' : 'F' }}</span>
+              </div>
+              <p class="weather-description text-capitalize mb-0">
+                {{ weather.description }}
+              </p>
             </div>
-
-            <div class="detail-item">
-              <i class="bi bi-droplet text-primary"></i>
-              <span class="detail-label">Humidity:</span>
-              <span class="detail-value">{{ weather.humidity }}%</span>
+            <!-- Weather Details -->
+            <div class="col-md-6">
+              <div class="weather-details">
+                <div class="detail-item">
+                  <i class="bi bi-thermometer-half text-danger"></i>
+                  <span class="detail-label">Feels Like:</span>
+                  <span class="detail-value">{{ weather.feelsLike }}°</span>
+                </div>
+                <div class="detail-item">
+                  <i class="bi bi-droplet text-primary"></i>
+                  <span class="detail-label">Humidity:</span>
+                  <span class="detail-value">{{ weather.humidity }}%</span>
+                </div>
+                <div class="detail-item">
+                  <i class="bi bi-wind text-info"></i>
+                  <span class="detail-label">Wind:</span>
+                  <span class="detail-value">
+                    {{ weather.windSpeed }} m/s {{ getWindDirection(weather.windDirection) }}
+                  </span>
+                </div>
+                <div class="detail-item">
+                  <i class="bi bi-speedometer text-secondary"></i>
+                  <span class="detail-label">Pressure:</span>
+                  <span class="detail-value">{{ weather.pressure }} hPa</span>
+                </div>
+                <div class="detail-item">
+                  <i class="bi bi-cloud text-muted"></i>
+                  <span class="detail-label">Cloudiness:</span>
+                  <span class="detail-value">{{ weather.clouds }}%</span>
+                </div>
+                <div class="detail-item">
+                  <i class="bi bi-eye text-success"></i>
+                  <span class="detail-label">Visibility:</span>
+                  <span class="detail-value">{{ (weather.visibility / 1000).toFixed(1) }} km</span>
+                </div>
+              </div>
             </div>
-
-            <div class="detail-item">
-              <i class="bi bi-wind text-info"></i>
-              <span class="detail-label">Wind:</span>
-              <span class="detail-value">
-                {{ weather.windSpeed }} m/s {{ getWindDirection(weather.windDirection) }}
+          </div>
+          <!-- Min/Max Temperature Bar -->
+          <div class="temp-range mt-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="temp-label">
+                <i class="bi bi-arrow-down text-primary"></i>
+                Min: {{ weather.tempMin }}°
+              </span>
+              <span class="temp-label">
+                <i class="bi bi-arrow-up text-danger"></i>
+                Max: {{ weather.tempMax }}°
               </span>
             </div>
-
-            <div class="detail-item">
-              <i class="bi bi-speedometer text-secondary"></i>
-              <span class="detail-label">Pressure:</span>
-              <span class="detail-value">{{ weather.pressure }} hPa</span>
-            </div>
-
-            <div class="detail-item">
-              <i class="bi bi-cloud text-muted"></i>
-              <span class="detail-label">Cloudiness:</span>
-              <span class="detail-value">{{ weather.clouds }}%</span>
-            </div>
-
-            <div class="detail-item">
-              <i class="bi bi-eye text-success"></i>
-              <span class="detail-label">Visibility:</span>
-              <span class="detail-value">{{ (weather.visibility / 1000).toFixed(1) }} km</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Min/Max Temperature Bar -->
-      <div class="temp-range mt-4">
-        <div class="d-flex justify-content-between mb-2">
-          <span class="temp-label">
-            <i class="bi bi-arrow-down text-primary"></i>
-            Min: {{ weather.tempMin }}°
-          </span>
-          <span class="temp-label">
-            <i class="bi bi-arrow-up text-danger"></i>
-            Max: {{ weather.tempMax }}°
-          </span>
-        </div>
-        <div class="progress" style="height: 8px;">
-          <div class="progress-bar bg-gradient"
-               [style.width.%]="((weather.temperature - weather.tempMin) / (weather.tempMax - weather.tempMin)) * 100"
-               role="progressbar">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 5-Day Forecast -->
-  <div class="forecast-section" *ngIf="forecast && forecast.length > 0">
-    <h4 class="mb-3">
-      <i class="bi bi-calendar-week me-2"></i>
-      5-Day Forecast
-    </h4>
-
-    <div class="row g-3">
-      <div class="col-md-2 col-sm-4 col-6" *ngFor="let day of forecast">
-        <div class="forecast-card card h-100">
-          <div class="card-body text-center p-3">
-            <h6 class="forecast-day mb-2">{{ getDayName(day.date) }}</h6>
-            <p class="forecast-date text-muted small mb-2">{{ getFormattedDate(day.date) }}</p>
-
-            <img
-              [src]="getWeatherIcon(day.icon)"
-              [alt]="day.description"
-              class="forecast-icon mb-2"
-            />
-
-            <p class="forecast-description text-capitalize small mb-2">
-              {{ day.description }}
-            </p>
-
-            <div class="forecast-temp mb-2">
-              <span class="temp-high text-danger">{{ day.maxTemperature }}°</span>
-              <span class="temp-divider mx-1">/</span>
-              <span class="temp-low text-primary">{{ day.minTemperature }}°</span>
-            </div>
-
-            <div class="forecast-details small">
-              <div class="mb-1">
-                <i class="bi bi-droplet text-primary"></i>
-                <span>{{ day.humidity }}%</span>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-gradient"
+                [style.width.%]="((weather.temperature - weather.tempMin) / (weather.tempMax - weather.tempMin)) * 100"
+                role="progressbar">
               </div>
-              <div>
-                <i class="bi bi-umbrella"
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+    <!-- 5-Day Forecast -->
+    @if (forecast && forecast.length > 0) {
+      <div class="forecast-section">
+        <h4 class="mb-3">
+          <i class="bi bi-calendar-week me-2"></i>
+          5-Day Forecast
+        </h4>
+        <div class="row g-3">
+          @for (day of forecast; track day) {
+            <div class="col-md-2 col-sm-4 col-6">
+              <div class="forecast-card card h-100">
+                <div class="card-body text-center p-3">
+                  <h6 class="forecast-day mb-2">{{ getDayName(day.date) }}</h6>
+                  <p class="forecast-date text-muted small mb-2">{{ getFormattedDate(day.date) }}</p>
+                  <img
+                    [src]="getWeatherIcon(day.icon)"
+                    [alt]="day.description"
+                    class="forecast-icon mb-2"
+                    />
+                  <p class="forecast-description text-capitalize small mb-2">
+                    {{ day.description }}
+                  </p>
+                  <div class="forecast-temp mb-2">
+                    <span class="temp-high text-danger">{{ day.maxTemperature }}°</span>
+                    <span class="temp-divider mx-1">/</span>
+                    <span class="temp-low text-primary">{{ day.minTemperature }}°</span>
+                  </div>
+                  <div class="forecast-details small">
+                    <div class="mb-1">
+                      <i class="bi bi-droplet text-primary"></i>
+                      <span>{{ day.humidity }}%</span>
+                    </div>
+                    <div>
+                      <i class="bi bi-umbrella"
                    [ngClass]="{
                      'text-primary': day.precipitationProbability >= 50,
                      'text-muted': day.precipitationProbability < 50
                    }">
-                </i>
-                <span>{{ day.precipitationProbability }}%</span>
+                      </i>
+                      <span>{{ day.precipitationProbability }}%</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          }
         </div>
       </div>
-    </div>
+    }
   </div>
-</div>
+}
 
 <!-- Loading State -->
-<div class="text-center py-5" *ngIf="loading">
-  <div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading weather data...</span>
+@if (loading) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading weather data...</span>
+    </div>
+    <p class="mt-3 text-muted">Loading weather data...</p>
   </div>
-  <p class="mt-3 text-muted">Loading weather data...</p>
-</div>
+}
 
 <!-- No Weather Data -->
-<div class="alert alert-info" *ngIf="!loading && !weather && !forecast?.length">
-  <i class="bi bi-info-circle me-2"></i>
-  No weather data available. Try searching for a destination.
-</div>
+@if (!loading && !weather && !forecast?.length) {
+  <div class="alert alert-info">
+    <i class="bi bi-info-circle me-2"></i>
+    No weather data available. Try searching for a destination.
+  </div>
+}

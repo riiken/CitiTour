@@ -10,48 +10,66 @@
     </button>
   </div>
 
-  <div class="link-box" *ngIf="mode === 'link'">
-    <ol class="help">
-      <li>Open your business in the Google Maps app</li>
-      <li>Tap <strong>Share</strong> → <strong>Copy link</strong></li>
-      <li>Paste it here</li>
-    </ol>
-    <div class="input-group">
-      <input class="form-control" [(ngModel)]="linkText" name="mapsLink" placeholder="https://maps.app.goo.gl/…"
-             (keyup.enter)="useLink()" autocomplete="off">
-      <button type="button" class="btn btn-primary" (click)="useLink()" [disabled]="resolvingLink || !linkText.trim()">
-        {{ resolvingLink ? 'Reading…' : 'Use link' }}
-      </button>
+  @if (mode === 'link') {
+    <div class="link-box">
+      <ol class="help">
+        <li>Open your business in the Google Maps app</li>
+        <li>Tap <strong>Share</strong> → <strong>Copy link</strong></li>
+        <li>Paste it here</li>
+      </ol>
+      <div class="input-group">
+        <input class="form-control" [(ngModel)]="linkText" name="mapsLink" placeholder="https://maps.app.goo.gl/…"
+          (keyup.enter)="useLink()" autocomplete="off">
+        <button type="button" class="btn btn-primary" (click)="useLink()" [disabled]="resolvingLink || !linkText.trim()">
+          {{ resolvingLink ? 'Reading…' : 'Use link' }}
+        </button>
+      </div>
     </div>
-  </div>
+  }
 
   <div class="search">
     <i class="fa fa-search"></i>
     <input class="form-control" [ngModel]="query" (ngModelChange)="onQuery($event)" name="placeSearch"
-           placeholder="Or search: landmark, street or area" autocomplete="off" aria-label="Search for your address">
-    <span class="spinner" *ngIf="searching">…</span>
-    <ul class="suggestions" *ngIf="suggestions.length" role="listbox">
-      <li *ngFor="let place of suggestions" (click)="choose(place)" role="option" tabindex="0" (keyup.enter)="choose(place)">
-        <strong>{{ place.title }}</strong>
-        <small>{{ place.displayName }}</small>
-      </li>
-    </ul>
+      placeholder="Or search: landmark, street or area" autocomplete="off" aria-label="Search for your address">
+    @if (searching) {
+      <span class="spinner">…</span>
+    }
+    @if (suggestions.length) {
+      <ul class="suggestions" role="listbox">
+        @for (place of suggestions; track place) {
+          <li (click)="choose(place)" role="option" tabindex="0" (keyup.enter)="choose(place)">
+            <strong>{{ place.title }}</strong>
+            <small>{{ place.displayName }}</small>
+          </li>
+        }
+      </ul>
+    }
   </div>
 
-  <p class="message" *ngIf="message" [class.error]="message.kind === 'error'">{{ message.text }}</p>
+  @if (message) {
+    <p class="message" [class.error]="message.kind === 'error'">{{ message.text }}</p>
+  }
 
   <div class="map-wrap">
     <div #mapContainer class="map" aria-label="Map: move it so the pin is on your business"></div>
-    <div class="centre-pin" *ngIf="hasPin || needsZoom"><i class="fa fa-map-marker"></i></div>
-    <div class="map-hint" *ngIf="!hasPin && !needsZoom">Pick an option above, or zoom in and move the map to your place</div>
-    <div class="map-hint" *ngIf="needsZoom">Zoom in closer to set your exact spot</div>
+    @if (hasPin || needsZoom) {
+      <div class="centre-pin"><i class="fa fa-map-marker"></i></div>
+    }
+    @if (!hasPin && !needsZoom) {
+      <div class="map-hint">Pick an option above, or zoom in and move the map to your place</div>
+    }
+    @if (needsZoom) {
+      <div class="map-hint">Zoom in closer to set your exact spot</div>
+    }
   </div>
 
-  <div class="confirm" *ngIf="hasPin">
-    <i class="fa fa-check-circle"></i>
-    <div>
-      <strong>{{ confirmedAddress || 'Pin set' }}</strong>
-      <small>Not quite right? Move the map. The pin stays in the middle.</small>
+  @if (hasPin) {
+    <div class="confirm">
+      <i class="fa fa-check-circle"></i>
+      <div>
+        <strong>{{ confirmedAddress || 'Pin set' }}</strong>
+        <small>Not quite right? Move the map. The pin stays in the middle.</small>
+      </div>
     </div>
-  </div>
+  }
 </div>

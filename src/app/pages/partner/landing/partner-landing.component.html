@@ -4,9 +4,13 @@
     <h1>Get found by travellers planning trips to your city</h1>
     <p class="lead">List your business on CitiTour for free. Our trip planner suggests verified local businesses in day-by-day itineraries, and travellers contact you directly on WhatsApp.</p>
     <a class="btn btn-primary btn-lg" [routerLink]="isLoggedIn ? '/partner/new' : '/register'"
-       [queryParams]="isLoggedIn ? null : { returnUrl: '/partner/new' }">List your business, it's free</a>
-    <a class="btn btn-link" routerLink="/partner" *ngIf="isLoggedIn">Manage my listings</a>
-    <a class="btn btn-link" routerLink="/login" [queryParams]="{ returnUrl: '/partner' }" *ngIf="!isLoggedIn">I already have an account</a>
+    [queryParams]="isLoggedIn ? null : { returnUrl: '/partner/new' }">List your business, it's free</a>
+    @if (isLoggedIn) {
+      <a class="btn btn-link" routerLink="/partner">Manage my listings</a>
+    }
+    @if (!isLoggedIn) {
+      <a class="btn btn-link" routerLink="/login" [queryParams]="{ returnUrl: '/partner' }">I already have an account</a>
+    }
   </div>
 </section>
 

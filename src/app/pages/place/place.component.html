@@ -1,76 +1,110 @@
 <div class="container py-4 place-page">
-  <p *ngIf="loading">Loading…</p>
-  <div class="state" *ngIf="error">
-    <p>{{ error }}</p>
-    <a routerLink="/plan-trip" class="btn btn-primary">Plan a trip</a>
-  </div>
-
-  <ng-container *ngIf="place as p">
-    <div class="gallery" *ngIf="p.photos.length">
-      <img class="main" [src]="listingService.photoUrl(p.photos[activePhoto])" [alt]="p.name">
-      <div class="thumbs" *ngIf="p.photos.length > 1">
-        <button *ngFor="let photo of p.photos; let i = index" type="button" [class.active]="i === activePhoto" (click)="activePhoto = i"
-                [attr.aria-label]="'Photo ' + (i + 1)">
-          <img [src]="listingService.photoUrl(photo)" alt="">
-        </button>
-      </div>
+  @if (loading) {
+    <p>Loading…</p>
+  }
+  @if (error) {
+    <div class="state">
+      <p>{{ error }}</p>
+      <a routerLink="/plan-trip" class="btn btn-primary">Plan a trip</a>
     </div>
+  }
 
+  @if (place; as p) {
+    @if (p.photos.length) {
+      <div class="gallery">
+        <img class="main" [src]="listingService.photoUrl(p.photos[activePhoto])" [alt]="p.name">
+        @if (p.photos.length > 1) {
+          <div class="thumbs">
+            @for (photo of p.photos; track photo; let i = $index) {
+              <button type="button" [class.active]="i === activePhoto" (click)="activePhoto = i"
+                [attr.aria-label]="'Photo ' + (i + 1)">
+                <img [src]="listingService.photoUrl(photo)" alt="">
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
     <div class="layout">
       <div class="main-col">
         <p class="eyebrow">{{ categoryLabel }} · {{ p.city }}</p>
         <h1>{{ p.name }}</h1>
         <div class="badges">
-          <span class="verified" *ngIf="p.verified"><i class="fa fa-check-circle"></i> Verified by owner</span>
-          <span class="sponsored" *ngIf="p.sponsored">Sponsored</span>
-          <span class="veg" *ngIf="p.vegOnly">Pure veg</span>
+          @if (p.verified) {
+            <span class="verified"><i class="fa fa-check-circle"></i> Verified by owner</span>
+          }
+          @if (p.sponsored) {
+            <span class="sponsored">Sponsored</span>
+          }
+          @if (p.vegOnly) {
+            <span class="veg">Pure veg</span>
+          }
         </div>
-        <p class="price" *ngIf="priceText">{{ priceText }}</p>
-        <p class="description" *ngIf="p.description">{{ p.description }}</p>
-
+        @if (priceText) {
+          <p class="price">{{ priceText }}</p>
+        }
+        @if (p.description) {
+          <p class="description">{{ p.description }}</p>
+        }
         <div class="facts">
-          <div *ngIf="p.openingHours"><i class="fa fa-clock-o"></i> {{ p.openingHours }}</div>
-          <div *ngIf="p.duration"><i class="fa fa-hourglass-half"></i> {{ p.duration }}</div>
-          <div *ngIf="p.address"><i class="fa fa-map-marker"></i> {{ p.address }}, {{ p.city }}</div>
+          @if (p.openingHours) {
+            <div><i class="fa fa-clock-o"></i> {{ p.openingHours }}</div>
+          }
+          @if (p.duration) {
+            <div><i class="fa fa-hourglass-half"></i> {{ p.duration }}</div>
+          }
+          @if (p.address) {
+            <div><i class="fa fa-map-marker"></i> {{ p.address }}, {{ p.city }}</div>
+          }
         </div>
-
-        <div class="chips" *ngIf="p.amenities?.length">
-          <h2>Amenities</h2>
-          <span class="chip" *ngFor="let amenity of p.amenities">{{ amenity }}</span>
-        </div>
-        <div class="chips" *ngIf="p.cuisines?.length">
-          <h2>Cuisines</h2>
-          <span class="chip" *ngFor="let cuisine of p.cuisines">{{ cuisine }}</span>
-        </div>
-
+        @if (p.amenities?.length) {
+          <div class="chips">
+            <h2>Amenities</h2>
+            @for (amenity of p.amenities; track amenity) {
+              <span class="chip">{{ amenity }}</span>
+            }
+          </div>
+        }
+        @if (p.cuisines?.length) {
+          <div class="chips">
+            <h2>Cuisines</h2>
+            @for (cuisine of p.cuisines; track cuisine) {
+              <span class="chip">{{ cuisine }}</span>
+            }
+          </div>
+        }
         <h2>Location</h2>
         <div #mapContainer class="map" [attr.aria-label]="'Map showing ' + p.name"></div>
         <a class="small" [href]="directionsLink" target="_blank" rel="noopener">Get directions in Google Maps →</a>
       </div>
-
       <aside class="contact-card">
         <h2>Contact {{ p.name }}</h2>
         <p class="muted small">Message or call the owner directly. No booking fees.</p>
-        <a *ngIf="p.whatsappLink" class="btn btn-success w-100 mb-2" [href]="p.whatsappLink" target="_blank" rel="noopener" (click)="lead('whatsapp')">
-          <i class="fa fa-whatsapp"></i> Ask on WhatsApp
-        </a>
-        <a *ngIf="p.callLink" class="btn btn-outline-secondary w-100 mb-2" [href]="p.callLink" (click)="lead('call')">
-          <i class="fa fa-phone"></i> Call
-        </a>
-        <a *ngIf="p.websiteLink" class="btn btn-outline-secondary w-100 mb-2" [href]="p.websiteLink" target="_blank" rel="noopener nofollow" (click)="lead('website')">
-          <i class="fa fa-globe"></i> Website / book
-        </a>
+        @if (p.whatsappLink) {
+          <a class="btn btn-success w-100 mb-2" [href]="p.whatsappLink" target="_blank" rel="noopener" (click)="lead('whatsapp')">
+            <i class="fa fa-whatsapp"></i> Ask on WhatsApp
+          </a>
+        }
+        @if (p.callLink) {
+          <a class="btn btn-outline-secondary w-100 mb-2" [href]="p.callLink" (click)="lead('call')">
+            <i class="fa fa-phone"></i> Call
+          </a>
+        }
+        @if (p.websiteLink) {
+          <a class="btn btn-outline-secondary w-100 mb-2" [href]="p.websiteLink" target="_blank" rel="noopener nofollow" (click)="lead('website')">
+            <i class="fa fa-globe"></i> Website / book
+          </a>
+        }
         <hr>
-        <div class="share">
-          <a class="btn btn-sm btn-outline-success" [href]="whatsappShare" target="_blank" rel="noopener"><i class="fa fa-whatsapp"></i> Share</a>
-          <button class="btn btn-sm btn-outline-secondary" (click)="share()"><i class="fa fa-link"></i> {{ copied ? 'Copied' : 'Copy link' }}</button>
-        </div>
-        <a class="btn btn-primary w-100 mt-3" routerLink="/plan-trip" [queryParams]="{ destination: p.city }">
-          Plan a trip to {{ p.city }}
-        </a>
-      </aside>
-    </div>
-
-    <p class="muted small mt-4">Listed by the owner and reviewed by CitiTour. Please confirm prices and availability directly with the business.</p>
-  </ng-container>
-</div>
+          <div class="share">
+            <a class="btn btn-sm btn-outline-success" [href]="whatsappShare" target="_blank" rel="noopener"><i class="fa fa-whatsapp"></i> Share</a>
+            <button class="btn btn-sm btn-outline-secondary" (click)="share()"><i class="fa fa-link"></i> {{ copied ? 'Copied' : 'Copy link' }}</button>
+          </div>
+          <a class="btn btn-primary w-100 mt-3" routerLink="/plan-trip" [queryParams]="{ destination: p.city }">
+            Plan a trip to {{ p.city }}
+          </a>
+        </aside>
+      </div>
+      <p class="muted small mt-4">Listed by the owner and reviewed by CitiTour. Please confirm prices and availability directly with the business.</p>
+    }
+  </div>

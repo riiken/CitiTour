@@ -1,70 +1,74 @@
 <div class="container-xxl py-5">
-    <div class="container">
-        <div class="booking p-4 p-md-5">
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-5 text-white">
-                    <h6 class="text-white text-uppercase">{{ 'AI trip planner' | t }}</h6>
-                    <h1 class="text-white mb-4">{{ 'Plan your trip' | t }}</h1>
-                    <p class="mb-3">{{ "Tell us where and when. We'll suggest places to see, stay and eat, with weather, photos and links to check prices." | t }}</p>
-                    <p class="mb-0 small opacity-75">{{ 'Suggestions are AI-generated: double-check opening hours and prices before you go.' | t }}</p>
-                </div>
-                <div class="col-lg-7">
-                    <form (ngSubmit)="onSubmit()" #tripForm="ngForm">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control bg-transparent" id="destination"
-                                           [(ngModel)]="plan.destination" name="destination" [placeholder]="'Destination' | t" required maxlength="100">
-                                    <label for="destination">{{ 'Destination' | t }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="date" class="form-control bg-transparent" id="checkIn"
-                                           [(ngModel)]="plan.checkIn" name="checkIn" [min]="today" required>
-                                    <label for="checkIn">{{ 'Start date' | t }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="date" class="form-control bg-transparent" id="checkOut"
-                                           [(ngModel)]="plan.checkOut" name="checkOut" [min]="plan.checkIn || today" required>
-                                    <label for="checkOut">{{ 'End date' | t }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" class="form-control bg-transparent" id="travellers"
-                                           [(ngModel)]="plan.travellers" name="travellers" min="1" max="30" required>
-                                    <label for="travellers">{{ 'Travellers' | t }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select bg-transparent" id="budget" [(ngModel)]="plan.budget" name="budget">
-                                        <option *ngFor="let budget of budgets" [value]="budget">{{ budget | t }}</option>
-                                    </select>
-                                    <label for="budget">{{ 'Budget' | t }}</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <span class="text-white d-block mb-2">{{ 'Interests' | t }}</span>
-                                <button type="button" *ngFor="let interest of interestOptions"
-                                        class="btn btn-sm rounded-pill me-2 mb-2"
-                                        [class.btn-light]="plan.interests.includes(interest)"
-                                        [class.btn-outline-light]="!plan.interests.includes(interest)"
-                                        [attr.aria-pressed]="plan.interests.includes(interest)"
-                                        (click)="toggleInterest(interest)">
-                                    {{ interest | t }}
-                                </button>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-outline-light w-100 py-3" type="submit">{{ 'Plan my trip' | t }}</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+  <div class="container">
+    <div class="booking p-4 p-md-5">
+      <div class="row g-5 align-items-center">
+        <div class="col-lg-5 text-white">
+          <h6 class="text-white text-uppercase">{{ 'AI trip planner' | t }}</h6>
+          <h1 class="text-white mb-4">{{ 'Plan your trip' | t }}</h1>
+          <p class="mb-3">{{ "Tell us where and when. We'll suggest places to see, stay and eat, with weather, photos and links to check prices." | t }}</p>
+          <p class="mb-0 small opacity-75">{{ 'Suggestions are AI-generated: double-check opening hours and prices before you go.' | t }}</p>
         </div>
+        <div class="col-lg-7">
+          <form (ngSubmit)="onSubmit()" #tripForm="ngForm">
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control bg-transparent" id="destination"
+                    [(ngModel)]="plan.destination" name="destination" [placeholder]="'Destination' | t" required maxlength="100">
+                  <label for="destination">{{ 'Destination' | t }}</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="date" class="form-control bg-transparent" id="checkIn"
+                    [(ngModel)]="plan.checkIn" name="checkIn" [min]="today" required>
+                  <label for="checkIn">{{ 'Start date' | t }}</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="date" class="form-control bg-transparent" id="checkOut"
+                    [(ngModel)]="plan.checkOut" name="checkOut" [min]="plan.checkIn || today" required>
+                  <label for="checkOut">{{ 'End date' | t }}</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="number" class="form-control bg-transparent" id="travellers"
+                    [(ngModel)]="plan.travellers" name="travellers" min="1" max="30" required>
+                  <label for="travellers">{{ 'Travellers' | t }}</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select bg-transparent" id="budget" [(ngModel)]="plan.budget" name="budget">
+                    @for (budget of budgets; track budget) {
+                      <option [value]="budget">{{ budget | t }}</option>
+                    }
+                  </select>
+                  <label for="budget">{{ 'Budget' | t }}</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <span class="text-white d-block mb-2">{{ 'Interests' | t }}</span>
+                @for (interest of interestOptions; track interest) {
+                  <button type="button"
+                    class="btn btn-sm rounded-pill me-2 mb-2"
+                    [class.btn-light]="plan.interests.includes(interest)"
+                    [class.btn-outline-light]="!plan.interests.includes(interest)"
+                    [attr.aria-pressed]="plan.interests.includes(interest)"
+                    (click)="toggleInterest(interest)">
+                    {{ interest | t }}
+                  </button>
+                }
+              </div>
+              <div class="col-12">
+                <button class="btn btn-outline-light w-100 py-3" type="submit">{{ 'Plan my trip' | t }}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

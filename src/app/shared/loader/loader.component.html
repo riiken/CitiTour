@@ -1,10 +1,12 @@
-<div class="loader-wrapper" *ngIf="isLoading">
-  <div class="loader">
-    <div class="wave-dots">
-      <span class="dot dot1">.</span>
-      <span class="dot dot2">.</span>
-      <span class="dot dot3">.</span>
+@if (isLoading) {
+  <div class="loader-wrapper">
+    <div class="loader">
+      <div class="wave-dots">
+        <span class="dot dot1">.</span>
+        <span class="dot dot2">.</span>
+        <span class="dot dot3">.</span>
+      </div>
+      <div class="dynamic-message">{{ currentMessage }}</div>
     </div>
-    <div class="dynamic-message">{{ currentMessage }}</div>
   </div>
-</div>
+}

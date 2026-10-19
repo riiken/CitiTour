@@ -1,41 +1,63 @@
 <div class="trip-page container py-4">
-  <div *ngIf="loading" class="state">{{ 'Loading your trip…' | t }}</div>
+  @if (loading) {
+    <div class="state">{{ 'Loading your trip…' | t }}</div>
+  }
 
-  <div *ngIf="error" class="state">
-    <p>{{ error }}</p>
-    <a routerLink="/plan-trip" class="btn btn-primary">{{ 'Plan a new trip' | t }}</a>
-  </div>
+  @if (error) {
+    <div class="state">
+      <p>{{ error }}</p>
+      <a routerLink="/plan-trip" class="btn btn-primary">{{ 'Plan a new trip' | t }}</a>
+    </div>
+  }
 
-  <ng-container *ngIf="itinerary as trip">
+  @if (itinerary; as trip) {
     <!-- Header -->
     <header class="trip-header">
       <div>
         <p class="eyebrow">{{ trip.destination.name }} · {{ (nights === 1 ? '{n} night' : '{n} nights') | t: { n: nights } }} · {{ (trip.request.travellers === 1 ? '{n} traveller' : '{n} travellers') | t: { n: trip.request.travellers } }}</p>
-        <h1 *ngIf="!editingTitle">
-          {{ trip.title }}
-          <button *ngIf="editing" class="btn btn-link btn-sm p-0 ms-1" (click)="startTitleEdit()" aria-label="Rename trip"><i class="fa fa-pencil"></i></button>
-        </h1>
-        <div class="title-edit" *ngIf="editingTitle">
-          <input class="form-control" [(ngModel)]="titleDraft" maxlength="100" (keyup.enter)="saveTitle()" aria-label="Trip title">
-          <button class="btn btn-primary btn-sm" (click)="saveTitle()">Save</button>
-        </div>
+        @if (!editingTitle) {
+          <h1>
+            {{ trip.title }}
+            @if (editing) {
+              <button class="btn btn-link btn-sm p-0 ms-1" (click)="startTitleEdit()" aria-label="Rename trip"><i class="fa fa-pencil"></i></button>
+            }
+          </h1>
+        }
+        @if (editingTitle) {
+          <div class="title-edit">
+            <input class="form-control" [(ngModel)]="titleDraft" maxlength="100" (keyup.enter)="saveTitle()" aria-label="Trip title">
+            <button class="btn btn-primary btn-sm" (click)="saveTitle()">Save</button>
+          </div>
+        }
         <p class="dates">{{ trip.request.checkIn | date: 'EEE d MMM' }} – {{ trip.request.checkOut | date: 'EEE d MMM y' }}</p>
-        <p class="summary" *ngIf="trip.summary">{{ trip.summary }}</p>
+        @if (trip.summary) {
+          <p class="summary">{{ trip.summary }}</p>
+        }
       </div>
       <div class="header-side">
-        <div class="budget" *ngIf="trip.budget?.total">
-          <span class="label">{{ 'Estimated budget' | t }}</span>
-          <strong>{{ trip.budget?.total }}</strong>
-          <small *ngIf="trip.budget?.includes">{{ trip.budget?.includes }}</small>
-        </div>
+        @if (trip.budget?.total) {
+          <div class="budget">
+            <span class="label">{{ 'Estimated budget' | t }}</span>
+            <strong>{{ trip.budget?.total }}</strong>
+            @if (trip.budget?.includes) {
+              <small>{{ trip.budget?.includes }}</small>
+            }
+          </div>
+        }
         <div class="trip-actions">
-          <button *ngIf="!trip.canEdit" class="btn btn-primary btn-sm" (click)="saveTrip()" [disabled]="busy">
-            <i class="fa fa-bookmark"></i> {{ 'Save to my trips' | t }}
-          </button>
-          <button *ngIf="trip.canEdit" class="btn btn-sm" [class.btn-primary]="!editing" [class.btn-dark]="editing" (click)="toggleEditing()">
-            <i class="fa" [class.fa-pencil]="!editing" [class.fa-check]="editing"></i> {{ (editing ? 'Done editing' : 'Edit trip') | t }}
-          </button>
-          <a *ngIf="trip.canEdit" routerLink="/my-trips" class="btn btn-link btn-sm">{{ 'My trips' | t }}</a>
+          @if (!trip.canEdit) {
+            <button class="btn btn-primary btn-sm" (click)="saveTrip()" [disabled]="busy">
+              <i class="fa fa-bookmark"></i> {{ 'Save to my trips' | t }}
+            </button>
+          }
+          @if (trip.canEdit) {
+            <button class="btn btn-sm" [class.btn-primary]="!editing" [class.btn-dark]="editing" (click)="toggleEditing()">
+              <i class="fa" [class.fa-pencil]="!editing" [class.fa-check]="editing"></i> {{ (editing ? 'Done editing' : 'Edit trip') | t }}
+            </button>
+          }
+          @if (trip.canEdit) {
+            <a routerLink="/my-trips" class="btn btn-link btn-sm">{{ 'My trips' | t }}</a>
+          }
         </div>
         <div class="trip-actions">
           <a class="btn btn-outline-secondary btn-sm" [href]="calendarUrl" download><i class="fa fa-calendar-plus-o"></i> {{ 'Add to calendar' | t }}</a>
@@ -51,206 +73,315 @@
         </div>
       </div>
     </header>
-
     <!-- Where to stay (primary revenue placement) -->
-    <section class="stays" *ngIf="trip.stays.length || trip.links.allStays">
-      <div class="section-head">
-        <h2>{{ 'Where to stay' | t }}</h2>
-        <a [href]="trip.links.allStays" target="_blank" rel="sponsored noopener" class="see-all"
-           (click)="trackClick(trip.links.allStays, 'stays_all')">{{ 'See all stays for your dates →' | t }}</a>
-      </div>
-      <div class="stay-grid">
-        <button *ngIf="editing" class="add-card" (click)="openPicker('stay', 'stay')" [disabled]="busy">
-          <i class="fa fa-plus"></i> Add a place to stay
-        </button>
-        <article class="stay-card" *ngFor="let stay of trip.stays; let si = index" [class.partner]="stay.place.partner">
-          <button *ngIf="editing" class="remove-btn" (click)="removeStay(si)" [disabled]="busy" aria-label="Remove this stay">✕</button>
-          <img *ngIf="stay.place.photo" class="stay-photo" [src]="listingService.photoUrl(stay.place.photo)" [alt]="stay.place.name">
-          <div class="badges">
-            <span class="badge-sponsored" *ngIf="stay.place.sponsored">{{ 'Sponsored' | t }}</span>
-            <span class="badge-verified" *ngIf="stay.place.partner"><i class="fa fa-check-circle"></i> {{ 'Verified by owner' | t }}</span>
-            <span class="stay-kind" *ngIf="stay.place.priceBand">{{ stay.place.priceBand | t }}</span>
-          </div>
-          <h3>
-            <a *ngIf="stay.place.partner && stay.place.listingId; else plainStayName" [routerLink]="['/place', stay.place.listingId]">{{ stay.place.name }}</a>
-            <ng-template #plainStayName>{{ stay.place.name }}</ng-template>
-          </h3>
-          <p class="muted" *ngIf="stay.place.kind === 'area'">{{ stay.place.description }}</p>
-          <p *ngIf="stay.note">{{ stay.note }}</p>
-          <p class="muted small" *ngIf="stay.place.area && stay.place.kind !== 'area'"><i class="fa fa-map-marker"></i> {{ stay.place.area }}</p>
-          <p class="price" *ngIf="!stay.place.partner && stayPrice(stay.place) as price">{{ price }} <span class="muted">{{ "· check today's price" | t }}</span></p>
-          <p class="price" *ngIf="stay.place.partner && stay.place.priceMin">{{ 'From ₹{price}/{unit}' | t: { price: (stay.place.priceMin | number), unit: ((stay.place.priceUnit || 'night') | t) } }}</p>
-          <div class="actions" *ngIf="stay.place.partner">
-            <a *ngIf="stay.place.whatsappLink" class="btn btn-success btn-sm" [href]="stay.place.whatsappLink" target="_blank" rel="noopener"
-               (click)="trackLead(stay.place, 'whatsapp', 'itinerary_stay')"><i class="fa fa-whatsapp"></i> {{ 'Ask on WhatsApp' | t }}</a>
-            <a *ngIf="stay.place.callLink" class="btn btn-outline-secondary btn-sm" [href]="stay.place.callLink"
-               (click)="trackLead(stay.place, 'call', 'itinerary_stay')"><i class="fa fa-phone"></i> {{ 'Call' | t }}</a>
-            <a *ngIf="stay.place.websiteLink" class="btn btn-outline-secondary btn-sm" [href]="stay.place.websiteLink" target="_blank" rel="noopener"
-               (click)="trackLead(stay.place, 'website', 'itinerary_stay')">{{ 'Website' | t }}</a>
-            <a *ngIf="stay.place.mapsLink" class="btn btn-outline-secondary btn-sm" [href]="stay.place.mapsLink" target="_blank" rel="noopener">{{ 'Map' | t }}</a>
-          </div>
-          <div class="actions" *ngIf="!stay.place.partner">
-            <a *ngIf="stay.place.bookingLink" class="btn btn-primary btn-sm" [href]="stay.place.bookingLink" target="_blank" rel="sponsored noopener"
-               (click)="trackClick(stay.place.bookingLink, 'itinerary_stay')">
-              {{ (stay.place.kind === 'area' ? 'Find hotels here' : 'Check prices') | t }}
-            </a>
-            <a *ngIf="stay.place.mapsLink" class="btn btn-outline-secondary btn-sm" [href]="stay.place.mapsLink" target="_blank" rel="noopener"
-               (click)="trackClick(stay.place.mapsLink, 'itinerary_stay_map')">{{ 'Map' | t }}</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- Map -->
-    <section class="map-section">
-      <div class="day-filter">
-        <button class="chip" [class.active]="selectedDay === null" (click)="selectDay(null)">{{ 'All days' | t }}</button>
-        <button class="chip" *ngFor="let day of trip.days" [class.active]="selectedDay === day.day"
+    @if (trip.stays.length || trip.links.allStays) {
+      <section class="stays">
+        <div class="section-head">
+          <h2>{{ 'Where to stay' | t }}</h2>
+          <a [href]="trip.links.allStays" target="_blank" rel="sponsored noopener" class="see-all"
+          (click)="trackClick(trip.links.allStays, 'stays_all')">{{ 'See all stays for your dates →' | t }}</a>
+        </div>
+        <div class="stay-grid">
+          @if (editing) {
+            <button class="add-card" (click)="openPicker('stay', 'stay')" [disabled]="busy">
+              <i class="fa fa-plus"></i> Add a place to stay
+            </button>
+          }
+          @for (stay of trip.stays; track stay; let si = $index) {
+            <article class="stay-card" [class.partner]="stay.place.partner">
+              @if (editing) {
+                <button class="remove-btn" (click)="removeStay(si)" [disabled]="busy" aria-label="Remove this stay">✕</button>
+              }
+              @if (stay.place.photo) {
+                <img class="stay-photo" [src]="listingService.photoUrl(stay.place.photo)" [alt]="stay.place.name">
+              }
+              <div class="badges">
+                @if (stay.place.sponsored) {
+                  <span class="badge-sponsored">{{ 'Sponsored' | t }}</span>
+                }
+                @if (stay.place.partner) {
+                  <span class="badge-verified"><i class="fa fa-check-circle"></i> {{ 'Verified by owner' | t }}</span>
+                }
+                @if (stay.place.priceBand) {
+                  <span class="stay-kind">{{ stay.place.priceBand | t }}</span>
+                }
+              </div>
+              <h3>
+                @if (stay.place.partner && stay.place.listingId) {
+                  <a [routerLink]="['/place', stay.place.listingId]">{{ stay.place.name }}</a>
+                } @else {
+                  {{ stay.place.name }}
+                }
+              </h3>
+              @if (stay.place.kind === 'area') {
+                <p class="muted">{{ stay.place.description }}</p>
+              }
+              @if (stay.note) {
+                <p>{{ stay.note }}</p>
+              }
+              @if (stay.place.area && stay.place.kind !== 'area') {
+                <p class="muted small"><i class="fa fa-map-marker"></i> {{ stay.place.area }}</p>
+              }
+              @if (!stay.place.partner && stayPrice(stay.place); as price) {
+                <p class="price">{{ price }} <span class="muted">{{ "· check today's price" | t }}</span></p>
+              }
+              @if (stay.place.partner && stay.place.priceMin) {
+                <p class="price">{{ 'From ₹{price}/{unit}' | t: { price: (stay.place.priceMin | number), unit: ((stay.place.priceUnit || 'night') | t) } }}</p>
+              }
+              @if (stay.place.partner) {
+                <div class="actions">
+                  @if (stay.place.whatsappLink) {
+                    <a class="btn btn-success btn-sm" [href]="stay.place.whatsappLink" target="_blank" rel="noopener"
+                      (click)="trackLead(stay.place, 'whatsapp', 'itinerary_stay')"><i class="fa fa-whatsapp"></i> {{ 'Ask on WhatsApp' | t }}</a>
+                    }
+                    @if (stay.place.callLink) {
+                      <a class="btn btn-outline-secondary btn-sm" [href]="stay.place.callLink"
+                        (click)="trackLead(stay.place, 'call', 'itinerary_stay')"><i class="fa fa-phone"></i> {{ 'Call' | t }}</a>
+                      }
+                      @if (stay.place.websiteLink) {
+                        <a class="btn btn-outline-secondary btn-sm" [href]="stay.place.websiteLink" target="_blank" rel="noopener"
+                        (click)="trackLead(stay.place, 'website', 'itinerary_stay')">{{ 'Website' | t }}</a>
+                      }
+                      @if (stay.place.mapsLink) {
+                        <a class="btn btn-outline-secondary btn-sm" [href]="stay.place.mapsLink" target="_blank" rel="noopener">{{ 'Map' | t }}</a>
+                      }
+                    </div>
+                  }
+                  @if (!stay.place.partner) {
+                    <div class="actions">
+                      @if (stay.place.bookingLink) {
+                        <a class="btn btn-primary btn-sm" [href]="stay.place.bookingLink" target="_blank" rel="sponsored noopener"
+                          (click)="trackClick(stay.place.bookingLink, 'itinerary_stay')">
+                          {{ (stay.place.kind === 'area' ? 'Find hotels here' : 'Check prices') | t }}
+                        </a>
+                      }
+                      @if (stay.place.mapsLink) {
+                        <a class="btn btn-outline-secondary btn-sm" [href]="stay.place.mapsLink" target="_blank" rel="noopener"
+                        (click)="trackClick(stay.place.mapsLink, 'itinerary_stay_map')">{{ 'Map' | t }}</a>
+                      }
+                    </div>
+                  }
+                </article>
+              }
+            </div>
+          </section>
+        }
+        <!-- Map -->
+        <section class="map-section">
+          <div class="day-filter">
+            <button class="chip" [class.active]="selectedDay === null" (click)="selectDay(null)">{{ 'All days' | t }}</button>
+            @for (day of trip.days; track day) {
+              <button class="chip" [class.active]="selectedDay === day.day"
                 [style.borderColor]="dayColours[(day.day - 1) % dayColours.length]" (click)="selectDay(day.day)">
-          {{ 'Day {n}' | t: { n: day.day } }}
-        </button>
-      </div>
-      <div #mapContainer class="trip-map" role="img" [attr.aria-label]="'Map of the ' + trip.destination.name + ' itinerary'"></div>
-    </section>
-
-    <app-weather-display *ngIf="forecast.length" [weather]="null" [forecast]="forecast" [loading]="false"></app-weather-display>
-
-    <!-- Day by day -->
-    <section class="days">
-      <article class="day" *ngFor="let day of trip.days" [style.borderLeftColor]="dayColours[(day.day - 1) % dayColours.length]">
-        <header>
-          <h2>{{ 'Day {n}' | t: { n: day.day } }} <span class="muted">· {{ day.date | date: 'EEE d MMM' }}</span></h2>
-          <p class="theme" *ngIf="day.theme">{{ day.theme }}</p>
-          <p class="muted small" *ngIf="day.kind === 'arrival'">{{ 'Arrival day: a lighter plan' | t }}</p>
-          <p class="muted small" *ngIf="day.kind === 'departure'">{{ 'Departure day: morning only' | t }}</p>
-        </header>
-
-        <div class="item" *ngFor="let item of day.items; let ii = index" [class.meal]="isMeal(item)">
-          <div class="slot">{{ slotLabels[item.slot] | t }}</div>
-          <div class="body">
-            <h3>
-              <i class="fa {{ kindIcon(item.place.kind) }}"></i>
-              <a *ngIf="item.place.partner && item.place.listingId; else plainItemName" [routerLink]="['/place', item.place.listingId]">{{ item.place.name }}</a>
-              <ng-template #plainItemName>{{ item.place.name }}</ng-template>
-              <span class="badge-verified" *ngIf="item.place.partner"><i class="fa fa-check-circle"></i> {{ 'Verified by owner' | t }}</span>
-            </h3>
-            <p *ngIf="item.note">{{ item.note }}</p>
-            <p class="muted small" *ngIf="!item.note && item.place.description">{{ item.place.description }}</p>
-            <p class="muted small" *ngIf="item.place.cuisines?.length">{{ item.place.cuisines?.join(' · ') }}</p>
-            <div class="actions">
-              <a *ngIf="item.place.mapsLink" class="btn btn-outline-secondary btn-sm" [href]="item.place.mapsLink" target="_blank" rel="noopener"
-                 (click)="trackClick(item.place.mapsLink, 'itinerary_item_map')">{{ 'Map' | t }}</a>
-              <ng-container *ngIf="item.place.partner; else affiliate">
-                <a *ngIf="item.place.whatsappLink" class="btn btn-success btn-sm" [href]="item.place.whatsappLink" target="_blank" rel="noopener"
-                   (click)="trackLead(item.place, 'whatsapp', 'itinerary_item')"><i class="fa fa-whatsapp"></i> {{ 'WhatsApp' | t }}</a>
-                <a *ngIf="item.place.callLink" class="btn btn-outline-secondary btn-sm" [href]="item.place.callLink"
-                   (click)="trackLead(item.place, 'call', 'itinerary_item')"><i class="fa fa-phone"></i> {{ 'Call' | t }}</a>
-              </ng-container>
-              <ng-template #affiliate>
-                <a *ngIf="item.place.bookingLink" class="btn btn-primary btn-sm" [href]="item.place.bookingLink" target="_blank" rel="sponsored noopener"
-                   (click)="trackClick(item.place.bookingLink, 'itinerary_item')">{{ bookLabel(item.place) | t }}</a>
-              </ng-template>
-            </div>
-            <div class="edit-bar" *ngIf="editing">
-              <button class="btn btn-outline-primary btn-sm" (click)="openPicker(isMeal(item) ? 'meal' : 'activity', 'replace', day.day, ii)" [disabled]="busy">
-                <i class="fa fa-exchange"></i> Swap
+                {{ 'Day {n}' | t: { n: day.day } }}
               </button>
-              <select class="form-select form-select-sm move" [disabled]="busy" (change)="moveItem(day.day, ii, $any($event.target).value); $any($event.target).value = ''"
-                      aria-label="Move to another day">
-                <option value="">Move to…</option>
-                <ng-container *ngFor="let other of trip.days">
-                  <option *ngIf="other.day !== day.day" [value]="other.day">Day {{ other.day }}</option>
-                </ng-container>
-              </select>
-              <button class="btn btn-outline-danger btn-sm" (click)="removeItem(day.day, ii)" [disabled]="busy" aria-label="Remove">
-                <i class="fa fa-trash"></i>
-              </button>
+            }
+          </div>
+          <div #mapContainer class="trip-map" role="img" [attr.aria-label]="'Map of the ' + trip.destination.name + ' itinerary'"></div>
+        </section>
+        @if (forecast.length) {
+          <app-weather-display [weather]="null" [forecast]="forecast" [loading]="false"></app-weather-display>
+        }
+        <!-- Day by day -->
+        <section class="days">
+          @for (day of trip.days; track day) {
+            <article class="day" [style.borderLeftColor]="dayColours[(day.day - 1) % dayColours.length]">
+              <header>
+                <h2>{{ 'Day {n}' | t: { n: day.day } }} <span class="muted">· {{ day.date | date: 'EEE d MMM' }}</span></h2>
+                @if (day.theme) {
+                  <p class="theme">{{ day.theme }}</p>
+                }
+                @if (day.kind === 'arrival') {
+                  <p class="muted small">{{ 'Arrival day: a lighter plan' | t }}</p>
+                }
+                @if (day.kind === 'departure') {
+                  <p class="muted small">{{ 'Departure day: morning only' | t }}</p>
+                }
+              </header>
+              @for (item of day.items; track item; let ii = $index) {
+                <div class="item" [class.meal]="isMeal(item)">
+                  <div class="slot">{{ slotLabels[item.slot] | t }}</div>
+                  <div class="body">
+                    <h3>
+                      <i class="fa {{ kindIcon(item.place.kind) }}"></i>
+                      @if (item.place.partner && item.place.listingId) {
+                        <a [routerLink]="['/place', item.place.listingId]">{{ item.place.name }}</a>
+                      } @else {
+                        {{ item.place.name }}
+                      }
+                      @if (item.place.partner) {
+                        <span class="badge-verified"><i class="fa fa-check-circle"></i> {{ 'Verified by owner' | t }}</span>
+                      }
+                    </h3>
+                    @if (item.note) {
+                      <p>{{ item.note }}</p>
+                    }
+                    @if (!item.note && item.place.description) {
+                      <p class="muted small">{{ item.place.description }}</p>
+                    }
+                    @if (item.place.cuisines?.length) {
+                      <p class="muted small">{{ item.place.cuisines?.join(' · ') }}</p>
+                    }
+                    <div class="actions">
+                      @if (item.place.mapsLink) {
+                        <a class="btn btn-outline-secondary btn-sm" [href]="item.place.mapsLink" target="_blank" rel="noopener"
+                        (click)="trackClick(item.place.mapsLink, 'itinerary_item_map')">{{ 'Map' | t }}</a>
+                      }
+                      @if (item.place.partner) {
+                        @if (item.place.whatsappLink) {
+                          <a class="btn btn-success btn-sm" [href]="item.place.whatsappLink" target="_blank" rel="noopener"
+                            (click)="trackLead(item.place, 'whatsapp', 'itinerary_item')"><i class="fa fa-whatsapp"></i> {{ 'WhatsApp' | t }}</a>
+                          }
+                          @if (item.place.callLink) {
+                            <a class="btn btn-outline-secondary btn-sm" [href]="item.place.callLink"
+                              (click)="trackLead(item.place, 'call', 'itinerary_item')"><i class="fa fa-phone"></i> {{ 'Call' | t }}</a>
+                            }
+                          } @else {
+                            @if (item.place.bookingLink) {
+                              <a class="btn btn-primary btn-sm" [href]="item.place.bookingLink" target="_blank" rel="sponsored noopener"
+                              (click)="trackClick(item.place.bookingLink, 'itinerary_item')">{{ bookLabel(item.place) | t }}</a>
+                            }
+                          }
+                        </div>
+                        @if (editing) {
+                          <div class="edit-bar">
+                            <button class="btn btn-outline-primary btn-sm" (click)="openPicker(isMeal(item) ? 'meal' : 'activity', 'replace', day.day, ii)" [disabled]="busy">
+                              <i class="fa fa-exchange"></i> Swap
+                            </button>
+                            <select class="form-select form-select-sm move" [disabled]="busy" (change)="moveItem(day.day, ii, $any($event.target).value); $any($event.target).value = ''"
+                              aria-label="Move to another day">
+                              <option value="">Move to…</option>
+                              @for (other of trip.days; track other) {
+                                @if (other.day !== day.day) {
+                                  <option [value]="other.day">Day {{ other.day }}</option>
+                                }
+                              }
+                            </select>
+                            <button class="btn btn-outline-danger btn-sm" (click)="removeItem(day.day, ii)" [disabled]="busy" aria-label="Remove">
+                              <i class="fa fa-trash"></i>
+                            </button>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  }
+                  @if (!day.items.length) {
+                    <p class="muted">{{ 'Free time. Explore at your own pace.' | t }}</p>
+                  }
+                  @if (editing) {
+                    <div class="day-add">
+                      <button class="btn btn-outline-secondary btn-sm" (click)="openPicker('activity', 'add', day.day)" [disabled]="busy"><i class="fa fa-plus"></i> Add a stop</button>
+                      <button class="btn btn-outline-secondary btn-sm" (click)="openPicker('meal', 'add', day.day)" [disabled]="busy"><i class="fa fa-cutlery"></i> Add a meal</button>
+                    </div>
+                  }
+                  @if (day.foodNearbyLink) {
+                    <a class="food-link" [href]="day.foodNearbyLink" target="_blank" rel="noopener"
+                      (click)="trackClick(day.foodNearbyLink, 'food_nearby')"><i class="fa fa-cutlery"></i> {{ 'Find places to eat nearby' | t }}</a>
+                    }
+                  </article>
+                }
+              </section>
+              <section class="cta-band">
+                <div>
+                  <h2>{{ 'Ready to go?' | t }}</h2>
+                  <p>Lock in your stay early: prices for {{ trip.request.checkIn | date: 'MMMM' }} usually rise closer to the date.</p>
+                </div>
+                <div class="actions">
+                  <a class="btn btn-primary" [href]="trip.links.allStays" target="_blank" rel="sponsored noopener" (click)="trackClick(trip.links.allStays, 'cta_stays')">{{ 'Find hotels' | t }}</a>
+                  <a class="btn btn-outline-light" [href]="trip.links.allActivities" target="_blank" rel="sponsored noopener" (click)="trackClick(trip.links.allActivities, 'cta_activities')">{{ 'Find activities' | t }}</a>
+                </div>
+              </section>
+              @if (packing.length) {
+                <section class="packing">
+                  <button class="packing-toggle" (click)="showPacking = !showPacking" [attr.aria-expanded]="showPacking">
+                    <span><i class="fa fa-suitcase"></i> {{ 'Packing checklist' | t }}</span>
+                    <span class="muted small">{{ '{done} of {total} packed' | t: { done: packed.size, total: packing.length } }} <i class="fa" [class.fa-chevron-down]="!showPacking" [class.fa-chevron-up]="showPacking"></i></span>
+                  </button>
+                  @if (showPacking) {
+                    <div class="packing-body">
+                      @for (group of packingGroups; track group) {
+                        <div class="packing-group">
+                          <h3>{{ group.category }}</h3>
+                          @for (entry of group.items; track entry) {
+                            <label class="packing-item" [class.done]="packed.has(entry.item)">
+                              <input type="checkbox" [checked]="packed.has(entry.item)" (change)="togglePacked(entry.item)">
+                              <span>{{ entry.item }}<small class="d-block muted">{{ entry.reason }}</small></span>
+                            </label>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                </section>
+              }
+              @if (trip.tips?.length) {
+                <section class="tips">
+                  <h2>{{ 'Good to know' | t }}</h2>
+                  <ul>@for (tip of trip.tips; track tip) {
+                    <li>{{ tip }}</li>
+                  }</ul>
+                </section>
+              }
+              <app-google-ads></app-google-ads>
+              @if (picker) {
+                <div class="picker-backdrop" (click)="picker = null"></div>
+              }
+              @if (picker; as p) {
+                <aside class="picker" role="dialog" aria-label="Choose a place">
+                  <header>
+                    <h2>{{ p.mode === 'stay' ? 'Add a place to stay' : p.mode === 'replace' ? 'Swap with…' : (p.group === 'meal' ? 'Add a meal' : 'Add a stop') + ' on day ' + p.day }}</h2>
+                    <button class="btn-close" (click)="picker = null" aria-label="Close"></button>
+                  </header>
+                  @if (p.mode === 'add') {
+                    <div class="slot-choice">
+                      <span>When:</span>
+                      @for (slot of slotChoices(p.group); track slot) {
+                        <button class="chip" [class.active]="p.slot === slot" (click)="p.slot = slot">{{ slotLabels[slot] }}</button>
+                      }
+                    </div>
+                  }
+                  @if (p.loading) {
+                    <p class="muted">Finding nearby places…</p>
+                  }
+                  @if (!p.loading && !p.options.length) {
+                    <p class="muted">No more places available here. Try another day or category.</p>
+                  }
+                  <ul class="options">
+                    @for (option of p.options; track option) {
+                      <li>
+                        <div>
+                          <strong>{{ option.name }}</strong>
+                          @if (option.partner) {
+                            <span class="badge-verified"><i class="fa fa-check-circle"></i> Verified</span>
+                          }
+                          <small class="d-block muted">
+                            @if (option.distanceKm !== null) {
+                              <span>{{ option.distanceKm }} km away · </span>
+                              }{{ option.description || option.area || option.kind }}
+                            </small>
+                          </div>
+                          <button class="btn btn-primary btn-sm" (click)="choose(option)" [disabled]="busy">Choose</button>
+                        </li>
+                      }
+                    </ul>
+                  </aside>
+                }
+                <footer class="sources">
+                  <p>
+                    Places from
+                    @if (trip.guide) {
+                      <a [href]="trip.guide.url" target="_blank" rel="noopener">Wikivoyage: {{ trip.guide.title }}</a> (CC BY-SA 4.0),
+                    }
+                    Wikipedia and OpenStreetMap.
+                    {{ trip.generatedBy === 'ai' ? 'Plan arranged with AI from these real places.' : 'Plan arranged automatically from these real places.' }}
+                    Check opening hours and prices before you go.
+                  </p>
+                  <p>{{ 'Booking links may earn CitiTour a commission at no extra cost to you.' | t }}</p>
+                  @if (trip.hasPartners) {
+                    <p>Businesses marked "Verified by owner" were listed by their owners and reviewed by CitiTour. "Sponsored" listings pay for placement.</p>
+                  }
+                  <a routerLink="/plan-trip" class="btn btn-outline-primary btn-sm">{{ 'Plan another trip' | t }}</a>
+                  <a routerLink="/list-your-business" class="btn btn-link btn-sm">Own a business in {{ trip.destination.name }}? List it free</a>
+                </footer>
+              }
             </div>
-          </div>
-        </div>
-
-        <p class="muted" *ngIf="!day.items.length">{{ 'Free time. Explore at your own pace.' | t }}</p>
-        <div class="day-add" *ngIf="editing">
-          <button class="btn btn-outline-secondary btn-sm" (click)="openPicker('activity', 'add', day.day)" [disabled]="busy"><i class="fa fa-plus"></i> Add a stop</button>
-          <button class="btn btn-outline-secondary btn-sm" (click)="openPicker('meal', 'add', day.day)" [disabled]="busy"><i class="fa fa-cutlery"></i> Add a meal</button>
-        </div>
-        <a *ngIf="day.foodNearbyLink" class="food-link" [href]="day.foodNearbyLink" target="_blank" rel="noopener"
-           (click)="trackClick(day.foodNearbyLink, 'food_nearby')"><i class="fa fa-cutlery"></i> {{ 'Find places to eat nearby' | t }}</a>
-      </article>
-    </section>
-
-    <section class="cta-band">
-      <div>
-        <h2>{{ 'Ready to go?' | t }}</h2>
-        <p>Lock in your stay early: prices for {{ trip.request.checkIn | date: 'MMMM' }} usually rise closer to the date.</p>
-      </div>
-      <div class="actions">
-        <a class="btn btn-primary" [href]="trip.links.allStays" target="_blank" rel="sponsored noopener" (click)="trackClick(trip.links.allStays, 'cta_stays')">{{ 'Find hotels' | t }}</a>
-        <a class="btn btn-outline-light" [href]="trip.links.allActivities" target="_blank" rel="sponsored noopener" (click)="trackClick(trip.links.allActivities, 'cta_activities')">{{ 'Find activities' | t }}</a>
-      </div>
-    </section>
-
-    <section class="packing" *ngIf="packing.length">
-      <button class="packing-toggle" (click)="showPacking = !showPacking" [attr.aria-expanded]="showPacking">
-        <span><i class="fa fa-suitcase"></i> {{ 'Packing checklist' | t }}</span>
-        <span class="muted small">{{ '{done} of {total} packed' | t: { done: packed.size, total: packing.length } }} <i class="fa" [class.fa-chevron-down]="!showPacking" [class.fa-chevron-up]="showPacking"></i></span>
-      </button>
-      <div class="packing-body" *ngIf="showPacking">
-        <div class="packing-group" *ngFor="let group of packingGroups">
-          <h3>{{ group.category }}</h3>
-          <label *ngFor="let entry of group.items" class="packing-item" [class.done]="packed.has(entry.item)">
-            <input type="checkbox" [checked]="packed.has(entry.item)" (change)="togglePacked(entry.item)">
-            <span>{{ entry.item }}<small class="d-block muted">{{ entry.reason }}</small></span>
-          </label>
-        </div>
-      </div>
-    </section>
-
-    <section class="tips" *ngIf="trip.tips?.length">
-      <h2>{{ 'Good to know' | t }}</h2>
-      <ul><li *ngFor="let tip of trip.tips">{{ tip }}</li></ul>
-    </section>
-
-    <app-google-ads></app-google-ads>
-
-    <div class="picker-backdrop" *ngIf="picker" (click)="picker = null"></div>
-    <aside class="picker" *ngIf="picker as p" role="dialog" aria-label="Choose a place">
-      <header>
-        <h2>{{ p.mode === 'stay' ? 'Add a place to stay' : p.mode === 'replace' ? 'Swap with…' : (p.group === 'meal' ? 'Add a meal' : 'Add a stop') + ' on day ' + p.day }}</h2>
-        <button class="btn-close" (click)="picker = null" aria-label="Close"></button>
-      </header>
-      <div class="slot-choice" *ngIf="p.mode === 'add'">
-        <span>When:</span>
-        <button *ngFor="let slot of slotChoices(p.group)" class="chip" [class.active]="p.slot === slot" (click)="p.slot = slot">{{ slotLabels[slot] }}</button>
-      </div>
-      <p class="muted" *ngIf="p.loading">Finding nearby places…</p>
-      <p class="muted" *ngIf="!p.loading && !p.options.length">No more places available here. Try another day or category.</p>
-      <ul class="options">
-        <li *ngFor="let option of p.options">
-          <div>
-            <strong>{{ option.name }}</strong>
-            <span class="badge-verified" *ngIf="option.partner"><i class="fa fa-check-circle"></i> Verified</span>
-            <small class="d-block muted">
-              <span *ngIf="option.distanceKm !== null">{{ option.distanceKm }} km away · </span>{{ option.description || option.area || option.kind }}
-            </small>
-          </div>
-          <button class="btn btn-primary btn-sm" (click)="choose(option)" [disabled]="busy">Choose</button>
-        </li>
-      </ul>
-    </aside>
-
-    <footer class="sources">
-      <p>
-        Places from
-        <ng-container *ngIf="trip.guide"><a [href]="trip.guide.url" target="_blank" rel="noopener">Wikivoyage: {{ trip.guide.title }}</a> (CC BY-SA 4.0), </ng-container>
-        Wikipedia and OpenStreetMap.
-        {{ trip.generatedBy === 'ai' ? 'Plan arranged with AI from these real places.' : 'Plan arranged automatically from these real places.' }}
-        Check opening hours and prices before you go.
-      </p>
-      <p>{{ 'Booking links may earn CitiTour a commission at no extra cost to you.' | t }}</p>
-      <p *ngIf="trip.hasPartners">Businesses marked "Verified by owner" were listed by their owners and reviewed by CitiTour. "Sponsored" listings pay for placement.</p>
-      <a routerLink="/plan-trip" class="btn btn-outline-primary btn-sm">{{ 'Plan another trip' | t }}</a>
-      <a routerLink="/list-your-business" class="btn btn-link btn-sm">Own a business in {{ trip.destination.name }}? List it free</a>
-    </footer>
-  </ng-container>
-</div>

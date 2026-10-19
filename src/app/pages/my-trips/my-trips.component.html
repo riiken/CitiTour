@@ -4,29 +4,41 @@
     <a routerLink="/plan-trip" class="btn btn-primary"><i class="fa fa-plus"></i> {{ 'Plan a new trip' | t }}</a>
   </div>
 
-  <p *ngIf="loading">Loading…</p>
-  <div class="alert alert-warning" *ngIf="error">{{ error }}</div>
+  @if (loading) {
+    <p>Loading…</p>
+  }
+  @if (error) {
+    <div class="alert alert-warning">{{ error }}</div>
+  }
 
-  <div class="empty" *ngIf="!loading && !error && !trips.length">
-    <h2>{{ 'No saved trips yet' | t }}</h2>
-    <p>Plan a trip, or open a trip a friend shared, and tap <strong>{{ 'Save to my trips' | t }}</strong>.</p>
-    <a routerLink="/plan-trip" class="btn btn-primary">{{ 'Plan a trip' | t }}</a>
-  </div>
+  @if (!loading && !error && !trips.length) {
+    <div class="empty">
+      <h2>{{ 'No saved trips yet' | t }}</h2>
+      <p>Plan a trip, or open a trip a friend shared, and tap <strong>{{ 'Save to my trips' | t }}</strong>.</p>
+      <a routerLink="/plan-trip" class="btn btn-primary">{{ 'Plan a trip' | t }}</a>
+    </div>
+  }
 
-  <ng-container *ngFor="let group of [{ label: 'Upcoming', trips: upcoming }, { label: 'Past', trips: past }]">
-    <section *ngIf="group.trips.length">
-      <h2>{{ group.label | t }}</h2>
-      <div class="grid">
-        <article class="trip" *ngFor="let trip of group.trips">
-          <a [routerLink]="['/trip', trip.id]" class="trip-link">
-            <p class="eyebrow">{{ trip.destination }}</p>
-            <h3>{{ trip.title }}</h3>
-            <p class="muted">{{ trip.checkIn | date: 'd MMM' }} – {{ trip.checkOut | date: 'd MMM y' }} · {{ trip.travellers }} traveller{{ trip.travellers === 1 ? '' : 's' }}</p>
-            <p class="small">{{ trip.days }} days · {{ trip.stops }} stops<span *ngIf="trip.edited"> · edited</span></p>
-          </a>
-          <button class="btn btn-link btn-sm text-danger delete" (click)="remove(trip)" aria-label="Delete trip"><i class="fa fa-trash"></i></button>
-        </article>
-      </div>
-    </section>
-  </ng-container>
+  @for (group of [{ label: 'Upcoming', trips: upcoming }, { label: 'Past', trips: past }]; track group) {
+    @if (group.trips.length) {
+      <section>
+        <h2>{{ group.label | t }}</h2>
+        <div class="grid">
+          @for (trip of group.trips; track trip) {
+            <article class="trip">
+              <a [routerLink]="['/trip', trip.id]" class="trip-link">
+                <p class="eyebrow">{{ trip.destination }}</p>
+                <h3>{{ trip.title }}</h3>
+                <p class="muted">{{ trip.checkIn | date: 'd MMM' }} – {{ trip.checkOut | date: 'd MMM y' }} · {{ trip.travellers }} traveller{{ trip.travellers === 1 ? '' : 's' }}</p>
+                <p class="small">{{ trip.days }} days · {{ trip.stops }} stops@if (trip.edited) {
+                  <span> · edited</span>
+                }</p>
+              </a>
+              <button class="btn btn-link btn-sm text-danger delete" (click)="remove(trip)" aria-label="Delete trip"><i class="fa fa-trash"></i></button>
+            </article>
+          }
+        </div>
+      </section>
+    }
+  }
 </div>
