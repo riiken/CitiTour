@@ -17,10 +17,6 @@ import { BookingComponent } from './components/booking/booking.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ProcessComponent } from './components/process/process.component';
 import { ServicesComponent } from './components/services/services.component';
-import { SearchResultsComponent } from './components/search-results/search-results.component';
-import { HotelDetailsComponent } from './components/hotel-details/hotel-details.component';
-import { ResturantDetailsComponent } from './components/resturant-details/resturant-details.component';
-import { TourDetailsComponent } from './components/tour-details/tour-details.component';
 import { WeatherDisplayComponent } from './components/weather-display/weather-display.component';
 import { ImageGalleryComponent } from './components/image-gallery/image-gallery.component';
 import { TripPlannerComponent } from './pages/trip-planner/trip-planner.component';
@@ -31,6 +27,7 @@ import { ListingFormComponent } from './pages/partner/listing-form/listing-form.
 import { AdminComponent } from './pages/admin/admin.component';
 import { PlaceComponent } from './pages/place/place.component';
 import { MyTripsComponent } from './pages/my-trips/my-trips.component';
+import { ExploreComponent } from './pages/explore/explore.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
@@ -41,7 +38,6 @@ import { LoaderComponent } from './shared/loader/loader.component';
 import { LocationPickerComponent } from './shared/location-picker/location-picker.component';
 import { NavbarStickyDirective } from './navbar-sticky.directive';
 import { BackToTopDirective } from './back-to-top.directive';
-import { CurrencyConverterDirective } from './currency-converter.directive';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
@@ -56,10 +52,6 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ContactComponent,
     ProcessComponent,
     ServicesComponent,
-    SearchResultsComponent,
-    HotelDetailsComponent,
-    ResturantDetailsComponent,
-    TourDetailsComponent,
     WeatherDisplayComponent,
     ImageGalleryComponent,
     TripPlannerComponent,
@@ -70,6 +62,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     AdminComponent,
     PlaceComponent,
     MyTripsComponent,
+    ExploreComponent,
     PrivacyPolicyComponent,
     LoginComponent,
     RegisterComponent,
@@ -79,8 +72,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     LoaderComponent,
     LocationPickerComponent,
     NavbarStickyDirective,
-    BackToTopDirective,
-    CurrencyConverterDirective
+    BackToTopDirective
   ],
   bootstrap: [AppComponent],
   imports: [

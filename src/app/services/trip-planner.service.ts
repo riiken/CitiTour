@@ -41,10 +41,6 @@ export class TripPlannerService {
 
   constructor(private http: HttpClient) {}
 
-  getUserLocation(): Observable<any> {
-    return this.http.get('https://ipapi.co/json/');
-  }
-
   getTripRecommentdation(trip: TripRequest): Observable<{ query: string; guides: TravelGuide }> {
     const query = `Plan a ${trip.budget.toLowerCase()} trip to ${trip.destination} from ${trip.checkIn} to ${trip.checkOut} for ${trip.travellers} travellers.`;
     return this.http.post<{ query: string; guides: TravelGuide }>(`${this.apiUrl}query`, {

@@ -1,0 +1,97 @@
+<div class="container py-4 explore">
+  <form class="search" (ngSubmit)="search()">
+    <i class="fa fa-search"></i>
+    <input class="form-control" name="q" [(ngModel)]="query" placeholder="Explore a city or region, e.g. Udaipur" aria-label="Destination">
+    <button class="btn btn-primary" type="submit">Explore</button>
+  </form>
+
+  <div *ngIf="!destination" class="start">
+    <h1>Explore India, place by place</h1>
+    <p class="muted">Sights, activities, stays and food from travel guides and verified local businesses.</p>
+    <div class="popular">
+      <button *ngFor="let place of popular" type="button" class="chip" (click)="search(place)">{{ place }}</button>
+    </div>
+  </div>
+
+  <p *ngIf="loading" class="muted">Finding the best of {{ destination }}…</p>
+  <div class="alert alert-warning" *ngIf="error">{{ error }}</div>
+
+  <ng-container *ngIf="data && !loading">
+    <header class="head">
+      <div>
+        <h1>{{ data.destination.name }}</h1>
+        <p class="muted small">{{ data.destination.displayName }}</p>
+      </div>
+      <a class="btn btn-primary" routerLink="/plan-trip" [queryParams]="{ destination: data.destination.name }">
+        <i class="fa fa-calendar"></i> Plan a trip here
+      </a>
+    </header>
+
+    <nav class="tabs" role="tablist">
+      <button *ngFor="let section of sections" role="tab" [attr.aria-selected]="active === section"
+              [class.active]="active === section" (click)="select(section)" [disabled]="!data.counts[section]">
+        {{ sectionLabels[section] }} <span class="count">{{ data.counts[section] }}</span>
+      </button>
+    </nav>
+
+    <div class="filters">
+      <button *ngIf="hasPartners" class="chip" [class.active]="verifiedOnly" (click)="toggleVerified()">
+        <i class="fa fa-check-circle"></i> Verified businesses only
+      </button>
+      <ng-container *ngIf="priceBands.length">
+        <button class="chip" [class.active]="!priceBand" (click)="setBand(null)">Any price</button>
+        <button *ngFor="let band of priceBands" class="chip" [class.active]="priceBand === band" (click)="setBand(band)">{{ band }}</button>
+      </ng-container>
+      <a *ngIf="active === 'stay'" class="see-all" [href]="data.links.allStays" target="_blank" rel="sponsored noopener"
+         (click)="trackClick($any(null), data.links.allStays)">All stays on Booking.com →</a>
+      <a *ngIf="active === 'do' || active === 'see'" class="see-all" [href]="data.links.allActivities" target="_blank" rel="sponsored noopener"
+         (click)="trackClick($any(null), data.links.allActivities)">All tours &amp; activities →</a>
+    </div>
+
+    <div class="layout">
+      <div class="list">
+        <p class="muted" *ngIf="!places.length">Nothing here yet.</p>
+        <article class="place" *ngFor="let place of places" [class.partner]="place.partner">
+          <img *ngIf="place.photo" [src]="listingService.photoUrl(place.photo)" [alt]="place.name" class="photo">
+          <div class="body">
+            <div class="badges">
+              <span class="sponsored" *ngIf="place.sponsored">Sponsored</span>
+              <span class="verified" *ngIf="place.partner"><i class="fa fa-check-circle"></i> Verified by owner</span>
+              <span class="band" *ngIf="place.priceBand">{{ place.priceBand }}</span>
+            </div>
+            <h3>
+              <a *ngIf="place.partner && place.listingId; else plainName" [routerLink]="['/place', place.listingId]">{{ place.name }}</a>
+              <ng-template #plainName>{{ place.name }}</ng-template>
+            </h3>
+            <p class="muted small" *ngIf="place.description">{{ place.description }}</p>
+            <p class="small" *ngIf="place.area && place.kind !== 'area'"><i class="fa fa-map-marker"></i> {{ place.area }}</p>
+            <p class="price" *ngIf="priceText(place) as price">{{ price }}</p>
+            <div class="actions">
+              <a *ngIf="place.mapsLink" class="btn btn-outline-secondary btn-sm" [href]="place.mapsLink" target="_blank" rel="noopener"
+                 (click)="trackClick(place, place.mapsLink)">Map</a>
+              <ng-container *ngIf="place.partner; else affiliate">
+                <a *ngIf="place.whatsappLink" class="btn btn-success btn-sm" [href]="place.whatsappLink" target="_blank" rel="noopener"
+                   (click)="trackLead(place, 'whatsapp')"><i class="fa fa-whatsapp"></i> WhatsApp</a>
+                <a *ngIf="place.callLink" class="btn btn-outline-secondary btn-sm" [href]="place.callLink" (click)="trackLead(place, 'call')">
+                  <i class="fa fa-phone"></i> Call</a>
+              </ng-container>
+              <ng-template #affiliate>
+                <a *ngIf="place.bookingLink" class="btn btn-primary btn-sm" [href]="place.bookingLink" target="_blank" rel="sponsored noopener"
+                   (click)="trackClick(place, place.bookingLink)">{{ bookLabel(place) }}</a>
+              </ng-template>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="map-col">
+        <div #mapContainer class="map" [attr.aria-label]="'Map of ' + data.destination.name"></div>
+      </div>
+    </div>
+
+    <p class="muted small mt-3">
+      Places from <a *ngIf="data.guide" [href]="data.guide.url" target="_blank" rel="noopener">Wikivoyage: {{ data.guide.title }}</a>
+      (CC BY-SA 4.0), Wikipedia, OpenStreetMap and businesses listed by their owners. Booking links may earn CitiTour a commission at no extra cost to you.
+    </p>
+    <p class="small"><a routerLink="/list-your-business">Own a business in {{ data.destination.name }}? List it free →</a></p>
+  </ng-container>
+</div>

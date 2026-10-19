@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ItineraryService, TripSummary } from 'src/app/services/itinerary.service';
-import { apiErrorMessage } from 'src/app/services/search-recommendation.service';
+import { apiErrorMessage } from 'src/app/services/api-error';
 
 @Component({
   selector: 'app-my-trips',

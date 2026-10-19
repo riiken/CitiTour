@@ -6,7 +6,7 @@ import { PickedLocation } from 'src/app/shared/location-picker/location-picker.c
 import {
   ListingInput, ListingService, ListingType, LISTING_TYPES, OwnListing, SUBTYPES
 } from 'src/app/services/listing.service';
-import { apiErrorMessage } from 'src/app/services/search-recommendation.service';
+import { apiErrorMessage } from 'src/app/services/api-error';
 
 const AMENITIES = ['Wi-Fi', 'Parking', 'Air conditioning', 'Breakfast included', 'Hot water', 'Lake/river view',
   'Mountain view', 'Rooftop', 'Pool', 'Family rooms', 'Pet friendly', 'Airport pickup', 'Power backup', 'Kitchen'];

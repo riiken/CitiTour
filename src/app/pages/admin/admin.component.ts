@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AdminOverview, ListingService, ListingStatus, OwnListing } from 'src/app/services/listing.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { apiErrorMessage } from 'src/app/services/search-recommendation.service';
+import { apiErrorMessage } from 'src/app/services/api-error';
 
 @Component({
   selector: 'app-admin',

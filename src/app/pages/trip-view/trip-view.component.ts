@@ -10,7 +10,7 @@ import {
 } from 'src/app/services/itinerary.service';
 import { DestinationService, ForecastDay, WeatherData } from 'src/app/services/destination.service';
 import { ListingService } from 'src/app/services/listing.service';
-import { apiErrorMessage } from 'src/app/services/search-recommendation.service';
+import { apiErrorMessage } from 'src/app/services/api-error';
 
 const DAY_COLOURS = ['#86B817', '#e8590c', '#1c7ed6', '#ae3ec9', '#0ca678', '#f08c00', '#d6336c', '#5c7cfa', '#2b8a3e', '#c92a2a'];
 

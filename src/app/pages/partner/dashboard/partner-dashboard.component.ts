@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ListingService, OwnListing, LISTING_TYPES } from 'src/app/services/listing.service';
-import { apiErrorMessage } from 'src/app/services/search-recommendation.service';
+import { apiErrorMessage } from 'src/app/services/api-error';
 
 @Component({
   selector: 'app-partner-dashboard',

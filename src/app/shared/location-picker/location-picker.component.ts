@@ -5,7 +5,7 @@ import { Subject, Subscription, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 import * as L from 'leaflet';
 import { ListingService, PlaceResult } from 'src/app/services/listing.service';
-import { apiErrorMessage } from 'src/app/services/search-recommendation.service';
+import { apiErrorMessage } from 'src/app/services/api-error';
 
 export interface PickedLocation {
   lat: number;

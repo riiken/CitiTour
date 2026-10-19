@@ -98,6 +98,16 @@ export type TripEdit =
   | { op: 'stay_add'; place: { kind: PlaceKind; name: string } }
   | { op: 'title'; title: string };
 
+export type ExploreSection = 'see' | 'do' | 'stay' | 'eat';
+
+export interface ExploreData {
+  destination: { name: string; displayName?: string; lat?: number; lon?: number };
+  guide?: { title: string; url: string };
+  sections: Record<ExploreSection, ItineraryPlace[]>;
+  counts: Record<ExploreSection, number>;
+  links: { allStays: string; allActivities: string };
+}
+
 export interface TrackEvent {
   type: 'outbound_click' | 'share' | 'plan_view';
   partner?: string;
@@ -121,6 +131,13 @@ export class ItineraryService {
   get(id: string): Observable<Itinerary> {
     return this.http
       .get<{ success: boolean; data: Itinerary }>(`${this.baseUrl}/itineraries/${encodeURIComponent(id)}`)
+      .pipe(map(res => res.data));
+  }
+
+  explore(destination: string, params: { checkIn?: string; checkOut?: string; travellers?: number } = {}): Observable<ExploreData> {
+    const query: Record<string, string> = {};
+    Object.entries(params).forEach(([key, value]) => { if (value) query[key] = String(value); });
+    return this.http.get<{ data: ExploreData }>(`${this.baseUrl}/explore/${encodeURIComponent(destination)}`, { params: query })
       .pipe(map(res => res.data));
   }
 

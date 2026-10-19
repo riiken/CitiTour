@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import * as L from 'leaflet';
 import { ListingService, PublicListing, SUBTYPES } from 'src/app/services/listing.service';
-import { apiErrorMessage } from 'src/app/services/search-recommendation.service';
+import { apiErrorMessage } from 'src/app/services/api-error';
 
 /**
  * Public page for an approved business: the owner's shareable mini-site.

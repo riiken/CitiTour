@@ -5,7 +5,7 @@ import { TripPlannerComponent } from './pages/trip-planner/trip-planner.componen
 import { AboutComponent } from './components/about/about.component';
 import { ServicesComponent } from './components/services/services.component';
 import { ContactComponent } from './components/contact/contact.component';
-import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { ExploreComponent } from './pages/explore/explore.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
@@ -24,7 +24,9 @@ import { MyTripsComponent } from './pages/my-trips/my-trips.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, title: 'CitiTour – AI trip planner for India' },
-  { path: 'search-results', component: SearchResultsComponent, title: 'Hotels, restaurants & tours – CitiTour' },
+  { path: 'explore', component: ExploreComponent, title: 'Explore – CitiTour' },
+  { path: 'explore/:destination', component: ExploreComponent, title: 'Explore – CitiTour' },
+  { path: 'search-results', redirectTo: '/explore' },
   { path: 'plan-trip', component: TripPlannerComponent, title: 'Plan your trip – CitiTour' },
   { path: 'trip/:id', component: TripViewComponent, title: 'Your trip – CitiTour' },
   { path: 'login', component: LoginComponent, title: 'Log in – CitiTour' },
@@ -45,7 +47,7 @@ const routes: Routes = [
   { path: 'privacy-policy', component: PrivacyPolicyComponent, title: 'Privacy policy – CitiTour' },
   // Retired demo pages
   { path: 'booking', redirectTo: '/plan-trip' },
-  { path: 'destination', redirectTo: '/search-results' },
+  { path: 'destination', redirectTo: '/explore' },
   { path: 'dashboard', redirectTo: '/user-dashboard' },
   { path: '**', redirectTo: '/home' }
 ];

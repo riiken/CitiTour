@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/services/loader.service';
 import { TripRequest } from 'src/app/services/trip-planner.service';
 import { ItineraryService } from 'src/app/services/itinerary.service';
-import { apiErrorMessage } from 'src/app/services/search-recommendation.service';
+import { apiErrorMessage } from 'src/app/services/api-error';
 
 @Component({
   selector: 'app-trip-planner',
