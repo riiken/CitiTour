@@ -1,5 +1,6 @@
 import {
-  AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild
+  AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { Subject, Subscription, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
@@ -27,6 +28,7 @@ const MIN_PIN_ZOOM = 15;
     selector: 'app-location-picker',
     templateUrl: './location-picker.component.html',
     styleUrls: ['./location-picker.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LocationPickerComponent implements AfterViewInit, OnChanges, OnDestroy {

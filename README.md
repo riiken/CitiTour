@@ -4,6 +4,8 @@ Angular app for CitiTour: day-by-day trip plans built from real places, shareabl
 
 ## Run locally
 
+Needs Node 24.15+ (or 22.22.3+), as Angular 22 requires. With nvm: `nvm use` (reads `.nvmrc`).
+
 ```bash
 npm install
 npm start            # http://localhost:4200 (expects the API on http://localhost:5000)

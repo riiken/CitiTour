@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Output, ViewEncapsulation, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, User } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
@@ -10,6 +10,7 @@ import { I18nService } from '../../i18n/i18n.service';
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.css'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class NavbarComponent implements OnInit, OnDestroy {

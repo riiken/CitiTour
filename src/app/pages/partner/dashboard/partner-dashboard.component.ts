@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ListingService, OwnListing, LISTING_TYPES } from 'src/app/services/listing.service';
 import { apiErrorMessage } from 'src/app/services/api-error';
@@ -7,6 +7,7 @@ import { apiErrorMessage } from 'src/app/services/api-error';
     selector: 'app-partner-dashboard',
     templateUrl: './partner-dashboard.component.html',
     styleUrls: ['./partner-dashboard.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PartnerDashboardComponent implements OnInit {

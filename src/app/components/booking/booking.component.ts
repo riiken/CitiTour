@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TripPlannerService, TripRequest } from 'src/app/services/trip-planner.service';
@@ -10,6 +10,7 @@ const toIsoDate = (date: Date) => date.toISOString().slice(0, 10);
     selector: 'app-booking',
     templateUrl: './booking.component.html',
     styleUrls: ['./booking.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BookingComponent {

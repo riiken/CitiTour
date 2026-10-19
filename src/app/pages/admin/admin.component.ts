@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AdminOverview, ListingService, ListingStatus, OwnListing } from 'src/app/services/listing.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,6 +8,7 @@ import { apiErrorMessage } from 'src/app/services/api-error';
     selector: 'app-admin',
     templateUrl: './admin.component.html',
     styleUrls: ['./admin.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AdminComponent implements OnInit {

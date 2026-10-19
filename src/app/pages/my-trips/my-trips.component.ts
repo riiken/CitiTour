@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ItineraryService, TripSummary } from 'src/app/services/itinerary.service';
 import { apiErrorMessage } from 'src/app/services/api-error';
@@ -7,6 +7,7 @@ import { apiErrorMessage } from 'src/app/services/api-error';
     selector: 'app-my-trips',
     templateUrl: './my-trips.component.html',
     styleUrls: ['./my-trips.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MyTripsComponent implements OnInit {

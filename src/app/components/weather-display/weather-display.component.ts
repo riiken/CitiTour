@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { WeatherData, ForecastDay } from '../../services/destination.service';
 
 @Component({
     selector: 'app-weather-display',
     templateUrl: './weather-display.component.html',
     styleUrls: ['./weather-display.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class WeatherDisplayComponent {

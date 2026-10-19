@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
@@ -19,6 +19,7 @@ const POPULAR = ['Udaipur', 'Jaipur', 'Goa', 'Rishikesh', 'Manali', 'Varanasi', 
     selector: 'app-explore',
     templateUrl: './explore.component.html',
     styleUrls: ['./explore.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ExploreComponent implements OnInit, AfterViewChecked, OnDestroy {

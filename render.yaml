@@ -9,6 +9,10 @@ services:
     staticPublishPath: dist/citi-tour
     autoDeploy: true
     pullRequestPreviewsEnabled: false
+    envVars:
+      # Angular 22 needs Node 22.22.3+ or 24.15+ (see .nvmrc)
+      - key: NODE_VERSION
+        value: "24"
     routes:
       # Single-page app: every path serves index.html (deep links like /trip/abc work on refresh)
       - type: rewrite

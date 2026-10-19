@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -17,6 +17,7 @@ const CUISINES = ['North Indian', 'South Indian', 'Rajasthani', 'Gujarati', 'Pun
     selector: 'app-listing-form',
     templateUrl: './listing-form.component.html',
     styleUrls: ['./listing-form.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListingFormComponent implements OnInit {

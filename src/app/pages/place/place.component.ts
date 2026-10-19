@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import * as L from 'leaflet';
@@ -12,6 +12,7 @@ import { apiErrorMessage } from 'src/app/services/api-error';
     selector: 'app-place',
     templateUrl: './place.component.html',
     styleUrls: ['./place.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PlaceComponent implements OnInit, AfterViewChecked, OnDestroy {

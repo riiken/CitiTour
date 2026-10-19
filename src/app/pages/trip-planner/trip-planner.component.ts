@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/services/loader.service';
 import { TripRequest } from 'src/app/services/trip-planner.service';
@@ -9,6 +9,7 @@ import { apiErrorMessage } from 'src/app/services/api-error';
     selector: 'app-trip-planner',
     templateUrl: './trip-planner.component.html',
     styleUrls: ['./trip-planner.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TripPlannerComponent {

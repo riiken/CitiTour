@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DestinationImage } from '../../services/destination.service';
 
 @Component({
     selector: 'app-image-gallery',
     templateUrl: './image-gallery.component.html',
     styleUrls: ['./image-gallery.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ImageGalleryComponent implements OnInit {

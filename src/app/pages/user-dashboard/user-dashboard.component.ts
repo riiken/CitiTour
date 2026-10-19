@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService, User, UsageStats } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
     selector: 'app-user-dashboard',
     templateUrl: './user-dashboard.component.html',
     styleUrls: ['./user-dashboard.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class UserDashboardComponent implements OnInit {

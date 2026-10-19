@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, ChangeDetectionStrategy } from '@angular/core';
 import { environment } from '../environment';
 
 /**
@@ -9,6 +9,7 @@ import { environment } from '../environment';
     selector: 'app-google-ads',
     templateUrl: './google-ads.component.html',
     styleUrls: ['./google-ads.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class GoogleAdsComponent implements AfterViewInit {
