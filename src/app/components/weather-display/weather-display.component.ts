@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { WeatherData, ForecastDay } from '../../services/destination.service';
 
 @Component({
-  selector: 'app-weather-display',
-  templateUrl: './weather-display.component.html',
-  styleUrls: ['./weather-display.component.css']
+    selector: 'app-weather-display',
+    templateUrl: './weather-display.component.html',
+    styleUrls: ['./weather-display.component.css'],
+    standalone: false
 })
 export class WeatherDisplayComponent {
   @Input() weather: WeatherData | null = null;

@@ -9,9 +9,10 @@ import { apiErrorMessage } from 'src/app/services/api-error';
  * Public page for an approved business: the owner's shareable mini-site.
  */
 @Component({
-  selector: 'app-place',
-  templateUrl: './place.component.html',
-  styleUrls: ['./place.component.css']
+    selector: 'app-place',
+    templateUrl: './place.component.html',
+    styleUrls: ['./place.component.css'],
+    standalone: false
 })
 export class PlaceComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('mapContainer') mapContainer?: ElementRef<HTMLDivElement>;

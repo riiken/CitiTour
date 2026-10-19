@@ -6,10 +6,11 @@ import { ToastrService } from 'ngx-toastr';
 import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'],
-  encapsulation:ViewEncapsulation.None
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.css'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   mobileVersion: boolean;

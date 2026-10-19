@@ -1,7 +1,8 @@
 import { Directive, HostListener, Renderer2, ElementRef, OnInit } from '@angular/core';
 
 @Directive({
-  selector: '[appNavbarSticky]'
+    selector: '[appNavbarSticky]',
+    standalone: false
 })
 export class NavbarStickyDirective {
 

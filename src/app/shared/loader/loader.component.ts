@@ -3,9 +3,10 @@ import { Subscription } from 'rxjs';
 import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
-  selector: 'app-loader',
-  templateUrl: './loader.component.html',
-  styleUrls: ['./loader.component.css']
+    selector: 'app-loader',
+    templateUrl: './loader.component.html',
+    styleUrls: ['./loader.component.css'],
+    standalone: false
 })
 export class LoaderComponent implements OnDestroy {
   isLoading = false;

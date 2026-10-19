@@ -5,25 +5,26 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/app/environment';
 
 @Component({
-  selector: 'app-contact',
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css'],
-  animations: [
-    trigger('fadeInUp', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(20px)' }),
-        animate('0.5s 0.1s ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-      ])
-    ]),
-    trigger('staggerAnimation', [
-      transition('* => *', [
-        query(':enter', [
-          style({ opacity: 0, transform: 'translateY(20px)' }),
-          stagger(100, animate('0.5s 0.1s ease-out', style({ opacity: 1, transform: 'translateY(0)' })))
-        ], { optional: true })
-      ])
-    ])
-  ]
+    selector: 'app-contact',
+    templateUrl: './contact.component.html',
+    styleUrls: ['./contact.component.css'],
+    animations: [
+        trigger('fadeInUp', [
+            transition(':enter', [
+                style({ opacity: 0, transform: 'translateY(20px)' }),
+                animate('0.5s 0.1s ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+            ])
+        ]),
+        trigger('staggerAnimation', [
+            transition('* => *', [
+                query(':enter', [
+                    style({ opacity: 0, transform: 'translateY(20px)' }),
+                    stagger(100, animate('0.5s 0.1s ease-out', style({ opacity: 1, transform: 'translateY(0)' })))
+                ], { optional: true })
+            ])
+        ])
+    ],
+    standalone: false
 })
 export class ContactComponent {
   private apiURL:string;

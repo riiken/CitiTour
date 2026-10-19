@@ -6,9 +6,10 @@ import { ItineraryService } from 'src/app/services/itinerary.service';
 import { apiErrorMessage } from 'src/app/services/api-error';
 
 @Component({
-  selector: 'app-trip-planner',
-  templateUrl: './trip-planner.component.html',
-  styleUrls: ['./trip-planner.component.css']
+    selector: 'app-trip-planner',
+    templateUrl: './trip-planner.component.html',
+    styleUrls: ['./trip-planner.component.css'],
+    standalone: false
 })
 export class TripPlannerComponent {
   error: string | null = null;

@@ -7,9 +7,10 @@ import { I18nService } from 'src/app/i18n/i18n.service';
 const toIsoDate = (date: Date) => date.toISOString().slice(0, 10);
 
 @Component({
-  selector: 'app-booking',
-  templateUrl: './booking.component.html',
-  styleUrls: ['./booking.component.css']
+    selector: 'app-booking',
+    templateUrl: './booking.component.html',
+    styleUrls: ['./booking.component.css'],
+    standalone: false
 })
 export class BookingComponent {
   readonly today = toIsoDate(new Date());

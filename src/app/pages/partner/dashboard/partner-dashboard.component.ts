@@ -4,9 +4,10 @@ import { ListingService, OwnListing, LISTING_TYPES } from 'src/app/services/list
 import { apiErrorMessage } from 'src/app/services/api-error';
 
 @Component({
-  selector: 'app-partner-dashboard',
-  templateUrl: './partner-dashboard.component.html',
-  styleUrls: ['./partner-dashboard.component.css']
+    selector: 'app-partner-dashboard',
+    templateUrl: './partner-dashboard.component.html',
+    styleUrls: ['./partner-dashboard.component.css'],
+    standalone: false
 })
 export class PartnerDashboardComponent implements OnInit {
   listings: OwnListing[] = [];

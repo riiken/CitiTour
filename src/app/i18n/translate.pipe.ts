@@ -2,7 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { I18nService } from './i18n.service';
 
 /** {{ 'Plan a trip' | t }} or {{ 'Plan a trip to {city}' | t: { city: name } }} */
-@Pipe({ name: 't' })
+@Pipe({
+    name: 't',
+    standalone: false
+})
 export class TranslatePipe implements PipeTransform {
   constructor(private i18n: I18nService) {}
 

@@ -20,9 +20,10 @@ const SLOT_LABELS: Record<string, string> = {
 };
 
 @Component({
-  selector: 'app-trip-view',
-  templateUrl: './trip-view.component.html',
-  styleUrls: ['./trip-view.component.css']
+    selector: 'app-trip-view',
+    templateUrl: './trip-view.component.html',
+    styleUrls: ['./trip-view.component.css'],
+    standalone: false
 })
 export class TripViewComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('mapContainer') mapContainer?: ElementRef<HTMLDivElement>;

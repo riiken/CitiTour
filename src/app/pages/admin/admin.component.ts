@@ -5,9 +5,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { apiErrorMessage } from 'src/app/services/api-error';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+    selector: 'app-admin',
+    templateUrl: './admin.component.html',
+    styleUrls: ['./admin.component.css'],
+    standalone: false
 })
 export class AdminComponent implements OnInit {
   readonly tabs: { status: ListingStatus; label: string }[] = [

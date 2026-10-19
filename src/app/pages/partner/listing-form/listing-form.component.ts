@@ -14,9 +14,10 @@ const CUISINES = ['North Indian', 'South Indian', 'Rajasthani', 'Gujarati', 'Pun
   'Chinese', 'Continental', 'Italian', 'Cafe', 'Street food', 'Seafood', 'Desserts'];
 
 @Component({
-  selector: 'app-listing-form',
-  templateUrl: './listing-form.component.html',
-  styleUrls: ['./listing-form.component.css']
+    selector: 'app-listing-form',
+    templateUrl: './listing-form.component.html',
+    styleUrls: ['./listing-form.component.css'],
+    standalone: false
 })
 export class ListingFormComponent implements OnInit {
 

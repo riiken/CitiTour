@@ -24,9 +24,10 @@ const MIN_PIN_ZOOM = 15;
  * the map under the pin and sees the detected address to confirm.
  */
 @Component({
-  selector: 'app-location-picker',
-  templateUrl: './location-picker.component.html',
-  styleUrls: ['./location-picker.component.css']
+    selector: 'app-location-picker',
+    templateUrl: './location-picker.component.html',
+    styleUrls: ['./location-picker.component.css'],
+    standalone: false
 })
 export class LocationPickerComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() lat: number | null = null;

@@ -4,9 +4,10 @@ import { ItineraryService, TripSummary } from 'src/app/services/itinerary.servic
 import { apiErrorMessage } from 'src/app/services/api-error';
 
 @Component({
-  selector: 'app-my-trips',
-  templateUrl: './my-trips.component.html',
-  styleUrls: ['./my-trips.component.css']
+    selector: 'app-my-trips',
+    templateUrl: './my-trips.component.html',
+    styleUrls: ['./my-trips.component.css'],
+    standalone: false
 })
 export class MyTripsComponent implements OnInit {
   trips: TripSummary[] = [];

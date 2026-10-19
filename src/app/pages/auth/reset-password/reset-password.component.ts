@@ -6,9 +6,10 @@ import { AuthService } from 'src/app/services/auth.service';
 const PASSWORD_RULE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,128}$/;
 
 @Component({
-  selector: 'app-reset-password',
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['../login/login.component.css']
+    selector: 'app-reset-password',
+    templateUrl: './reset-password.component.html',
+    styleUrls: ['../login/login.component.css'],
+    standalone: false
 })
 export class ResetPasswordComponent {
   email: string;

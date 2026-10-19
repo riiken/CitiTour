@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DestinationImage } from '../../services/destination.service';
 
 @Component({
-  selector: 'app-image-gallery',
-  templateUrl: './image-gallery.component.html',
-  styleUrls: ['./image-gallery.component.css']
+    selector: 'app-image-gallery',
+    templateUrl: './image-gallery.component.html',
+    styleUrls: ['./image-gallery.component.css'],
+    standalone: false
 })
 export class ImageGalleryComponent implements OnInit {
   @Input() images: DestinationImage[] = [];

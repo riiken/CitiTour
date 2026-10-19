@@ -16,9 +16,10 @@ const POPULAR = ['Udaipur', 'Jaipur', 'Goa', 'Rishikesh', 'Manali', 'Varanasi', 
  * including verified local businesses. /explore and /explore/:destination
  */
 @Component({
-  selector: 'app-explore',
-  templateUrl: './explore.component.html',
-  styleUrls: ['./explore.component.css']
+    selector: 'app-explore',
+    templateUrl: './explore.component.html',
+    styleUrls: ['./explore.component.css'],
+    standalone: false
 })
 export class ExploreComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('mapContainer') mapContainer?: ElementRef<HTMLDivElement>;

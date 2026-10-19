@@ -6,9 +6,10 @@ import { environment } from '../environment';
  * not configured or when running inside the native app (which uses AdMob).
  */
 @Component({
-  selector: 'app-google-ads',
-  templateUrl: './google-ads.component.html',
-  styleUrls: ['./google-ads.component.css']
+    selector: 'app-google-ads',
+    templateUrl: './google-ads.component.html',
+    styleUrls: ['./google-ads.component.css'],
+    standalone: false
 })
 export class GoogleAdsComponent implements AfterViewInit {
   readonly client = environment.adsenseClient;
